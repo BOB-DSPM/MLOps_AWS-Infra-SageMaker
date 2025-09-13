@@ -1,0 +1,14 @@
+{
+    "app": "python3 app.py",
+    "context": {
+        "project_name": "my-mlops",
+        "env_name": "dev",
+        "region": "ap-northeast-2",
+        "include_vpc": true,
+        "enable_pipeline": true,
+        "codecommit-_repo_name": "my-mlops-repo",
+        "pipeline_branch": "main",
+        "artifact_bucket_lifecycle_days": 90,
+        "ecr_untagged_keep": 20
+    }
+}

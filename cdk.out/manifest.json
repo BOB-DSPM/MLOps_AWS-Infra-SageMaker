@@ -1,0 +1,418 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "My-mlops-BaseStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "My-mlops-BaseStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "My-mlops-BaseStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://651706765732/ap-northeast-2",
+      "properties": {
+        "templateFile": "My-mlops-BaseStack.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "Env": "dev",
+          "ManagedBy": "cdk",
+          "Project": "my-mlops"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::651706765732:role/cdk-hnb659fds-deploy-role-651706765732-ap-northeast-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::651706765732:role/cdk-hnb659fds-cfn-exec-role-651706765732-ap-northeast-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-651706765732-ap-northeast-2/6c70bad61295b20007da52056616b84f4a297ebf84c39cbc1316d226e5e03646.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "My-mlops-BaseStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::651706765732:role/cdk-hnb659fds-lookup-role-651706765732-ap-northeast-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "My-mlops-BaseStack.assets"
+      ],
+      "metadata": {
+        "/My-mlops-BaseStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "Env",
+                "Value": "dev"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "cdk"
+              },
+              {
+                "Key": "Project",
+                "Value": "my-mlops"
+              }
+            ]
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpc9C8E08CA"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1Subnet2663FDF8"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1RouteTableC7B97EBC"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1RouteTableAssociationD187BBEF"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1DefaultRoute7B3A0BBF"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1EIP3A257FAD"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet1NATGateway9FFD2AE7"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet2Subnet5663DA54"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet2RouteTableD2863FD6"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet2RouteTableAssociation2584ED31"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/poublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcpoublicSubnet2DefaultRoute04C230F1"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet1Subnet5462C604"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet1RouteTable7FE5625A"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet1RouteTableAssociation262F91CA"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet1DefaultRouteB24C5742"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet2SubnetD63D8069"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet2RouteTable3F816AD9"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet2RouteTableAssociation0F6A5ED7"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/privateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcprivateSubnet2DefaultRouteB7FAA534"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcIGW8C3B516F"
+          }
+        ],
+        "/My-mlops-BaseStack/Net/Vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetVpcVPCGW7DE1748F"
+          }
+        ],
+        "/My-mlops-BaseStack/Kms/Key/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyF138A6A4"
+          }
+        ],
+        "/My-mlops-BaseStack/Kms/KeyAlias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyAliasA98867C7"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/LogsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageLogsBucket16160246"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/LogsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageLogsBucketPolicyF1EDCC63"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageArtifactsBucketB19151BF"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageArtifactsBucketPolicyAE973BC9"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/DataBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDataBucketB1B922FA"
+          }
+        ],
+        "/My-mlops-BaseStack/Storage/DataBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StorageDataBucketPolicyC997B69E"
+          }
+        ],
+        "/My-mlops-BaseStack/Ecr/Repository/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcrRepository5297154A"
+          }
+        ],
+        "/My-mlops-BaseStack/CodeBuildRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodeBuildRole728CBADE"
+          }
+        ],
+        "/My-mlops-BaseStack/CodeBuildRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodeBuildRoleDefaultPolicy829527DE"
+          }
+        ],
+        "/My-mlops-BaseStack/CodePipelineRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodePipelineRoleB31C27BE"
+          }
+        ],
+        "/My-mlops-BaseStack/CodePipelineRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodePipelineRoleDefaultPolicy2731C56D"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Repo/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdRepo76115433"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Repo/MymlopsBaseStackCiCdPipeline8AC719AF-main-EventRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdRepoMymlopsBaseStackCiCdPipeline8AC719AFmainEventRuleD530E4EB"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/BuildLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdBuildLogsEA39AA40"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Build/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdBuildAE59F546"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "V1 pipeline type is implicitly selected when `pipelineType` is not set. If you want to use V2 type, set `PipelineType.V2`. [ack: @aws-cdk/aws-codepipeline:unspecifiedPipelineType]",
+            "trace": [
+              "Annotations.addMessage (/tmp/jsii-kernel-oI610y/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1608)",
+              "Annotations.addWarningV2 (/tmp/jsii-kernel-oI610y/node_modules/aws-cdk-lib/core/lib/annotations.js:1:825)",
+              "new Pipeline (/tmp/jsii-kernel-oI610y/node_modules/aws-cdk-lib/aws-codepipeline/lib/pipeline.js:1:6677)",
+              "Kernel._Kernel_create (/tmp/tmphw5en12e/lib/program.js:548:25)",
+              "Kernel.create (/tmp/tmphw5en12e/lib/program.js:218:93)",
+              "KernelHost.processRequest (/tmp/tmphw5en12e/lib/program.js:15479:36)",
+              "KernelHost.run (/tmp/tmphw5en12e/lib/program.js:15439:22)",
+              "Immediate._onImmediate (/tmp/tmphw5en12e/lib/program.js:15440:45)",
+              "process.processImmediate (node:internal/timers:485:21)"
+            ]
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineBFCF649F"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineSourceCodeCommitCodePipelineActionRole7AC4B272"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineSourceCodeCommitCodePipelineActionRoleDefaultPolicy7E3902CD"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/EventsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineEventsRole39EDBB34"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/EventsRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineEventsRoleDefaultPolicy7AE98E11"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineBuildCodeBuildCodePipelineActionRole0C33426F"
+          }
+        ],
+        "/My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CiCdPipelineBuildCodeBuildCodePipelineActionRoleDefaultPolicy6801B28B"
+          }
+        ],
+        "/My-mlops-BaseStack/CodeCommitCloneUrlHttp": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CodeCommitCloneUrlHttp"
+          }
+        ],
+        "/My-mlops-BaseStack/PipelineName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PipelineName"
+          }
+        ],
+        "/My-mlops-BaseStack/ArtifactsBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ArtifactsBucket"
+          }
+        ],
+        "/My-mlops-BaseStack/DateBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DateBucket"
+          }
+        ],
+        "/My-mlops-BaseStack/LogsBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogsBucket"
+          }
+        ],
+        "/My-mlops-BaseStack/EcrRepoUri": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcrRepoUri"
+          }
+        ],
+        "/My-mlops-BaseStack/VpcId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcId"
+          }
+        ],
+        "/My-mlops-BaseStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/My-mlops-BaseStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/My-mlops-BaseStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "My-mlops-BaseStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

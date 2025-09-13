@@ -1,0 +1,74 @@
+# ─────────────────────────
+# Python
+# ─────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 가상환경
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+pip-log.txt
+
+# 패키징 산출물
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# 테스트/커버리지
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# 정적분석/타입체커
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# ─────────────────────────
+# AWS CDK
+# ─────────────────────────
+cdk.out/
+# cdk.context.json 은 재현성 위해 커밋 유지 권장
+# cdk.context.json
+
+# ─────────────────────────
+# 편집기/OS 잡파일
+# ─────────────────────────
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+*.swp
+.history/
+
+# ─────────────────────────
+# 환경변수 파일
+# ─────────────────────────
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# ─────────────────────────
+# 기타
+# ─────────────────────────
+.ipynb_checkpoints/
+*.log
+*.tmp
+*.bak
+*.orig
+
+# (선택) SAM/Serverless 잔여물
+.aws-sam/
+.serverless/
+
+# (선택) Docker 관련 임시파일
+*.tar
+docker-compose.override.yml

@@ -1,0 +1,2903 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "My-mlops-BaseStack": {
+        "id": "My-mlops-BaseStack",
+        "path": "My-mlops-BaseStack",
+        "children": {
+          "Net": {
+            "id": "Net",
+            "path": "My-mlops-BaseStack/Net",
+            "children": {
+              "Vpc": {
+                "id": "Vpc",
+                "path": "My-mlops-BaseStack/Net/Vpc",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Net/Vpc/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                      "aws:cdk:cloudformation:props": {
+                        "cidrBlock": "10.20.0.0/16",
+                        "enableDnsHostnames": true,
+                        "enableDnsSupport": true,
+                        "instanceTenancy": "default",
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "My-mlops-BaseStack/Net/Vpc"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "poublicSubnet1": {
+                    "id": "poublicSubnet1",
+                    "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1",
+                    "children": {
+                      "Subnet": {
+                        "id": "Subnet",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/Subnet",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                          "aws:cdk:cloudformation:props": {
+                            "availabilityZone": "ap-northeast-2a",
+                            "cidrBlock": "10.20.0.0/24",
+                            "mapPublicIpOnLaunch": true,
+                            "tags": [
+                              {
+                                "key": "aws-cdk:subnet-name",
+                                "value": "poublic"
+                              },
+                              {
+                                "key": "aws-cdk:subnet-type",
+                                "value": "Public"
+                              },
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "Acl": {
+                        "id": "Acl",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/Acl",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTable": {
+                        "id": "RouteTable",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/RouteTable",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                          "aws:cdk:cloudformation:props": {
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTableAssociation": {
+                        "id": "RouteTableAssociation",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/RouteTableAssociation",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                          "aws:cdk:cloudformation:props": {
+                            "routeTableId": {
+                              "Ref": "NetVpcpoublicSubnet1RouteTableC7B97EBC"
+                            },
+                            "subnetId": {
+                              "Ref": "NetVpcpoublicSubnet1Subnet2663FDF8"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "DefaultRoute": {
+                        "id": "DefaultRoute",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/DefaultRoute",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                          "aws:cdk:cloudformation:props": {
+                            "destinationCidrBlock": "0.0.0.0/0",
+                            "gatewayId": {
+                              "Ref": "NetVpcIGW8C3B516F"
+                            },
+                            "routeTableId": {
+                              "Ref": "NetVpcpoublicSubnet1RouteTableC7B97EBC"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "EIP": {
+                        "id": "EIP",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/EIP",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+                          "aws:cdk:cloudformation:props": {
+                            "domain": "vpc",
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "NATGateway": {
+                        "id": "NATGateway",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1/NATGateway",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::NatGateway",
+                          "aws:cdk:cloudformation:props": {
+                            "allocationId": {
+                              "Fn::GetAtt": [
+                                "NetVpcpoublicSubnet1EIP3A257FAD",
+                                "AllocationId"
+                              ]
+                            },
+                            "subnetId": {
+                              "Ref": "NetVpcpoublicSubnet1Subnet2663FDF8"
+                            },
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "poublicSubnet2": {
+                    "id": "poublicSubnet2",
+                    "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2",
+                    "children": {
+                      "Subnet": {
+                        "id": "Subnet",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2/Subnet",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                          "aws:cdk:cloudformation:props": {
+                            "availabilityZone": "ap-northeast-2b",
+                            "cidrBlock": "10.20.1.0/24",
+                            "mapPublicIpOnLaunch": true,
+                            "tags": [
+                              {
+                                "key": "aws-cdk:subnet-name",
+                                "value": "poublic"
+                              },
+                              {
+                                "key": "aws-cdk:subnet-type",
+                                "value": "Public"
+                              },
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "Acl": {
+                        "id": "Acl",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2/Acl",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTable": {
+                        "id": "RouteTable",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2/RouteTable",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                          "aws:cdk:cloudformation:props": {
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTableAssociation": {
+                        "id": "RouteTableAssociation",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2/RouteTableAssociation",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                          "aws:cdk:cloudformation:props": {
+                            "routeTableId": {
+                              "Ref": "NetVpcpoublicSubnet2RouteTableD2863FD6"
+                            },
+                            "subnetId": {
+                              "Ref": "NetVpcpoublicSubnet2Subnet5663DA54"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "DefaultRoute": {
+                        "id": "DefaultRoute",
+                        "path": "My-mlops-BaseStack/Net/Vpc/poublicSubnet2/DefaultRoute",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                          "aws:cdk:cloudformation:props": {
+                            "destinationCidrBlock": "0.0.0.0/0",
+                            "gatewayId": {
+                              "Ref": "NetVpcIGW8C3B516F"
+                            },
+                            "routeTableId": {
+                              "Ref": "NetVpcpoublicSubnet2RouteTableD2863FD6"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "privateSubnet1": {
+                    "id": "privateSubnet1",
+                    "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1",
+                    "children": {
+                      "Subnet": {
+                        "id": "Subnet",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1/Subnet",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                          "aws:cdk:cloudformation:props": {
+                            "availabilityZone": "ap-northeast-2a",
+                            "cidrBlock": "10.20.16.0/20",
+                            "mapPublicIpOnLaunch": false,
+                            "tags": [
+                              {
+                                "key": "aws-cdk:subnet-name",
+                                "value": "private"
+                              },
+                              {
+                                "key": "aws-cdk:subnet-type",
+                                "value": "Private"
+                              },
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/privateSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "Acl": {
+                        "id": "Acl",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1/Acl",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTable": {
+                        "id": "RouteTable",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1/RouteTable",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                          "aws:cdk:cloudformation:props": {
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/privateSubnet1"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTableAssociation": {
+                        "id": "RouteTableAssociation",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1/RouteTableAssociation",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                          "aws:cdk:cloudformation:props": {
+                            "routeTableId": {
+                              "Ref": "NetVpcprivateSubnet1RouteTable7FE5625A"
+                            },
+                            "subnetId": {
+                              "Ref": "NetVpcprivateSubnet1Subnet5462C604"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "DefaultRoute": {
+                        "id": "DefaultRoute",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet1/DefaultRoute",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                          "aws:cdk:cloudformation:props": {
+                            "destinationCidrBlock": "0.0.0.0/0",
+                            "natGatewayId": {
+                              "Ref": "NetVpcpoublicSubnet1NATGateway9FFD2AE7"
+                            },
+                            "routeTableId": {
+                              "Ref": "NetVpcprivateSubnet1RouteTable7FE5625A"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "privateSubnet2": {
+                    "id": "privateSubnet2",
+                    "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2",
+                    "children": {
+                      "Subnet": {
+                        "id": "Subnet",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2/Subnet",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                          "aws:cdk:cloudformation:props": {
+                            "availabilityZone": "ap-northeast-2b",
+                            "cidrBlock": "10.20.32.0/20",
+                            "mapPublicIpOnLaunch": false,
+                            "tags": [
+                              {
+                                "key": "aws-cdk:subnet-name",
+                                "value": "private"
+                              },
+                              {
+                                "key": "aws-cdk:subnet-type",
+                                "value": "Private"
+                              },
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/privateSubnet2"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "Acl": {
+                        "id": "Acl",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2/Acl",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTable": {
+                        "id": "RouteTable",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2/RouteTable",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                          "aws:cdk:cloudformation:props": {
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Name",
+                                "value": "My-mlops-BaseStack/Net/Vpc/privateSubnet2"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ],
+                            "vpcId": {
+                              "Ref": "NetVpc9C8E08CA"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "RouteTableAssociation": {
+                        "id": "RouteTableAssociation",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2/RouteTableAssociation",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                          "aws:cdk:cloudformation:props": {
+                            "routeTableId": {
+                              "Ref": "NetVpcprivateSubnet2RouteTable3F816AD9"
+                            },
+                            "subnetId": {
+                              "Ref": "NetVpcprivateSubnet2SubnetD63D8069"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "DefaultRoute": {
+                        "id": "DefaultRoute",
+                        "path": "My-mlops-BaseStack/Net/Vpc/privateSubnet2/DefaultRoute",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                          "aws:cdk:cloudformation:props": {
+                            "destinationCidrBlock": "0.0.0.0/0",
+                            "natGatewayId": {
+                              "Ref": "NetVpcpoublicSubnet1NATGateway9FFD2AE7"
+                            },
+                            "routeTableId": {
+                              "Ref": "NetVpcprivateSubnet2RouteTable3F816AD9"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "IGW": {
+                    "id": "IGW",
+                    "path": "My-mlops-BaseStack/Net/Vpc/IGW",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "My-mlops-BaseStack/Net/Vpc"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "VPCGW": {
+                    "id": "VPCGW",
+                    "path": "My-mlops-BaseStack/Net/Vpc/VPCGW",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                      "aws:cdk:cloudformation:props": {
+                        "internetGatewayId": {
+                          "Ref": "NetVpcIGW8C3B516F"
+                        },
+                        "vpcId": {
+                          "Ref": "NetVpc9C8E08CA"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.Vpc",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Kms": {
+            "id": "Kms",
+            "path": "My-mlops-BaseStack/Kms",
+            "children": {
+              "Key": {
+                "id": "Key",
+                "path": "My-mlops-BaseStack/Kms/Key",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Kms/Key/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "S3/KMS general-purpose key",
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::651706765732:root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "pendingWindowInDays": 7,
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.153.0"
+                }
+              },
+              "KeyAlias": {
+                "id": "KeyAlias",
+                "path": "My-mlops-BaseStack/Kms/KeyAlias",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Kms/KeyAlias/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
+                      "aws:cdk:cloudformation:props": {
+                        "aliasName": "alias/my-mlops-dev-s3",
+                        "targetKeyId": {
+                          "Fn::GetAtt": [
+                            "KmsKeyF138A6A4",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnAlias",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Alias",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Storage": {
+            "id": "Storage",
+            "path": "My-mlops-BaseStack/Storage",
+            "children": {
+              "LogsBucket": {
+                "id": "LogsBucket",
+                "path": "My-mlops-BaseStack/Storage/LogsBucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Storage/LogsBucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "accessControl": "LogDeliveryWrite",
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "AES256"
+                              }
+                            }
+                          ]
+                        },
+                        "bucketName": "my-mlops-dev-logs",
+                        "lifecycleConfiguration": {
+                          "rules": [
+                            {
+                              "expirationInDays": 365,
+                              "noncurrentVersionExpiration": {
+                                "noncurrentDays": 180
+                              },
+                              "status": "Enabled"
+                            }
+                          ]
+                        },
+                        "ownershipControls": {
+                          "rules": [
+                            {
+                              "objectOwnership": "ObjectWriter"
+                            }
+                          ]
+                        },
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        },
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ],
+                        "versioningConfiguration": {
+                          "status": "Enabled"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "My-mlops-BaseStack/Storage/LogsBucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "My-mlops-BaseStack/Storage/LogsBucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "StorageLogsBucket16160246"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StorageLogsBucket16160246",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "StorageLogsBucket16160246",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "StorageLogsBucket16160246",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyBucket"
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StorageLogsBucket16160246",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/*"
+                                      ]
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyObjects"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.153.0"
+                }
+              },
+              "ArtifactsBucket": {
+                "id": "ArtifactsBucket",
+                "path": "My-mlops-BaseStack/Storage/ArtifactsBucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Storage/ArtifactsBucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "aws:kms",
+                                "kmsMasterKeyId": {
+                                  "Fn::GetAtt": [
+                                    "KmsKeyF138A6A4",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "bucketName": "my-mlops-dev-artifacts",
+                        "lifecycleConfiguration": {
+                          "rules": [
+                            {
+                              "expirationInDays": 90,
+                              "noncurrentVersionExpiration": {
+                                "noncurrentDays": 90
+                              },
+                              "status": "Enabled"
+                            }
+                          ]
+                        },
+                        "loggingConfiguration": {
+                          "destinationBucketName": {
+                            "Ref": "StorageLogsBucket16160246"
+                          },
+                          "logFilePrefix": "artifacts/"
+                        },
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        },
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ],
+                        "versioningConfiguration": {
+                          "status": "Enabled"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "My-mlops-BaseStack/Storage/ArtifactsBucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "My-mlops-BaseStack/Storage/ArtifactsBucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "StorageArtifactsBucketB19151BF"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StorageArtifactsBucketB19151BF",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "StorageArtifactsBucketB19151BF",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "StorageArtifactsBucketB19151BF",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyBucket"
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StorageArtifactsBucketB19151BF",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/*"
+                                      ]
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyObjects"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.153.0"
+                }
+              },
+              "DataBucket": {
+                "id": "DataBucket",
+                "path": "My-mlops-BaseStack/Storage/DataBucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Storage/DataBucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "aws:kms",
+                                "kmsMasterKeyId": {
+                                  "Fn::GetAtt": [
+                                    "KmsKeyF138A6A4",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "bucketName": "my-mlops-dev-data",
+                        "loggingConfiguration": {
+                          "destinationBucketName": {
+                            "Ref": "StorageLogsBucket16160246"
+                          },
+                          "logFilePrefix": "data/"
+                        },
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        },
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ],
+                        "versioningConfiguration": {
+                          "status": "Enabled"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "My-mlops-BaseStack/Storage/DataBucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "My-mlops-BaseStack/Storage/DataBucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "StorageDataBucketB1B922FA"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StorageDataBucketB1B922FA",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "StorageDataBucketB1B922FA",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "StorageDataBucketB1B922FA",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyBucket"
+                                },
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StorageDataBucketB1B922FA",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/*"
+                                      ]
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnlyObjects"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Ecr": {
+            "id": "Ecr",
+            "path": "My-mlops-BaseStack/Ecr",
+            "children": {
+              "Repository": {
+                "id": "Repository",
+                "path": "My-mlops-BaseStack/Ecr/Repository",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/Ecr/Repository/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ECR::Repository",
+                      "aws:cdk:cloudformation:props": {
+                        "imageScanningConfiguration": {
+                          "scanOnPush": true
+                        },
+                        "lifecyclePolicy": {
+                          "lifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Keep the last 20 untagged images\",\"selection\":{\"tagStatus\":\"untagged\",\"countType\":\"imageCountMoreThan\",\"countNumber\":20},\"action\":{\"type\":\"expire\"}}]}"
+                        },
+                        "repositoryName": "my-mlops-dev",
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ecr.CfnRepository",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecr.Repository",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "CiCdIam": {
+            "id": "CiCdIam",
+            "path": "My-mlops-BaseStack/CiCdIam",
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "CodeBuildRole": {
+            "id": "CodeBuildRole",
+            "path": "My-mlops-BaseStack/CodeBuildRole",
+            "children": {
+              "ImportCodeBuildRole": {
+                "id": "ImportCodeBuildRole",
+                "path": "My-mlops-BaseStack/CodeBuildRole/ImportCodeBuildRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.153.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "My-mlops-BaseStack/CodeBuildRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "codebuild.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "description": "Role for CodeBuild to build/push images and access S3/KMS",
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+                          ]
+                        ]
+                      }
+                    ],
+                    "tags": [
+                      {
+                        "key": "Env",
+                        "value": "dev"
+                      },
+                      {
+                        "key": "ManagedBy",
+                        "value": "cdk"
+                      },
+                      {
+                        "key": "Project",
+                        "value": "my-mlops"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.153.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "My-mlops-BaseStack/CodeBuildRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CodeBuildRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:ListBucket"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageArtifactsBucketB19151BF",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageArtifactsBucketB19151BF",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                },
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageDataBucketB1B922FA",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageDataBucketB1B922FA",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "kms:Encrypt",
+                                "kms:Decrypt",
+                                "kms:DescribeKey",
+                                "kms:GenerateDataKey*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "KmsKeyF138A6A4",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "ecr:GetAuthorizationToken",
+                                "ecr:BatchCheckLayerAvailability",
+                                "ecr:CompleteLayerUpload",
+                                "ecr:UploadLayerPart",
+                                "ecr:InitiateLayerUpload",
+                                "ecr:PutImage",
+                                "ecr:BatchGetImage",
+                                "ecr:GetDownloadUrlForLayer",
+                                "ecr:DescribeRepositories"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "CiCdBuildLogsEA39AA40",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":logs:ap-northeast-2:651706765732:log-group:/aws/codebuild/",
+                                      {
+                                        "Ref": "CiCdBuildAE59F546"
+                                      }
+                                    ]
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":logs:ap-northeast-2:651706765732:log-group:/aws/codebuild/",
+                                      {
+                                        "Ref": "CiCdBuildAE59F546"
+                                      },
+                                      ":*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "codebuild:CreateReportGroup",
+                                "codebuild:CreateReport",
+                                "codebuild:UpdateReport",
+                                "codebuild:BatchPutTestCases",
+                                "codebuild:BatchPutCodeCoverages"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":codebuild:ap-northeast-2:651706765732:report-group/",
+                                    {
+                                      "Ref": "CiCdBuildAE59F546"
+                                    },
+                                    "-*"
+                                  ]
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "s3:GetObject*",
+                                "s3:GetBucket*",
+                                "s3:List*",
+                                "s3:DeleteObject*",
+                                "s3:PutObject",
+                                "s3:PutObjectLegalHold",
+                                "s3:PutObjectRetention",
+                                "s3:PutObjectTagging",
+                                "s3:PutObjectVersionTagging",
+                                "s3:Abort*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageArtifactsBucketB19151BF",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageArtifactsBucketB19151BF",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:DescribeKey",
+                                "kms:Encrypt",
+                                "kms:ReEncrypt*",
+                                "kms:GenerateDataKey*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "KmsKeyF138A6A4",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:ReEncrypt*",
+                                "kms:GenerateDataKey*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "KmsKeyF138A6A4",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "CodeBuildRoleDefaultPolicy829527DE",
+                        "roles": [
+                          {
+                            "Ref": "CodeBuildRole728CBADE"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.153.0"
+            }
+          },
+          "CodePipelineRole": {
+            "id": "CodePipelineRole",
+            "path": "My-mlops-BaseStack/CodePipelineRole",
+            "children": {
+              "ImportCodePipelineRole": {
+                "id": "ImportCodePipelineRole",
+                "path": "My-mlops-BaseStack/CodePipelineRole/ImportCodePipelineRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.153.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "My-mlops-BaseStack/CodePipelineRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "codepipeline.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "description": "Role for CodePipeline to orchestrate stages and access artifact store",
+                    "tags": [
+                      {
+                        "key": "Env",
+                        "value": "dev"
+                      },
+                      {
+                        "key": "ManagedBy",
+                        "value": "cdk"
+                      },
+                      {
+                        "key": "Project",
+                        "value": "my-mlops"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.153.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "My-mlops-BaseStack/CodePipelineRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CodePipelineRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:ListBucket"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:GenerateDataKey*",
+                                "kms:DescribeKey"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "KmsKeyF138A6A4",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "s3:GetObject*",
+                                "s3:GetBucket*",
+                                "s3:List*",
+                                "s3:DeleteObject*",
+                                "s3:PutObject",
+                                "s3:PutObjectLegalHold",
+                                "s3:PutObjectRetention",
+                                "s3:PutObjectTagging",
+                                "s3:PutObjectVersionTagging",
+                                "s3:Abort*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "StorageArtifactsBucketB19151BF",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "StorageArtifactsBucketB19151BF",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:DescribeKey",
+                                "kms:Encrypt",
+                                "kms:ReEncrypt*",
+                                "kms:GenerateDataKey*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "KmsKeyF138A6A4",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "CiCdPipelineSourceCodeCommitCodePipelineActionRole7AC4B272",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "CiCdPipelineBuildCodeBuildCodePipelineActionRole0C33426F",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "CodePipelineRoleDefaultPolicy2731C56D",
+                        "roles": [
+                          {
+                            "Ref": "CodePipelineRoleB31C27BE"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.153.0"
+            }
+          },
+          "CiCd": {
+            "id": "CiCd",
+            "path": "My-mlops-BaseStack/CiCd",
+            "children": {
+              "Repo": {
+                "id": "Repo",
+                "path": "My-mlops-BaseStack/CiCd/Repo",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CiCd/Repo/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodeCommit::Repository",
+                      "aws:cdk:cloudformation:props": {
+                        "repositoryDescription": "Bootstrap repo for my-mlops",
+                        "repositoryName": "my-mlops-repo",
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codecommit.CfnRepository",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "MymlopsBaseStackCiCdPipeline8AC719AF-main-EventRule": {
+                    "id": "MymlopsBaseStackCiCdPipeline8AC719AF-main-EventRule",
+                    "path": "My-mlops-BaseStack/CiCd/Repo/MymlopsBaseStackCiCdPipeline8AC719AF-main-EventRule",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "My-mlops-BaseStack/CiCd/Repo/MymlopsBaseStackCiCdPipeline8AC719AF-main-EventRule/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                          "aws:cdk:cloudformation:props": {
+                            "eventPattern": {
+                              "source": [
+                                "aws.codecommit"
+                              ],
+                              "resources": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "CiCdRepo76115433",
+                                    "Arn"
+                                  ]
+                                }
+                              ],
+                              "detail-type": [
+                                "CodeCommit Repository State Change"
+                              ],
+                              "detail": {
+                                "event": [
+                                  "referenceCreated",
+                                  "referenceUpdated"
+                                ],
+                                "referenceName": [
+                                  "main"
+                                ]
+                              }
+                            },
+                            "state": "ENABLED",
+                            "targets": [
+                              {
+                                "id": "Target0",
+                                "arn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":codepipeline:ap-northeast-2:651706765732:",
+                                      {
+                                        "Ref": "CiCdPipelineBFCF649F"
+                                      }
+                                    ]
+                                  ]
+                                },
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "CiCdPipelineEventsRole39EDBB34",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_events.Rule",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codecommit.Repository",
+                  "version": "2.153.0"
+                }
+              },
+              "BuildLogs": {
+                "id": "BuildLogs",
+                "path": "My-mlops-BaseStack/CiCd/BuildLogs",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CiCd/BuildLogs/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "retentionInDays": 30,
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+                  "version": "2.153.0"
+                }
+              },
+              "Build": {
+                "id": "Build",
+                "path": "My-mlops-BaseStack/CiCd/Build",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CiCd/Build/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                      "aws:cdk:cloudformation:props": {
+                        "artifacts": {
+                          "type": "NO_ARTIFACTS"
+                        },
+                        "cache": {
+                          "type": "NO_CACHE"
+                        },
+                        "encryptionKey": {
+                          "Fn::GetAtt": [
+                            "KmsKeyF138A6A4",
+                            "Arn"
+                          ]
+                        },
+                        "environment": {
+                          "type": "LINUX_CONTAINER",
+                          "image": "aws/codebuild/standard:7.0",
+                          "imagePullCredentialsType": "CODEBUILD",
+                          "privilegedMode": true,
+                          "computeType": "BUILD_GENERAL1_SMALL"
+                        },
+                        "logsConfig": {
+                          "cloudWatchLogs": {
+                            "status": "ENABLED",
+                            "groupName": {
+                              "Ref": "CiCdBuildLogsEA39AA40"
+                            }
+                          }
+                        },
+                        "serviceRole": {
+                          "Fn::GetAtt": [
+                            "CodeBuildRole728CBADE",
+                            "Arn"
+                          ]
+                        },
+                        "source": {
+                          "type": "NO_SOURCE",
+                          "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"runtime-versions\": {\n        \"python\": \"3.11\"\n      },\n      \"commands\": [\n        \"echo INSTALL\",\n        \"aws --version\",\n        \"python --version\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"echo BUILD on `date` in $AWS_DEFAULT_REGION\",\n        \"echo Commit=$CODEBUILD_RESOLVED_SOURCE_VERSION\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"**/*\"\n    ],\n    \"base-directory\": \".\"\n  }\n}"
+                        },
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                      "version": "2.153.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codebuild.Project",
+                  "version": "2.153.0"
+                }
+              },
+              "Pipeline": {
+                "id": "Pipeline",
+                "path": "My-mlops-BaseStack/CiCd/Pipeline",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "My-mlops-BaseStack/CiCd/Pipeline/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
+                      "aws:cdk:cloudformation:props": {
+                        "artifactStore": {
+                          "type": "S3",
+                          "location": {
+                            "Ref": "StorageArtifactsBucketB19151BF"
+                          },
+                          "encryptionKey": {
+                            "type": "KMS",
+                            "id": {
+                              "Fn::GetAtt": [
+                                "KmsKeyF138A6A4",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "name": "my-mlops-repo-pipeline",
+                        "restartExecutionOnUpdate": true,
+                        "roleArn": {
+                          "Fn::GetAtt": [
+                            "CodePipelineRoleB31C27BE",
+                            "Arn"
+                          ]
+                        },
+                        "stages": [
+                          {
+                            "name": "Source",
+                            "actions": [
+                              {
+                                "name": "CodeCommit",
+                                "outputArtifacts": [
+                                  {
+                                    "name": "Source"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Source",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeCommit"
+                                },
+                                "configuration": {
+                                  "RepositoryName": {
+                                    "Fn::GetAtt": [
+                                      "CiCdRepo76115433",
+                                      "Name"
+                                    ]
+                                  },
+                                  "BranchName": "main",
+                                  "PollForSourceChanges": false
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "CiCdPipelineSourceCodeCommitCodePipelineActionRole7AC4B272",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Build",
+                            "actions": [
+                              {
+                                "name": "CodeBuild",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "Source"
+                                  }
+                                ],
+                                "outputArtifacts": [
+                                  {
+                                    "name": "BuildOutput"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "CiCdBuildAE59F546"
+                                  }
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "CiCdPipelineBuildCodeBuildCodePipelineActionRole0C33426F",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "tags": [
+                          {
+                            "key": "Env",
+                            "value": "dev"
+                          },
+                          {
+                            "key": "ManagedBy",
+                            "value": "cdk"
+                          },
+                          {
+                            "key": "Project",
+                            "value": "my-mlops"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codepipeline.CfnPipeline",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "Source": {
+                    "id": "Source",
+                    "path": "My-mlops-BaseStack/CiCd/Pipeline/Source",
+                    "children": {
+                      "CodeCommit": {
+                        "id": "CodeCommit",
+                        "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole",
+                            "children": {
+                              "ImportCodePipelineActionRole": {
+                                "id": "ImportCodePipelineActionRole",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/ImportCodePipelineActionRole",
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.Resource",
+                                  "version": "2.153.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::651706765732:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "tags": [
+                                      {
+                                        "key": "Env",
+                                        "value": "dev"
+                                      },
+                                      {
+                                        "key": "ManagedBy",
+                                        "value": "cdk"
+                                      },
+                                      {
+                                        "key": "Project",
+                                        "value": "my-mlops"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                  "version": "2.153.0"
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "My-mlops-BaseStack/CiCd/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "s3:GetObject*",
+                                                "s3:GetBucket*",
+                                                "s3:List*",
+                                                "s3:DeleteObject*",
+                                                "s3:PutObject",
+                                                "s3:PutObjectLegalHold",
+                                                "s3:PutObjectRetention",
+                                                "s3:PutObjectTagging",
+                                                "s3:PutObjectVersionTagging",
+                                                "s3:Abort*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "StorageArtifactsBucketB19151BF",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "StorageArtifactsBucketB19151BF",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "Action": [
+                                                "kms:Decrypt",
+                                                "kms:DescribeKey",
+                                                "kms:Encrypt",
+                                                "kms:ReEncrypt*",
+                                                "kms:GenerateDataKey*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "KmsKeyF138A6A4",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "Action": [
+                                                "codecommit:GetBranch",
+                                                "codecommit:GetCommit",
+                                                "codecommit:UploadArchive",
+                                                "codecommit:GetUploadArchiveStatus",
+                                                "codecommit:CancelUploadArchive"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "CiCdRepo76115433",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "CiCdPipelineSourceCodeCommitCodePipelineActionRoleDefaultPolicy7E3902CD",
+                                        "roles": [
+                                          {
+                                            "Ref": "CiCdPipelineSourceCodeCommitCodePipelineActionRole7AC4B272"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                      "version": "2.153.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                  "version": "2.153.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Role",
+                              "version": "2.153.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "EventsRole": {
+                    "id": "EventsRole",
+                    "path": "My-mlops-BaseStack/CiCd/Pipeline/EventsRole",
+                    "children": {
+                      "ImportEventsRole": {
+                        "id": "ImportEventsRole",
+                        "path": "My-mlops-BaseStack/CiCd/Pipeline/EventsRole/ImportEventsRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "My-mlops-BaseStack/CiCd/Pipeline/EventsRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "events.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "tags": [
+                              {
+                                "key": "Env",
+                                "value": "dev"
+                              },
+                              {
+                                "key": "ManagedBy",
+                                "value": "cdk"
+                              },
+                              {
+                                "key": "Project",
+                                "value": "my-mlops"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.153.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "My-mlops-BaseStack/CiCd/Pipeline/EventsRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "My-mlops-BaseStack/CiCd/Pipeline/EventsRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "codepipeline:StartPipelineExecution",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":codepipeline:ap-northeast-2:651706765732:",
+                                            {
+                                              "Ref": "CiCdPipelineBFCF649F"
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "CiCdPipelineEventsRoleDefaultPolicy7AE98E11",
+                                "roles": [
+                                  {
+                                    "Ref": "CiCdPipelineEventsRole39EDBB34"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.153.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.153.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.153.0"
+                    }
+                  },
+                  "Build": {
+                    "id": "Build",
+                    "path": "My-mlops-BaseStack/CiCd/Pipeline/Build",
+                    "children": {
+                      "CodeBuild": {
+                        "id": "CodeBuild",
+                        "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole",
+                            "children": {
+                              "ImportCodePipelineActionRole": {
+                                "id": "ImportCodePipelineActionRole",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/ImportCodePipelineActionRole",
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.Resource",
+                                  "version": "2.153.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::651706765732:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "tags": [
+                                      {
+                                        "key": "Env",
+                                        "value": "dev"
+                                      },
+                                      {
+                                        "key": "ManagedBy",
+                                        "value": "cdk"
+                                      },
+                                      {
+                                        "key": "Project",
+                                        "value": "my-mlops"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                  "version": "2.153.0"
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "My-mlops-BaseStack/CiCd/Pipeline/Build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "codebuild:BatchGetBuilds",
+                                                "codebuild:StartBuild",
+                                                "codebuild:StopBuild"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "CiCdBuildAE59F546",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "CiCdPipelineBuildCodeBuildCodePipelineActionRoleDefaultPolicy6801B28B",
+                                        "roles": [
+                                          {
+                                            "Ref": "CiCdPipelineBuildCodeBuildCodePipelineActionRole0C33426F"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                      "version": "2.153.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                  "version": "2.153.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Role",
+                              "version": "2.153.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codepipeline.Pipeline",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "CodeCommitCloneUrlHttp": {
+            "id": "CodeCommitCloneUrlHttp",
+            "path": "My-mlops-BaseStack/CodeCommitCloneUrlHttp",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "PipelineName": {
+            "id": "PipelineName",
+            "path": "My-mlops-BaseStack/PipelineName",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "ArtifactsBucket": {
+            "id": "ArtifactsBucket",
+            "path": "My-mlops-BaseStack/ArtifactsBucket",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "DateBucket": {
+            "id": "DateBucket",
+            "path": "My-mlops-BaseStack/DateBucket",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "LogsBucket": {
+            "id": "LogsBucket",
+            "path": "My-mlops-BaseStack/LogsBucket",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "EcrRepoUri": {
+            "id": "EcrRepoUri",
+            "path": "My-mlops-BaseStack/EcrRepoUri",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "VpcId": {
+            "id": "VpcId",
+            "path": "My-mlops-BaseStack/VpcId",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.153.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "My-mlops-BaseStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "My-mlops-BaseStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.153.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "My-mlops-BaseStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.153.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "My-mlops-BaseStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.153.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.153.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.4.2"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.153.0"
+    }
+  }
+}
