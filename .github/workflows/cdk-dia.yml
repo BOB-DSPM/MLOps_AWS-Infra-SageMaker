@@ -1,0 +1,95 @@
+# .github/workflows/cdk-dia.yml
+name: CDK Diagrams (cdk-dia)
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.tsx"
+      - "**/*.jsx"
+      - "cdk.json"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "yarn.lock"
+      - ".github/workflows/cdk-dia.yml"
+  pull_request:
+    branches: [ main, develop ]
+
+# CDK 앱이 서브폴더(예: infra/)에 있으면 여기만 바꾸면 됩니다.
+env:
+  INFRA_DIR: "."
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cdk-dia-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  diagram:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.INFRA_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # pnpm/yarn 자동 감지 설치
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> $GITHUB_OUTPUT;
+          elif [ -f yarn.lock ]; then echo "pm=yarn" >> $GITHUB_OUTPUT;
+          else echo "pm=npm" >> $GITHUB_OUTPUT; fi
+
+      - name: Enable pnpm (if needed)
+        if: steps.pm.outputs.pm == 'pnpm'
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Install Graphviz (cdk-dia uses 'dot')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      - name: Install dependencies
+        run: |
+          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then pnpm install --frozen-lockfile;
+          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then yarn install --frozen-lockfile;
+          elif [ -f package-lock.json ]; then npm ci;
+          else npm install; fi
+
+      # synth(템플릿 생성) 이후 다이어그램 생성
+      - name: CDK synth
+        run: |
+          npx cdk synth > /dev/null || true
+
+      - name: Generate diagrams (PNG & interactive HTML)
+        run: |
+          mkdir -p diagrams
+          npx cdk-dia -o diagrams/cdk-dia.png
+          npx cdk-dia --rendering cytoscape-html -o diagrams/cdk-dia.html
+
+      # 큰 모노레포에서 특정 스택만 보고 싶다면:
+      #   npx cdk-dia --include MyStackA MyStackB -o diagrams/selected.png
+      # 또는 제외:
+      #   npx cdk-dia --exclude LegacyStack -o diagrams/exclude-legacy.png
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cdk-diagrams
+          path: ${{ env.INFRA_DIR }}/diagrams
+          retention-days: 14
