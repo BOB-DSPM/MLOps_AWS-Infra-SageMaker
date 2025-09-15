@@ -35,7 +35,7 @@ htmlcov/
 # ─────────────────────────
 cdk.out/
 # cdk.context.json 은 재현성 위해 커밋 유지 권장
-# cdk.context.json
+cdk.context.json
 
 # ─────────────────────────
 # 편집기/OS 잡파일

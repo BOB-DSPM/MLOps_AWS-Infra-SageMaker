@@ -5,7 +5,6 @@ from aws_cdk import (
     aws_codepipeline as codepipeline,
     aws_codepipeline_actions as cpactions,
     aws_logs as logs,
-    Duration,
 )
 
 class CiCdPipeline(Construct):
@@ -28,12 +27,12 @@ class CiCdPipeline(Construct):
             description="Bootstrap repo for my-mlops",
         )
 
-        self.project = codebuild.Project(
+        self.project = codebuild.PipelineProject(
             self, "Build",
             role=codebuild_role,
             environment=codebuild.BuildEnvironment(
                 build_image=codebuild.LinuxBuildImage.STANDARD_7_0,
-                privileged=True,  
+                privileged=True,
             ),
             logging=codebuild.LoggingOptions(
                 cloud_watch=codebuild.CloudWatchLoggingOptions(
@@ -66,7 +65,7 @@ class CiCdPipeline(Construct):
         )
 
         source_output = codepipeline.Artifact(artifact_name="Source")
-        build_output = codepipeline.Artifact(artifact_name="BuildOutput")
+        build_output  = codepipeline.Artifact(artifact_name="BuildOutput")
 
         self.pipeline = codepipeline.Pipeline(
             self, "Pipeline",
@@ -74,6 +73,7 @@ class CiCdPipeline(Construct):
             artifact_bucket=artifacts_bucket,
             restart_execution_on_update=True,
             pipeline_name=f"{repo_name}-pipeline",
+            pipeline_type=codepipeline.PipelineType.V2,
         )
 
         self.pipeline.add_stage(
@@ -84,6 +84,7 @@ class CiCdPipeline(Construct):
                     repository=self.repo,
                     branch=branch,
                     output=source_output,
+                    trigger=cpactions.CodeCommitTrigger.EVENTS, 
                 )
             ],
         )
