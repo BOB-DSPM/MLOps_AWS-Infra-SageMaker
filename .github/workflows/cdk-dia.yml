@@ -1,23 +1,12 @@
-# .github/workflows/cdk-dia.yml
 name: CDK Diagrams (cdk-dia)
 
 on:
   push:
     branches: [ main, develop ]
-    paths:
-      - "**/*.ts"
-      - "**/*.js"
-      - "**/*.tsx"
-      - "**/*.jsx"
-      - "cdk.json"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "yarn.lock"
-      - ".github/workflows/cdk-dia.yml"
   pull_request:
     branches: [ main, develop ]
 
-# CDK 앱이 서브폴더(예: infra/)에 있으면 여기만 바꾸면 됩니다.
+# CDK 앱이 서브폴더에 있으면 여기만 변경 (예: infra)
 env:
   INFRA_DIR: "."
 
@@ -39,53 +28,61 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (no caching to avoid lockfile error)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
-      # pnpm/yarn 자동 감지 설치
-      - name: Detect package manager
-        id: pm
-        run: |
-          if [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> $GITHUB_OUTPUT;
-          elif [ -f yarn.lock ]; then echo "pm=yarn" >> $GITHUB_OUTPUT;
-          else echo "pm=npm" >> $GITHUB_OUTPUT; fi
+      - name: Setup Python (for Python-based CDK apps)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-      - name: Enable pnpm (if needed)
-        if: steps.pm.outputs.pm == 'pnpm'
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-
-      - name: Install Graphviz (cdk-dia uses 'dot')
+      - name: Install Graphviz
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
 
-      - name: Install dependencies
+      - name: Detect project type
+        id: detect
         run: |
-          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then pnpm install --frozen-lockfile;
-          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then yarn install --frozen-lockfile;
-          elif [ -f package-lock.json ]; then npm ci;
-          else npm install; fi
+          PM="none"
+          if [ -f pnpm-lock.yaml ]; then PM="pnpm";
+          elif [ -f yarn.lock ]; then PM="yarn";
+          elif [ -f package.json ]; then PM="npm"; fi
+          echo "pm=$PM" >> $GITHUB_OUTPUT
+          if [ -f requirements.txt ]; then echo "pyreq=true" >> $GITHUB_OUTPUT; else echo "pyreq=false" >> $GITHUB_OUTPUT; fi
 
-      # synth(템플릿 생성) 이후 다이어그램 생성
+      - name: Enable pnpm (if needed)
+        if: steps.detect.outputs.pm == 'pnpm'
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Install Node deps (if Node CDK)
+        if: steps.detect.outputs.pm != 'none'
+        run: |
+          if [ "${{ steps.detect.outputs.pm }}" = "pnpm" ]; then pnpm install --frozen-lockfile || pnpm install;
+          elif [ "${{ steps.detect.outputs.pm }}" = "yarn" ]; then yarn install --frozen-lockfile || yarn install;
+          elif [ "${{ steps.detect.outputs.pm }}" = "npm" ]; then \
+            if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then npm ci; else npm install; fi; \
+          fi
+
+      - name: Install Python deps (if Python CDK)
+        if: steps.detect.outputs.pyreq == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # CDK CLI를 로컬 devDep로 안 넣어도 npx로 사용 가능
       - name: CDK synth
-        run: |
-          npx cdk synth > /dev/null || true
+        run: npx --yes aws-cdk@latest synth || true
 
-      - name: Generate diagrams (PNG & interactive HTML)
+      - name: Generate diagrams (PNG & HTML via npx)
         run: |
           mkdir -p diagrams
-          npx cdk-dia -o diagrams/cdk-dia.png
-          npx cdk-dia --rendering cytoscape-html -o diagrams/cdk-dia.html
-
-      # 큰 모노레포에서 특정 스택만 보고 싶다면:
-      #   npx cdk-dia --include MyStackA MyStackB -o diagrams/selected.png
-      # 또는 제외:
-      #   npx cdk-dia --exclude LegacyStack -o diagrams/exclude-legacy.png
+          npx --yes cdk-dia@latest -o diagrams/cdk-dia.png
+          npx --yes cdk-dia@latest --rendering cytoscape-html -o diagrams/cdk-dia.html
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

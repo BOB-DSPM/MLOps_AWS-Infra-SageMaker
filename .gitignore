@@ -72,3 +72,9 @@ Thumbs.db
 # (선택) Docker 관련 임시파일
 *.tar
 docker-compose.override.yml
+
+package-lock.json
+package.json
+
+node_modules/
+node_modules
