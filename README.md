@@ -1,7 +1,7 @@
 # MLOps on AWS (SageMaker + CodePipeline)
 
 ## 준비
-1) `.env.example`를 복사해 `.env` 생성 후 실제 값 입력 (커밋 금지)
+1) 해당 레포 클론
 2) 의존성 설치
    ```bash
    python3 -m venv .venv && source .venv/bin/activate
@@ -22,3 +22,4 @@ cdk deploy
 * 학습 출력은 Model Package Group 버전으로 등록(PendingManualApproval).
 
 * 승인 후 최신 Approved 버전이 엔드포인트에 배포/업데이트.
+
