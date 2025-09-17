@@ -167,6 +167,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         role=role,
         instance_type=p_instance_type,
         instance_count=1,
+        command=["python3"],
         sagemaker_session=sm_sess,
     )
     evaluation = PropertyFile(name="EvaluationReport", output_name="report", path="evaluation.json")
