@@ -183,9 +183,8 @@ def get_pipeline(region: str, role: str) -> Pipeline:
                 destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/evaluate/report"]),
             )
         ],
-        property_files=[evaluation],
     )
-    eval_step = ProcessingStep(name="Evaluate", step_args=eval_args)
+    eval_step = ProcessingStep(name="Evaluate", step_args=eval_args, property_files=[evaluation])
 
     # RegisterModel requires the estimator definition and concrete instance types.
     # Use a safe default instance type; deployment uses another stage later.
