@@ -58,7 +58,6 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             "--use-feature-store", p_use_fs,
             "--feature-group-name", p_fg_name,
         ],
-        cache_config=cache,
     )
 
     validate = SKLearnProcessor(
@@ -75,7 +74,6 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation"),
         ],
         outputs=[ProcessingOutput(output_name="report", source="/opt/ml/processing/report")],
-        cache_config=cache,
     )
 
     preprocess = SKLearnProcessor(
@@ -95,7 +93,6 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingOutput(output_name="train_pre", source="/opt/ml/processing/train_pre"),
             ProcessingOutput(output_name="validation_pre", source="/opt/ml/processing/validation_pre"),
         ],
-        cache_config=cache,
     )
 
     image = p_train_image
@@ -132,7 +129,6 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         ],
         outputs=[ProcessingOutput(output_name="report", source="/opt/ml/processing/report")],
         property_files=[evaluation],
-        cache_config=cache,
     )
 
     reg = RegisterModel(
