@@ -19,10 +19,23 @@ def main():
     os.makedirs("/opt/ml/processing/train", exist_ok=True)
     os.makedirs("/opt/ml/processing/validation", exist_ok=True)
 
+    # Resolve AWS region explicitly to avoid NoRegionError inside processing containers
+    region = os.environ.get("AWS_REGION") or os.environ.get("AWS_DEFAULT_REGION")
+    if not region:
+        try:
+            region = boto3.session.Session().region_name
+        except Exception:
+            region = None
+    if not region:
+        raise SystemExit("AWS region not found in environment; set AWS_REGION or AWS_DEFAULT_REGION")
+
+    session = boto3.session.Session(region_name=region)
+    s3c = session.client("s3")
+
     df = None
     if args.use_feature_store.lower() == "true" and args.feature_group_name:
-        sm = boto3.client("sagemaker")
-        athena = boto3.client("athena")
+        sm = session.client("sagemaker")
+        athena = session.client("athena")
         desc = sm.describe_feature_group(FeatureGroupName=args.feature_group_name)
         dc = desc.get("OfflineStoreConfig", {}).get("DataCatalogConfig") or {}
         glue_tbl = dc.get("TableName")
@@ -44,7 +57,7 @@ def main():
         s3loc = urlparse(s3_out)
         dl = f"{qid}.csv"
         tmp = tempfile.NamedTemporaryFile(delete=False)
-        boto3.client("s3").download_file(s3loc.netloc, os.path.join(s3loc.path.lstrip("/"), dl), tmp.name)
+        s3c.download_file(s3loc.netloc, os.path.join(s3loc.path.lstrip("/"), dl), tmp.name)
         raw = pd.read_csv(tmp.name)
         df = raw
     if df is None and args.csv and args.csv.startswith("s3://"):
@@ -52,7 +65,7 @@ def main():
         b = u.netloc
         k = u.path.lstrip("/")
         tmp = tempfile.NamedTemporaryFile(delete=False)
-        boto3.client("s3").download_file(b, k, tmp.name)
+        s3c.download_file(b, k, tmp.name)
         raw = pd.read_csv(tmp.name)
         cols = {c.lower(): c for c in raw.columns}
         def col(*names):

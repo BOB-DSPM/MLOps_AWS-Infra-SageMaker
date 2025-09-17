@@ -11,4 +11,7 @@
 정리:
 - CDK 스키마: CTR 컬럼으로 고정
 - 기존 FG: 필요 시 삭제 후 재생성하거나, 새 FG 이름 사용 권장
- 
+
+추가 변경 내역:
+- SageMaker 실행 역할에 태깅 권한(sagemaker:AddTags, TagResource/UntagResource/ListTags)과 처리/학습 잡 생성 권한(CreateProcessingJob/CreateTrainingJob 등), iam:PassRole(Self)을 부여했습니다.
+- 파이프라인 Extract 단계 스크립트가 컨테이너 내에서 명시적으로 리전(AWS_REGION/AWS_DEFAULT_REGION)을 설정하여 NoRegionError를 방지합니다.

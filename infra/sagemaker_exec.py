@@ -93,6 +93,36 @@ class SmExecutionRole(Construct):
         self.role.add_to_policy(iam.PolicyStatement(
             actions=[
                 "sagemaker:AddTags",
+                "sagemaker:TagResource",
+                "sagemaker:UntagResource",
+                "sagemaker:ListTags",
             ],
             resources=["*"]
+        ))
+
+        # Allow this role (used as the SageMaker Pipeline service role) to create jobs and register models
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                # Processing/Training
+                "sagemaker:CreateProcessingJob",
+                "sagemaker:DescribeProcessingJob",
+                "sagemaker:StopProcessingJob",
+                "sagemaker:CreateTrainingJob",
+                "sagemaker:DescribeTrainingJob",
+                "sagemaker:StopTrainingJob",
+                # Models & Model Registry used by RegisterModel step
+                "sagemaker:CreateModel",
+                "sagemaker:DescribeModel",
+                "sagemaker:CreateModelPackage",
+                "sagemaker:DescribeModelPackage",
+                "sagemaker:ListModelPackages",
+                "sagemaker:UpdateModelPackage",
+            ],
+            resources=["*"]
+        ))
+
+        # The pipeline role must be able to pass the execution role to SageMaker jobs
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=["iam:PassRole"],
+            resources=[self.role.role_arn],
         ))
