@@ -1,5 +1,6 @@
 import argparse
 import os
+import boto3
 from sagemaker.workflow.pipeline import Pipeline
 from sagemaker.workflow.parameters import (
     ParameterString,
@@ -38,6 +39,25 @@ def get_pipeline(region: str, role: str) -> Pipeline:
 
     cache = CacheConfig(enable_caching=False, expire_after="PT1H")
 
+    # Upload local processing scripts to an existing S3 bucket to avoid default bucket creation
+    data_bucket_env = os.environ.get("DATA_BUCKET", "")
+    if not data_bucket_env:
+        raise SystemExit("DATA_BUCKET env var must be set for pipeline compilation")
+    s3 = boto3.client("s3")
+    base_dir = os.path.dirname(__file__)
+    scripts = {
+        "extract": os.path.join(base_dir, "steps", "01_extract.py"),
+        "validate": os.path.join(base_dir, "steps", "02_validate.py"),
+        "preprocess": os.path.join(base_dir, "steps", "03_preprocess.py"),
+        "evaluate": os.path.join(base_dir, "steps", "04_evaluate.py"),
+    }
+    s3_prefix_scripts = "pipelines/scripts"
+    code_uris = {}
+    for name, path in scripts.items():
+        key = f"{s3_prefix_scripts}/{os.path.basename(path)}"
+        s3.upload_file(path, data_bucket_env, key)
+        code_uris[name] = f"s3://{data_bucket_env}/{key}"
+
     extract = SKLearnProcessor(
         framework_version="1.2-1",
         role=role,
@@ -46,7 +66,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         sagemaker_session=sm_sess,
     )
     extract_step = extract.run(
-        code=os.path.join(os.path.dirname(__file__), "steps", "01_extract.py"),
+        code=code_uris["extract"],
         inputs=[],
         outputs=[
             ProcessingOutput(output_name="train", source="/opt/ml/processing/train"),
@@ -68,7 +88,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         sagemaker_session=sm_sess,
     )
     validate_step = validate.run(
-        code=os.path.join(os.path.dirname(__file__), "steps", "02_validate.py"),
+        code=code_uris["validate"],
         inputs=[
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, destination="/opt/ml/processing/train"),
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation"),
@@ -84,7 +104,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         sagemaker_session=sm_sess,
     )
     preprocess_step = preprocess.run(
-        code=os.path.join(os.path.dirname(__file__), "steps", "03_preprocess.py"),
+        code=code_uris["preprocess"],
         inputs=[
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, destination="/opt/ml/processing/train"),
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation"),
@@ -122,7 +142,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
     )
     evaluation = PropertyFile(name="EvaluationReport", output_name="report", path="evaluation.json")
     eval_step = eval_proc.run(
-        code=os.path.join(os.path.dirname(__file__), "steps", "04_evaluate.py"),
+        code=code_uris["evaluate"],
         inputs=[
             ProcessingInput(source=train_step.properties.ModelArtifacts.S3ModelArtifacts, destination="/opt/ml/processing/model"),
             ProcessingInput(source=preprocess_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation_pre"),
