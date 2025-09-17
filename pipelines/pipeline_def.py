@@ -7,7 +7,7 @@ from sagemaker.workflow.parameters import (
     ParameterFloat,
     ParameterInteger,
 )
-from sagemaker.workflow.steps import CacheConfig
+from sagemaker.workflow.steps import CacheConfig, ProcessingStep, TrainingStep
 from sagemaker.workflow.step_collections import RegisterModel
 from sagemaker.workflow.properties import PropertyFile
 from sagemaker.workflow.functions import Join
@@ -68,28 +68,29 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         instance_count=1,
         sagemaker_session=sm_sess,
     )
-    extract_step = extract.run(
+    extract_args = extract.run(
         code=code_uris["extract"],
         inputs=[],
         outputs=[
             ProcessingOutput(
                 output_name="train",
                 source="/opt/ml/processing/train",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "extract", "train"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/extract/train"]),
             ),
             ProcessingOutput(
                 output_name="validation",
                 source="/opt/ml/processing/validation",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "extract", "validation"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/extract/validation"]),
             ),
         ],
         arguments=[
-            "--s3", Join(on="/", values=["s3:/", p_data_bucket, p_prefix]),
+            "--s3", Join(on="", values=["s3://", p_data_bucket, "/", p_prefix]),
             "--csv", p_external_csv,
             "--use-feature-store", p_use_fs,
             "--feature-group-name", p_fg_name,
         ],
     )
+    extract_step = ProcessingStep(name="Extract", step_args=extract_args)
 
     validate = SKLearnProcessor(
         framework_version="1.2-1",
@@ -98,7 +99,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         instance_count=1,
         sagemaker_session=sm_sess,
     )
-    validate_step = validate.run(
+    validate_args = validate.run(
         code=code_uris["validate"],
         inputs=[
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, destination="/opt/ml/processing/train"),
@@ -108,10 +109,11 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingOutput(
                 output_name="report",
                 source="/opt/ml/processing/report",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "validate", "report"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/validate/report"]),
             )
         ],
     )
+    validate_step = ProcessingStep(name="Validate", step_args=validate_args)
 
     preprocess = SKLearnProcessor(
         framework_version="1.2-1",
@@ -120,7 +122,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         instance_count=1,
         sagemaker_session=sm_sess,
     )
-    preprocess_step = preprocess.run(
+    preprocess_args = preprocess.run(
         code=code_uris["preprocess"],
         inputs=[
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, destination="/opt/ml/processing/train"),
@@ -130,15 +132,16 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingOutput(
                 output_name="train_pre",
                 source="/opt/ml/processing/train_pre",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "preprocess", "train_pre"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/preprocess/train_pre"]),
             ),
             ProcessingOutput(
                 output_name="validation_pre",
                 source="/opt/ml/processing/validation_pre",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "preprocess", "validation_pre"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/preprocess/validation_pre"]),
             ),
         ],
     )
+    preprocess_step = ProcessingStep(name="Preprocess", step_args=preprocess_args)
 
     image = p_train_image
     train = Estimator(
@@ -147,16 +150,17 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         instance_type=p_instance_type,
         instance_count=1,
         sagemaker_session=sm_sess,
-        output_path=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "model"]),
+        output_path=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/model"]),
         enable_network_isolation=False,
     )
     train.set_hyperparameters(objective="binary:logistic", num_round=p_num_round, eval_metric="auc", verbosity=1)
-    train_step = train.fit(
+    train_args = train.fit(
         inputs={
             "train": TrainingInput(s3_data=preprocess_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, content_type="text/csv"),
             "validation": TrainingInput(s3_data=preprocess_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, content_type="text/csv"),
         }
     )
+    train_step = TrainingStep(name="Train", step_args=train_args)
 
     eval_proc = ScriptProcessor(
         image_uri=image_uris.retrieve(framework="sklearn", region=sm_sess.boto_region_name, version="1.2-1"),
@@ -166,7 +170,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         sagemaker_session=sm_sess,
     )
     evaluation = PropertyFile(name="EvaluationReport", output_name="report", path="evaluation.json")
-    eval_step = eval_proc.run(
+    eval_args = eval_proc.run(
         code=code_uris["evaluate"],
         inputs=[
             ProcessingInput(source=train_step.properties.ModelArtifacts.S3ModelArtifacts, destination="/opt/ml/processing/model"),
@@ -176,20 +180,23 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingOutput(
                 output_name="report",
                 source="/opt/ml/processing/report",
-                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "evaluate", "report"]),
+                destination=Join(on="", values=["s3://", p_data_bucket, "/", p_prefix, "/evaluate/report"]),
             )
         ],
         property_files=[evaluation],
     )
+    eval_step = ProcessingStep(name="Evaluate", step_args=eval_args)
 
+    # RegisterModel requires the estimator definition and concrete instance types.
+    # Use a safe default instance type; deployment uses another stage later.
     reg = RegisterModel(
         name="RegisterModel",
         estimator=train,
         model_data=train_step.properties.ModelArtifacts.S3ModelArtifacts,
         content_types=["text/csv"],
         response_types=["text/csv"],
-        inference_instances=[p_instance_type],
-        transform_instances=[p_instance_type],
+        inference_instances=["ml.m5.large"],
+        transform_instances=["ml.m5.large"],
         model_package_group_name=os.environ.get("MODEL_PACKAGE_GROUP_NAME", "model-pkg"),
         approval_status="PendingManualApproval",
     )
