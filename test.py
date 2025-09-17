@@ -3,7 +3,8 @@ rt = boto3.client("sagemaker-runtime", region_name="ap-northeast-2")
 endpoint = "my-mlops-dev-endpoint"
 
 # XGBoost(binary:logistic) 입력: 라벨 없이 feature만 CSV (행 단위)
-payload = "-0.2,0.7,-1.1,0.3,0.05\n0.1,-0.2,0.3,0.4,-0.5\n"
+# 본 예제의 feature 순서: gender(0/1), age(int), device(0:web,1:mobile), hour(0-23)
+payload = "1,32,1,21\n0,48,0,9\n"
 
 res = rt.invoke_endpoint(
     EndpointName=endpoint,

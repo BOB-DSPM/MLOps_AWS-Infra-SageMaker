@@ -76,6 +76,9 @@ class SageMakerCiCd(Construct):
         sm_instance_type: str,
         endpoint_name: str,
         ct_schedule_cron: str | None = None,
+        use_sm_pipeline: bool = False,
+        use_feature_store: bool = False,
+        feature_group_name: str = "",
     ):
         super().__init__(scope, id)
 
@@ -91,6 +94,10 @@ class SageMakerCiCd(Construct):
             "SM_INSTANCE_TYPE": codebuild.BuildEnvironmentVariable(value=sm_instance_type),
             "TRAIN_IMAGE_URI": codebuild.BuildEnvironmentVariable(value=(train_image_uri or "")),
             "DATA_BUCKET": codebuild.BuildEnvironmentVariable(value=data_bucket.bucket_name),
+            "USE_SM_PIPELINE": codebuild.BuildEnvironmentVariable(value=("true" if use_sm_pipeline else "false")),
+            "EXTERNAL_CSV_URI": codebuild.BuildEnvironmentVariable(value=f"s3://{data_bucket.bucket_name}/datasets/ad_click_dataset.csv"),
+            "USE_FEATURE_STORE": codebuild.BuildEnvironmentVariable(value=("true" if use_feature_store else "true")),
+            "FEATURE_GROUP_NAME": codebuild.BuildEnvironmentVariable(value=(feature_group_name or "")),
         }
 
         train_register = codebuild.Project(
@@ -135,8 +142,10 @@ class SageMakerCiCd(Construct):
                                 "        print('[ERROR] MPG check:', e, file=sys.stderr)\n"
                                 "        sys.exit(1)\n"
                                 "PY",
+                                "echo 'USE_SM_PIPELINE='\"$USE_SM_PIPELINE\"",
+                                "if [ \"$USE_SM_PIPELINE\" = \"true\" ]; then python pipelines/pipeline_def.py --run --wait; else :; fi",
                                 "echo 'TRAIN & REGISTER (inline script, fallback to XGBoost if custom image fails)'",
-                                "python - <<'PY'\n"
+                                "if [ \"$USE_SM_PIPELINE\" != \"true\" ]; then python - <<'PY'\n"
                                 "import io, json, os, sys, time, tempfile\n"
                                 "import boto3, numpy as np, pandas as pd\n"
                                 "import sagemaker\n"
@@ -147,7 +156,7 @@ class SageMakerCiCd(Construct):
                                 "def ensure_dataset(s3_prefix_uri: str) -> str:\n"
                                 "    s3 = boto3.client('s3')\n"
                                 "    b, p = s3_prefix_uri.replace('s3://','').split('/',1)\n"
-                                "    p = p.rstrip('/')  # ✅ strip first to avoid f-string escape issues\n"
+                                "    p = p.rstrip('/')\n"
                                 "    def exists(k: str) -> bool:\n"
                                 "        try:\n"
                                 "            s3.head_object(Bucket=b, Key=k)\n"
@@ -196,14 +205,14 @@ class SageMakerCiCd(Construct):
                                 "    TRAIN_IMG = (os.environ.get('TRAIN_IMAGE_URI') or '').strip()\n"
                                 "    s3_prefix = ensure_dataset(f's3://{DATA_BUCKET}/ct/input/')\n"
                                 "\n"
-                                "    # Try custom image first; on failure, fallback to official XGBoost\n"
+                                "    try:\n"
                                 "    try:\n"
                                 "        est, sm_sess = train_once(TRAIN_IMG or None, os.environ['SM_EXEC_ROLE_ARN'], os.environ['SM_INSTANCE_TYPE'], s3_prefix)\n"
                                 "    except Exception as e:\n"
                                 "        print('[WARN] Custom image training failed, fallback to XGBoost. Reason:', str(e))\n"
                                 "        est, sm_sess = train_once(None, os.environ['SM_EXEC_ROLE_ARN'], os.environ['SM_INSTANCE_TYPE'], s3_prefix)\n"
                                 "\n"
-                                "    # Write dummy metric\n"
+                                "    metrics = {'dummy:auc': 0.75}\n"
                                 "    metrics = {'dummy:auc': 0.75}\n"
                                 "    s3 = boto3.client('s3')\n"
                                 "    bucket = s3_prefix.split('/')[2]\n"
@@ -212,7 +221,6 @@ class SageMakerCiCd(Construct):
                                 "    s3.put_object(Bucket=bucket, Key=mkey, Body=io.BytesIO(json.dumps(metrics).encode()), ContentType='application/json')\n"
                                 "    metrics_s3 = f's3://{bucket}/{mkey}'\n"
                                 "\n"
-                                "    # Register model package\n"
                                 "    sm = boto3.client('sagemaker')\n"
                                 "    container = [{'Image': est.image_uri, 'ModelDataUrl': est.model_data}]\n"
                                 "    pkg = sm.create_model_package(\n"
@@ -236,7 +244,7 @@ class SageMakerCiCd(Construct):
                                 "\n"
                                 "if __name__ == '__main__':\n"
                                 "    main()\n"
-                                "PY",
+                                "PY\nfi",
                             ],
                         },
                     },
@@ -320,6 +328,14 @@ class SageMakerCiCd(Construct):
                     "sagemaker:ListModelPackageGroups",
                     "sagemaker:PutModelPackageGroupPolicy",
                     "sagemaker:AddTags",
+                    # SageMaker Pipelines (optional)
+                    "sagemaker:CreatePipeline",
+                    "sagemaker:UpdatePipeline",
+                    "sagemaker:StartPipelineExecution",
+                    "sagemaker:DescribePipeline",
+                    "sagemaker:DescribePipelineExecution",
+                    "sagemaker:ListPipelineExecutions",
+                    "sagemaker:ListPipelines",
                 ],
                 resources=["*"],
             )

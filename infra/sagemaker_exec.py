@@ -70,3 +70,21 @@ class SmExecutionRole(Construct):
                 f"{data_bucket.bucket_arn}/*"
             ],
         ))
+
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                "glue:GetDatabase",
+                "glue:GetDatabases",
+                "glue:GetTable",
+                "glue:GetTables",
+                "glue:GetPartition",
+                "glue:GetPartitions",
+                "athena:StartQueryExecution",
+                "athena:GetQueryExecution",
+                "athena:GetQueryResults",
+                "athena:StopQueryExecution",
+                "athena:ListWorkGroups",
+                "athena:GetWorkGroup",
+            ],
+            resources=["*"],
+        ))

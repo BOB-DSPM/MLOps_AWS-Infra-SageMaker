@@ -4,6 +4,7 @@ from aws_cdk import (
     aws_iam as iam,
     RemovalPolicy,
     Duration,
+    Stack,
 )
 
 def _enforce_ssl(bucket: s3.Bucket):
@@ -40,10 +41,16 @@ class BaseStorage(Construct):
         artifact_lifecycle_days: int = 90,
     ) -> None:
         super().__init__(scope, construct_id)
+        stack = Stack.of(self)
+        use_existing = bool(stack.node.try_get_context("use_existing_buckets") or False)
+        existing_logs = stack.node.try_get_context("existing_logs_bucket_name")
+        existing_artifacts = stack.node.try_get_context("existing_artifacts_bucket_name")
+        existing_data = stack.node.try_get_context("existing_data_bucket_name")
+
         logs_bucket_name = f"{project}-{env}-logs".lower()
-        try:
-            self.logs_bucket = s3.Bucket.from_bucket_name(self, "LogsBucket", logs_bucket_name)
-        except Exception:
+        if use_existing and existing_logs:
+            self.logs_bucket = s3.Bucket.from_bucket_name(self, "LogsBucket", existing_logs)
+        else:
             self.logs_bucket = s3.Bucket(
                 self,
                 "LogsBucket",
@@ -64,9 +71,9 @@ class BaseStorage(Construct):
             _enforce_ssl(self.logs_bucket)
 
         artifacts_bucket_name = f"{project}-{env}-artifacts".lower()
-        try:
-            self.artifacts_bucket = s3.Bucket.from_bucket_name(self, "ArtifactsBucket", artifacts_bucket_name)
-        except Exception:
+        if use_existing and existing_artifacts:
+            self.artifacts_bucket = s3.Bucket.from_bucket_name(self, "ArtifactsBucket", existing_artifacts)
+        else:
             self.artifacts_bucket = s3.Bucket(
                 self,
                 "ArtifactsBucket",
@@ -90,9 +97,9 @@ class BaseStorage(Construct):
             _enforce_ssl(self.artifacts_bucket)
 
         data_bucket_name = f"{project}-{env}-data".lower()
-        try:
-            self.data_bucket = s3.Bucket.from_bucket_name(self, "DataBucket", data_bucket_name)
-        except Exception:
+        if use_existing and existing_data:
+            self.data_bucket = s3.Bucket.from_bucket_name(self, "DataBucket", existing_data)
+        else:
             self.data_bucket = s3.Bucket(
                 self,
                 "DataBucket",

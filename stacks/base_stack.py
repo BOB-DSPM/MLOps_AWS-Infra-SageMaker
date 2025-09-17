@@ -104,19 +104,28 @@ class BaseStack(Stack):
             resources=[storage.data_bucket.arn_for_objects("feature-store/*")],
         ))
 
-        fg = FeatureGroup(
-            self,
-            "FeatureGroup",
-            feature_group_name=f"{name_prefix}-feature-group",
-            s3_uri=f"s3://{storage.data_bucket.bucket_name}/feature-store/",
-            role=sm_exec.role,
-            kms_key_arn=kms.key.key_arn,
-            record_identifier_name="id",
-            event_time_name="event_time",
-        )
+        enable_feature_group = self.node.try_get_context("enable_feature_group")
+        use_existing_feature_group = self.node.try_get_context("use_existing_feature_group")
+        feature_group_name = self.node.try_get_context("feature_group_name") or f"{name_prefix}-feature-group"
+        enable_feature_group = True if enable_feature_group is None else bool(enable_feature_group)
+        use_existing_feature_group = bool(use_existing_feature_group or False)
 
-        if storage.data_bucket.policy:
-            fg.feature_group.node.add_dependency(storage.data_bucket.policy)
+        if enable_feature_group and not use_existing_feature_group:
+            fg = FeatureGroup(
+                self,
+                "FeatureGroup",
+                feature_group_name=feature_group_name,
+                s3_uri=f"s3://{storage.data_bucket.bucket_name}/feature-store/",
+                role=sm_exec.role,
+                kms_key_arn=kms.key.key_arn,
+                record_identifier_name="id",
+                event_time_name="event_time",
+            )
+
+            if storage.data_bucket.policy:
+                fg.feature_group.node.add_dependency(storage.data_bucket.policy)
+        else:
+            pass
 
         enable_sm_ci = bool(self.node.try_get_context("enable_sagemaker_ci") or False)
         if enable_sm_ci and cicd is not None:
@@ -148,6 +157,9 @@ class BaseStack(Stack):
                 sm_instance_type=sm_instance_type,
                 endpoint_name=sm_endpoint_name,
                 ct_schedule_cron=ct_cron,
+                use_sm_pipeline=bool(self.node.try_get_context("use_sm_pipeline") or False),
+                use_feature_store=bool(self.node.try_get_context("use_feature_store") or True),
+                feature_group_name=(self.node.try_get_context("feature_group_name") or f"{name_prefix}-feature-group"),
             )
 
             iam.codebuild_role.add_to_policy(iam_cdk.PolicyStatement(
@@ -178,6 +190,7 @@ class BaseStack(Stack):
         CfnOutput(self, "DataBucket", value=storage.data_bucket.bucket_name)
         CfnOutput(self, "LogsBucket", value=storage.logs_bucket.bucket_name)
         CfnOutput(self, "EcrRepoUri", value=ecr.repo.repository_uri)
+        CfnOutput(self, "SmExecRoleArn", value=sm_exec.role.role_arn)
         if vpc:
             CfnOutput(self, "VpcId", value=vpc.vpc_id)
 

@@ -30,10 +30,19 @@ class FeatureGroup(Construct):
                     feature_name=event_time_name, feature_type="String"
                 ),
                 sagemaker.CfnFeatureGroup.FeatureDefinitionProperty(
-                    feature_name="feature1", feature_type="Fractional"
+                    feature_name="gender", feature_type="Integral"
                 ),
                 sagemaker.CfnFeatureGroup.FeatureDefinitionProperty(
-                    feature_name="feature2", feature_type="Fractional"
+                    feature_name="age", feature_type="Integral"
+                ),
+                sagemaker.CfnFeatureGroup.FeatureDefinitionProperty(
+                    feature_name="device", feature_type="Integral"
+                ),
+                sagemaker.CfnFeatureGroup.FeatureDefinitionProperty(
+                    feature_name="hour", feature_type="Integral"
+                ),
+                sagemaker.CfnFeatureGroup.FeatureDefinitionProperty(
+                    feature_name="click", feature_type="Integral"
                 ),
             ]
 
