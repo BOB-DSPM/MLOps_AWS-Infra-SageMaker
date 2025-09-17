@@ -20,11 +20,14 @@ from sagemaker.processing import ScriptProcessor, ProcessingInput, ProcessingOut
 from sagemaker.sklearn.processing import SKLearnProcessor
 from sagemaker.estimator import Estimator
 from sagemaker.inputs import TrainingInput
-from sagemaker import image_uris, Session
+from sagemaker import image_uris
+from sagemaker.workflow.pipeline_context import PipelineSession
 
 
 def get_pipeline(region: str, role: str) -> Pipeline:
-    sm_sess = Session()
+    # Use PipelineSession to ensure steps are compiled into a pipeline graph
+    # instead of executing immediately (avoids JSON serialization of Parameters)
+    sm_sess = PipelineSession()
 
     p_data_bucket = ParameterString(name="DataBucket", default_value=os.environ.get("DATA_BUCKET", ""))
     p_prefix = ParameterString(name="Prefix", default_value="pipelines/exp1")
