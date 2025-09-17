@@ -69,8 +69,16 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         code=code_uris["extract"],
         inputs=[],
         outputs=[
-            ProcessingOutput(output_name="train", source="/opt/ml/processing/train"),
-            ProcessingOutput(output_name="validation", source="/opt/ml/processing/validation"),
+            ProcessingOutput(
+                output_name="train",
+                source="/opt/ml/processing/train",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "extract", "train"]),
+            ),
+            ProcessingOutput(
+                output_name="validation",
+                source="/opt/ml/processing/validation",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "extract", "validation"]),
+            ),
         ],
         arguments=[
             "--s3", Join(on="/", values=["s3:/", p_data_bucket, p_prefix]),
@@ -93,7 +101,13 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[0].S3Output.S3Uri, destination="/opt/ml/processing/train"),
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation"),
         ],
-        outputs=[ProcessingOutput(output_name="report", source="/opt/ml/processing/report")],
+        outputs=[
+            ProcessingOutput(
+                output_name="report",
+                source="/opt/ml/processing/report",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "validate", "report"]),
+            )
+        ],
     )
 
     preprocess = SKLearnProcessor(
@@ -110,8 +124,16 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingInput(source=extract_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation"),
         ],
         outputs=[
-            ProcessingOutput(output_name="train_pre", source="/opt/ml/processing/train_pre"),
-            ProcessingOutput(output_name="validation_pre", source="/opt/ml/processing/validation_pre"),
+            ProcessingOutput(
+                output_name="train_pre",
+                source="/opt/ml/processing/train_pre",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "preprocess", "train_pre"]),
+            ),
+            ProcessingOutput(
+                output_name="validation_pre",
+                source="/opt/ml/processing/validation_pre",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "preprocess", "validation_pre"]),
+            ),
         ],
     )
 
@@ -147,7 +169,13 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             ProcessingInput(source=train_step.properties.ModelArtifacts.S3ModelArtifacts, destination="/opt/ml/processing/model"),
             ProcessingInput(source=preprocess_step.properties.ProcessingOutputConfig.Outputs[1].S3Output.S3Uri, destination="/opt/ml/processing/validation_pre"),
         ],
-        outputs=[ProcessingOutput(output_name="report", source="/opt/ml/processing/report")],
+        outputs=[
+            ProcessingOutput(
+                output_name="report",
+                source="/opt/ml/processing/report",
+                destination=Join(on="/", values=["s3:/", p_data_bucket, p_prefix, "evaluate", "report"]),
+            )
+        ],
         property_files=[evaluation],
     )
 
