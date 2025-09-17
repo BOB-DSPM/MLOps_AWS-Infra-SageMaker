@@ -100,6 +100,17 @@ class SmExecutionRole(Construct):
             resources=["*"]
         ))
 
+        # Read Feature Store metadata (used to resolve offline store Data Catalog)
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                "sagemaker:DescribeFeatureGroup",
+                "sagemaker:ListFeatureGroups",
+                "sagemaker:DescribeFeatureMetadata",
+                "sagemaker:ListFeatureMetadata",
+            ],
+            resources=["*"]
+        ))
+
         # Allow this role (used as the SageMaker Pipeline service role) to create jobs and register models
         self.role.add_to_policy(iam.PolicyStatement(
             actions=[
