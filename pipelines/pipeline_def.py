@@ -205,7 +205,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         name="ModelQualityCheck",
         conditions=[
             ConditionGreaterThanOrEqualTo(
-                left=JsonGet(eval_step.name, evaluation, "metrics.auc.value"),
+                left=JsonGet(step=eval_step, property_file=evaluation, json_path="metrics.auc.value"),
                 right=p_auc_threshold,
             )
         ],
