@@ -88,3 +88,11 @@ class SmExecutionRole(Construct):
             ],
             resources=["*"],
         ))
+
+        # Allow SageMaker Pipelines to tag Processing/Training jobs created with this role
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                "sagemaker:AddTags",
+            ],
+            resources=["*"]
+        ))
