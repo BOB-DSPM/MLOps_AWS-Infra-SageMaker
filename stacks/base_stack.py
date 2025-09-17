@@ -12,6 +12,8 @@ from infra.iam_role import CiCdIam
 from infra.cicd import CiCdPipeline
 from infra.sagemaker_exec import SmExecutionRole
 from infra.sagemaker_ci import ModelRegistry, SageMakerCiCd
+from infra.feature_store import FeatureGroup
+from infra.studio import Studio
 
 
 def _sanitize_alias_component(s: str) -> str:
@@ -83,13 +85,50 @@ class BaseStack(Stack):
             kms_key=kms.key,
         )
 
+        storage.data_bucket.add_to_resource_policy(iam_cdk.PolicyStatement(
+            principals=[iam_cdk.ArnPrincipal(sm_exec.role.role_arn)],
+            actions=[
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+            ],
+            resources=[storage.data_bucket.bucket_arn],
+        ))
+        storage.data_bucket.add_to_resource_policy(iam_cdk.PolicyStatement(
+            principals=[iam_cdk.ArnPrincipal(sm_exec.role.role_arn)],
+            actions=[
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+            ],
+            resources=[storage.data_bucket.arn_for_objects("feature-store/*")],
+        ))
+
+        fg = FeatureGroup(
+            self,
+            "FeatureGroup",
+            feature_group_name=f"{name_prefix}-feature-group",
+            s3_uri=f"s3://{storage.data_bucket.bucket_name}/feature-store/",
+            role=sm_exec.role,
+            kms_key_arn=kms.key.key_arn,
+            record_identifier_name="id",
+            event_time_name="event_time",
+        )
+
+        if storage.data_bucket.policy:
+            fg.feature_group.node.add_dependency(storage.data_bucket.policy)
+
         enable_sm_ci = bool(self.node.try_get_context("enable_sagemaker_ci") or False)
         if enable_sm_ci and cicd is not None:
             sm_pkg_group_name = self.node.try_get_context("sm_pkg_group_name") or f"{name_prefix}-pkg"
             sm_endpoint_name  = self.node.try_get_context("sm_endpoint_name")  or f"{name_prefix}-endpoint"
             sm_instance_type  = self.node.try_get_context("sm_instance_type")  or "ml.m5.large"
             sm_train_image    = self.node.try_get_context("sm_training_image_uri")
-            ct_cron           = self.node.try_get_context("ct_schedule_cron") or ""
+
+            if not sm_train_image:
+                sm_train_image = f"683313688378.dkr.ecr.{self.region}.amazonaws.com/sagemaker-xgboost:1.5-1"
+
+            ct_cron = self.node.try_get_context("ct_schedule_cron") or ""
 
             ModelRegistry(self, "ModelRegistry", group_name=sm_pkg_group_name)
 
@@ -127,7 +166,6 @@ class BaseStack(Stack):
                 actions=["logs:DescribeLogGroups"],
                 resources=["*"],
             ))
-
             iam.codebuild_role.add_to_policy(iam_cdk.PolicyStatement(
                 actions=["iam:PassRole"],
                 resources=[sm_exec.role.role_arn],
@@ -142,3 +180,17 @@ class BaseStack(Stack):
         CfnOutput(self, "EcrRepoUri", value=ecr.repo.repository_uri)
         if vpc:
             CfnOutput(self, "VpcId", value=vpc.vpc_id)
+
+        enable_studio = bool(self.node.try_get_context("enable_studio") or False)
+        if enable_studio and vpc:
+            studio_domain_name = f"{cfg.project_name}-{cfg.env_name}-studio"
+            studio_user = self.node.try_get_context("studio_user") or "admin"
+            Studio(
+                self,
+                "Studio",
+                vpc=vpc,
+                kms_key=kms.key,
+                domain_name=studio_domain_name,
+                user_name=studio_user,
+                s3_access_buckets=[storage.data_bucket, storage.artifacts_bucket],
+            )

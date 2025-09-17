@@ -17,6 +17,8 @@
         "sm_pkg_group_name": "my-mlops-dev-pkg",
         "sm_endpoint_name": "my-mlops-dev-endpoint",
         "sm_instance_type": "ml.m5.large",
-        "ct_schedule_cron": "cron(0 0 * * ? *)"
+        "ct_schedule_cron": "cron(0 0 * * ? *)",
+        "enable_studio": true,
+        "studio_user": "admin"
     }
 }

@@ -31,6 +31,10 @@ class SmExecutionRole(Construct):
             iam.ManagedPolicy.from_aws_managed_policy_name("CloudWatchLogsFullAccess")
         )
 
+        self.role.add_managed_policy(
+            iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSageMakerFeatureStoreAccess")
+        )
+
         self.role.add_to_policy(iam.PolicyStatement(
             actions=[
                 "ecr:GetAuthorizationToken",
@@ -50,4 +54,19 @@ class SmExecutionRole(Construct):
                 "ecr-public:BatchGetImage",
             ],
             resources=["*"],
+        ))
+
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+            ],
+            resources=[
+                data_bucket.bucket_arn,
+                f"{data_bucket.bucket_arn}/*"
+            ],
         ))
