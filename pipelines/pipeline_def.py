@@ -58,7 +58,6 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             "--use-feature-store", p_use_fs,
             "--feature-group-name", p_fg_name,
         ],
-        job_arguments=None,
         cache_config=cache,
     )
 
