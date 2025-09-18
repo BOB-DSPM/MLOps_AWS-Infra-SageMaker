@@ -37,7 +37,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
     p_external_csv = ParameterString(name="ExternalCsvUri", default_value=os.environ.get("EXTERNAL_CSV_URI", ""))
     p_use_fs = ParameterString(name="UseFeatureStore", default_value=os.environ.get("USE_FEATURE_STORE", "true"))
     p_fg_name = ParameterString(name="FeatureGroupName", default_value=os.environ.get("FEATURE_GROUP_NAME", ""))
-    p_auc_threshold = ParameterFloat(name="AucThreshold", default_value=0.7)
+    p_auc_threshold = ParameterFloat(name="AucThreshold", default_value=0.65)
     p_num_round = ParameterInteger(name="NumRound", default_value=50)
 
     cache = CacheConfig(enable_caching=False, expire_after="PT1H")
