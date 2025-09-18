@@ -15,7 +15,7 @@ from infra.sagemaker_ci import ModelRegistry, SageMakerCiCd
 from infra.feature_store import FeatureGroup
 from infra.studio import Studio
 
-
+## hjahahahahahaahahah
 def _sanitize_alias_component(s: str) -> str:
     """KMS Alias 허용문자(a-zA-Z0-9:/_-) 외 문자는 '-'로 치환"""
     import re
