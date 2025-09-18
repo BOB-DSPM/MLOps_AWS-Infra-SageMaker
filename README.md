@@ -64,5 +64,115 @@ python scripts/ingest_to_feature_store.py --csv /path/to/ad_click_dataset.csv
 
 CodeBuild(Train 단계)는 기본적으로 `s3://<DataBucket>/datasets/ad_click_dataset.csv`를 사용하도록 설정되어 있습니다(`EXTERNAL_CSV_URI`).
 
+## 완전 재배포 가이드 (Nuke & Redeploy)
+
+### 1. 기존 스택 완전 삭제 (Nuke)
+모든 리소스를 완전히 삭제하고 처음부터 다시 배포할 때 사용합니다.
+
+```bash
+# 모든 스택 삭제 (순서 중요: 의존성 역순으로 삭제)
+cdk destroy My-mlops-InferenceStack --force
+cdk destroy My-mlops-DevMLOpsStack --force
+cdk destroy My-mlops-DevVpcStack --force
+cdk destroy My-mlops-BaseStack --force
+
+# S3 버킷 수동 정리 (버킷이 비어있지 않으면 자동 삭제 안됨)
+aws s3 rm s3://your-data-bucket-name --recursive
+aws s3 rb s3://your-data-bucket-name
+
+# ECR 레포지토리 수동 정리 (이미지가 있으면 자동 삭제 안됨)
+aws ecr delete-repository --repository-name your-ecr-repo-name --force
+```
+
+### 2. 완전 재배포
+```bash
+# 환경 변수 설정
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export AWS_REGION=ap-northeast-2
+
+# CDK 부트스트랩 (필요시 - 계정당 1회만)
+cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION
+
+# 전체 스택 배포 (의존성 순서대로)
+cdk deploy --all --require-approval never
+```
+
+### 3. 데이터 적재 및 파이프라인 실행
+
+#### Step 1: 환경 변수 설정
+배포 완료 후 스택 Output에서 필요한 값들을 가져와 환경변수로 설정합니다.
+
+```bash
+# 스택 Output 확인
+aws cloudformation describe-stacks --stack-name My-mlops-BaseStack --query 'Stacks[0].Outputs'
+
+# 환경변수 설정 (Output에서 가져온 값으로 설정)
+export DATA_BUCKET="<DataBucket-Output-Value>"
+export SM_EXEC_ROLE_ARN="<SageMakerExecutionRole-Output-Value>"
+export FEATURE_GROUP_NAME="ad-click-feature-group"
+export KMS_KEY_ARN="<KMSKey-Output-Value>"  # 선택사항
+
+# 예시:
+# export DATA_BUCKET="my-mlops-basestack-databucket12345678-abcdefghijkl"
+# export SM_EXEC_ROLE_ARN="arn:aws:iam::123456789012:role/My-mlops-BaseStack-SageMakerExecutionRole-ABCDEFGHIJKL"
+```
+
+#### Step 2: 데이터셋 업로드 및 Feature Store 적재
+```bash
+# CSV 파일을 S3와 Feature Store에 적재
+python scripts/ingest_to_feature_store.py --csv ad_click_dataset.csv
+
+# 실행 결과 확인
+# - S3: s3://<DataBucket>/datasets/ad_click_dataset.csv 업로드 완료
+# - Feature Store: ad-click-feature-group 생성 및 레코드 적재 완료
+```
+
+#### Step 3: ML 파이프라인 트리거
+```bash
+# CodeCommit에 더미 커밋으로 파이프라인 트리거
+git add .
+git commit -m "Trigger ML pipeline after redeploy"
+git push origin main
+
+# 파이프라인 실행 상태 확인
+aws codepipeline get-pipeline-state --name My-mlops-BaseStack-MLOpsPipeline
+```
+
+#### Step 4: 모델 승인 및 배포
+```bash
+# 파이프라인의 Manual Approval 단계에서 승인 대기 상태 확인
+aws codepipeline get-pipeline-execution --pipeline-name My-mlops-BaseStack-MLOpsPipeline --pipeline-execution-id <execution-id>
+
+# 콘솔에서 수동 승인 또는 CLI로 승인
+aws codepipeline put-approval-result \
+  --pipeline-name My-mlops-BaseStack-MLOpsPipeline \
+  --stage-name ApprovalStage \
+  --action-name ManualApproval \
+  --result summary="Approved for deployment",status=Approved \
+  --token <approval-token>
+```
+
+### 4. 배포 검증
+```bash
+# 엔드포인트 상태 확인
+aws sagemaker describe-endpoint --endpoint-name ad-click-prediction-endpoint
+
+# 추론 테스트
+aws sagemaker-runtime invoke-endpoint \
+  --endpoint-name ad-click-prediction-endpoint \
+  --content-type text/csv \
+  --body "25,1,0,1,0,0,1,1" \
+  output.json && cat output.json
+
+# Feature Store 확인
+aws sagemaker describe-feature-group --feature-group-name ad-click-feature-group
+```
+
+### 주의사항
+- **순서 준수**: 삭제는 의존성 역순으로, 배포는 의존성 순서대로 진행
+- **S3/ECR 수동 정리**: 내용이 있는 버킷/레포지토리는 수동으로 정리 필요
+- **환경변수 확인**: 각 단계에서 올바른 값이 설정되었는지 반드시 확인
+- **승인 프로세스**: Manual Approval 단계에서 반드시 수동 승인 필요
+
 <!-- Test commit to trigger pipeline -->
 

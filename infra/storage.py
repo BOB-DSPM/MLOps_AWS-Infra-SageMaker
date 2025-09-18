@@ -39,6 +39,7 @@ class BaseStorage(Construct):
         env: str,
         kms_key,
         artifact_lifecycle_days: int = 90,
+        shared_buckets: dict = None,  # 공유 버킷 설정
     ) -> None:
         super().__init__(scope, construct_id)
         stack = Stack.of(self)
@@ -46,6 +47,11 @@ class BaseStorage(Construct):
         existing_logs = stack.node.try_get_context("existing_logs_bucket_name")
         existing_artifacts = stack.node.try_get_context("existing_artifacts_bucket_name")
         existing_data = stack.node.try_get_context("existing_data_bucket_name")
+
+        # 공유 버킷 설정이 있으면 사용
+        if shared_buckets and "prod_data_bucket" in shared_buckets:
+            existing_data = shared_buckets["prod_data_bucket"]
+            use_existing = True
 
         logs_bucket_name = f"{project}-{env}-logs".lower()
         if use_existing and existing_logs:
@@ -114,3 +120,41 @@ class BaseStorage(Construct):
                 removal_policy=RemovalPolicy.RETAIN,
             )
             _enforce_ssl(self.data_bucket)
+
+
+class StorageStack(Construct):
+    """스토리지 스택 - BaseStorage 래퍼"""
+    def __init__(
+        self,
+        scope: Construct,
+        construct_id: str,
+        *,
+        name_prefix: str,
+        shared_buckets: dict = None,
+    ) -> None:
+        super().__init__(scope, construct_id)
+        
+        # KMS 키는 부모 스택에서 가져와야 하므로 임시로 None 처리
+        # 실제로는 DevMLOpsStack에서 KMS 키를 전달받아야 함
+        from infra.kms_key import KMSStack
+        
+        # 프로젝트명과 환경명 파싱
+        parts = name_prefix.split('-')
+        project = parts[0] if len(parts) > 0 else "project"
+        env = parts[1] if len(parts) > 1 else "dev"
+        
+        # 임시 KMS 키 생성 (실제로는 외부에서 전달받아야 함)
+        temp_kms = KMSStack(self, "TempKms", name_prefix=name_prefix)
+        
+        self.base_storage = BaseStorage(
+            self, "BaseStorage",
+            project=project,
+            env=env,
+            kms_key=temp_kms.key,
+            shared_buckets=shared_buckets
+        )
+        
+        # 속성 노출
+        self.data_bucket = self.base_storage.data_bucket
+        self.artifacts_bucket = self.base_storage.artifacts_bucket
+        self.logs_bucket = self.base_storage.logs_bucket
