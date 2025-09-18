@@ -64,3 +64,5 @@ python scripts/ingest_to_feature_store.py --csv /path/to/ad_click_dataset.csv
 
 CodeBuild(Train 단계)는 기본적으로 `s3://<DataBucket>/datasets/ad_click_dataset.csv`를 사용하도록 설정되어 있습니다(`EXTERNAL_CSV_URI`).
 
+<!-- Test commit to trigger pipeline -->
+
