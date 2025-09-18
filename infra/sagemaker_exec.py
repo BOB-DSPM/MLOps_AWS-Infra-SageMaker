@@ -125,6 +125,8 @@ class SmExecutionRole(Construct):
                 "sagemaker:CreateModel",
                 "sagemaker:DescribeModel",
                 "sagemaker:CreateModelPackage",
+                "sagemaker:CreateModelPackageGroup",
+                "sagemaker:DescribeModelPackageGroup",
                 "sagemaker:DescribeModelPackage",
                 "sagemaker:ListModelPackages",
                 "sagemaker:UpdateModelPackage",
