@@ -133,10 +133,11 @@ class BaseStack(Stack):
             sm_endpoint_name  = self.node.try_get_context("sm_endpoint_name")  or f"{name_prefix}-endpoint"
             sm_instance_type  = self.node.try_get_context("sm_instance_type")  or "ml.m5.large"
             sm_train_image    = self.node.try_get_context("sm_training_image_uri")
-
+        
             if not sm_train_image:
-                sm_train_image = f"683313688378.dkr.ecr.{self.region}.amazonaws.com/sagemaker-xgboost:1.5-1"
-
+                # Use official SageMaker XGBoost image with correct account ID
+                sm_train_image = f"366743142698.dkr.ecr.{self.region}.amazonaws.com/sagemaker-xgboost:1.7-1"
+            
             ct_cron = self.node.try_get_context("ct_schedule_cron") or ""
 
             ModelRegistry(self, "ModelRegistry", group_name=sm_pkg_group_name)
