@@ -20,7 +20,7 @@
         "ct_schedule_cron": "cron(0 0 * * ? *)",
         "feature_group_name": "my-mlops-dev-feature-group-ctr",
         "use_existing_feature_group": false,
-        "use_sm_pipeline": true,
+        "use_sm_pipeline": false,
         "use_feature_store": true,
         "enable_studio": true,
         "studio_user": "admin"
