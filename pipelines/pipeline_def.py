@@ -224,6 +224,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
             p_external_csv,
             p_use_fs,
             p_fg_name,
+            p_model_package_group_name,
             p_auc_threshold,
             p_num_round,
         ],
