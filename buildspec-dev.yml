@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     AWS_DEFAULT_REGION: "ap-northeast-2"
+    # VPC Endpoints configured for AWS services access
     DATA_BUCKET: "my-mlops-dev-dev-data"
     SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
     FEATURE_GROUP_NAME: "ad-click-feature-group"
