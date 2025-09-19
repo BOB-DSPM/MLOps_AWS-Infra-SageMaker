@@ -178,3 +178,4 @@ aws sagemaker describe-feature-group --feature-group-name ad-click-feature-group
 
 # Pipeline retry with VPC endpoints - Fri Sep 19 20:34:13 KST 2025
 🔄 Fri Sep 19 21:10:54 KST 2025: Pipeline retry with fixed parameters
+2025-09-19 21:32:16 - Feature Group name fixed: ad-click-feature-group-dev
