@@ -5,8 +5,8 @@ env:
     AWS_DEFAULT_REGION: "ap-northeast-2"
     DATA_BUCKET: "my-mlops-dev-dev-data"
     SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-DevMLOpsStack-DevSmExecRoleF02E784A-bokjBaZoZ8ki"
-    FEATURE_GROUP_NAME: ""
-    USE_FEATURE_STORE: "false"
+    FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
+    USE_FEATURE_STORE: "true"
     EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
 
 phases:
