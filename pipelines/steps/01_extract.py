@@ -59,7 +59,14 @@ def main():
         tmp = tempfile.NamedTemporaryFile(delete=False)
         s3c.download_file(s3loc.netloc, os.path.join(s3loc.path.lstrip("/"), dl), tmp.name)
         raw = pd.read_csv(tmp.name)
-        df = raw
+        # Feature Store 쿼리 결과를 기대하는 형식으로 변환
+        df = pd.DataFrame({
+            "label": raw["label"],
+            0: raw["gender"],
+            1: raw["age"], 
+            2: raw["device"],
+            3: raw["hour"]
+        })
     if df is None and args.csv and args.csv.startswith("s3://"):
         u = urlparse(args.csv)
         b = u.netloc
