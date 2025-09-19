@@ -1,0 +1,41 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: "ap-northeast-2"
+    DATA_BUCKET: "my-mlops-dev-dev-data"
+    SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-DevMLOpsStack-DevSmExecRoleF02E784A-bokjBaZoZ8ki"
+    FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
+    USE_FEATURE_STORE: "true"
+    EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "Installing dependencies for DEV environment..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      
+  pre_build:
+    commands:
+      - echo "Pre-build phase started on `date` [DEV ENV]"
+      - echo "Checking AWS credentials..."
+      - aws sts get-caller-identity
+      
+  build:
+    commands:
+      - echo "Build phase started on `date` [DEV ENV]"
+      - echo "Running SageMaker pipeline in DEV environment..."
+      - python pipelines/pipeline_def.py --run
+      
+  post_build:
+    commands:
+      - echo "Post-build phase completed on `date` [DEV ENV]"
+      - echo "DEV Pipeline execution completed successfully"
+      - echo "Cross-repo deployment will be triggered automatically"
+
+artifacts:
+  files:
+    - '**/*'
