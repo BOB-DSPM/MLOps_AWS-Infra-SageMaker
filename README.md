@@ -177,3 +177,4 @@ aws sagemaker describe-feature-group --feature-group-name ad-click-feature-group
 <!-- Test commit to trigger pipeline -->
 
 # Pipeline retry with VPC endpoints - Fri Sep 19 20:34:13 KST 2025
+🔄 Fri Sep 19 21:10:54 KST 2025: Pipeline retry with fixed parameters
