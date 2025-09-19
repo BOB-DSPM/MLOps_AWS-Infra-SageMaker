@@ -34,24 +34,40 @@ def main():
 
     df = None
     if args.use_feature_store.lower() == "true" and args.feature_group_name:
+        print(f"Using Feature Store with Feature Group: {args.feature_group_name}")
         sm = session.client("sagemaker")
         athena = session.client("athena")
         desc = sm.describe_feature_group(FeatureGroupName=args.feature_group_name)
         dc = desc.get("OfflineStoreConfig", {}).get("DataCatalogConfig") or {}
         glue_tbl = dc.get("TableName")
         glue_db = dc.get("Database")
+        print(f"Feature Group table: {glue_db}.{glue_tbl}")
         if not glue_tbl or not glue_db:
             raise SystemExit("Feature Group offline store is not using DataCatalog; please provide ExternalCsvUri instead.")
         q = f"SELECT cast(click as integer) as label, cast(gender as integer) as gender, cast(age as integer) as age, cast(device as integer) as device, cast(hour as integer) as hour FROM \"{glue_db}\".\"{glue_tbl}\" WHERE click is not null limit 5000"
         s3_out = os.path.join(args.s3, "athena-out/")
-        s3_out = s3_out if s3_out.startswith("s3://") else args.s3
-        res = athena.start_query_execution(QueryString=q, ResultConfiguration={"OutputLocation": s3_out})
+        # S3 경로가 올바른 형식인지 확인
+        if not s3_out.startswith("s3://"):
+            s3_out = args.s3 + "/" if not args.s3.endswith("/") else args.s3
+            s3_out += "athena-out/"
+        print(f"Athena query: {q}")
+        print(f"Athena output location: {s3_out}")
+        res = athena.start_query_execution(
+            QueryString=q, 
+            ResultConfiguration={"OutputLocation": s3_out},
+            WorkGroup="primary"  # 명시적으로 WorkGroup 지정
+        )
         qid = res["QueryExecutionId"]
+        print(f"Athena query execution ID: {qid}")
         while True:
-            st = athena.get_query_execution(QueryExecutionId=qid)["QueryExecution"]["Status"]["State"]
+            ex = athena.get_query_execution(QueryExecutionId=qid)["QueryExecution"]
+            st = ex["Status"]["State"]
+            print(f"Athena query status: {st}")
             if st in ("SUCCEEDED", "FAILED", "CANCELLED"):
                 if st != "SUCCEEDED":
-                    raise SystemExit(f"Athena query failed: {st}")
+                    reason = ex["Status"].get("StateChangeReason", "Unknown reason")
+                    print(f"Athena query failed with reason: {reason}")
+                    raise SystemExit(f"Athena query failed: {st} - {reason}")
                 break
             time.sleep(3)
         s3loc = urlparse(s3_out)
