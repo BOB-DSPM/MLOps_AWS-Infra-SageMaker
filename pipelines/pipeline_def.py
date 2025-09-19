@@ -37,6 +37,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
     p_external_csv = ParameterString(name="ExternalCsvUri", default_value=os.environ.get("EXTERNAL_CSV_URI", ""))
     p_use_fs = ParameterString(name="UseFeatureStore", default_value=os.environ.get("USE_FEATURE_STORE", "true"))
     p_fg_name = ParameterString(name="FeatureGroupName", default_value=os.environ.get("FEATURE_GROUP_NAME", ""))
+    p_model_package_group_name = ParameterString(name="ModelPackageGroupName", default_value=os.environ.get("MODEL_PACKAGE_GROUP_NAME", "model-pkg"))
     p_auc_threshold = ParameterFloat(name="AucThreshold", default_value=0.65)
     p_num_round = ParameterInteger(name="NumRound", default_value=50)
 
@@ -197,7 +198,7 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         response_types=["text/csv"],
         inference_instances=["ml.m5.large"],
         transform_instances=["ml.m5.large"],
-        model_package_group_name=os.environ.get("MODEL_PACKAGE_GROUP_NAME", "model-pkg"),
+        model_package_group_name=p_model_package_group_name,
         approval_status="PendingManualApproval",
     )
 
