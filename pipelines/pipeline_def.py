@@ -238,8 +238,27 @@ def upsert_and_start(wait: bool = False):
     role = os.environ["SM_EXEC_ROLE_ARN"]
     pipe = get_pipeline(region, role)
     pipe.upsert(role_arn=role)
-    exe = pipe.start()
+    
+    # 파이프라인 실행 시 환경변수를 매개변수로 전달
+    parameters = {}
+    if os.environ.get("DATA_BUCKET"):
+        parameters["DataBucket"] = os.environ["DATA_BUCKET"]
+    if os.environ.get("PREFIX"):
+        parameters["Prefix"] = os.environ["PREFIX"]
+    if os.environ.get("EXTERNAL_CSV_URI"):
+        parameters["ExternalCsvUri"] = os.environ["EXTERNAL_CSV_URI"]
+    if os.environ.get("USE_FEATURE_STORE"):
+        parameters["UseFeatureStore"] = os.environ["USE_FEATURE_STORE"]
+    if os.environ.get("FEATURE_GROUP_NAME"):
+        parameters["FeatureGroupName"] = os.environ["FEATURE_GROUP_NAME"]
+    if os.environ.get("MODEL_PACKAGE_GROUP_NAME"):
+        parameters["ModelPackageGroupName"] = os.environ["MODEL_PACKAGE_GROUP_NAME"]
+    if os.environ.get("TRAIN_IMAGE_URI"):
+        parameters["TrainImage"] = os.environ["TRAIN_IMAGE_URI"]
+        
+    exe = pipe.start(parameters=parameters)
     print("Started pipeline:", exe.arn)
+    print("Parameters passed:", parameters)
     if wait:
         sm = boto3.client("sagemaker")
         while True:
