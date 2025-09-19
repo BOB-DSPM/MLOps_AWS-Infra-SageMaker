@@ -1,0 +1,40 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: "ap-northeast-2"
+    DATA_BUCKET: "my-mlops-dev-data"
+    SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
+    FEATURE_GROUP_NAME: "ad-click-feature-group"
+    USE_FEATURE_STORE: "true"
+    EXTERNAL_CSV_URI: "s3://my-mlops-dev-data/raw-data/ad_click_dataset.csv"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "Installing dependencies..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      
+  pre_build:
+    commands:
+      - echo "Pre-build phase started on `date`"
+      - echo "Checking AWS credentials..."
+      - aws sts get-caller-identity
+      
+  build:
+    commands:
+      - echo "Build phase started on `date`"
+      - echo "Running SageMaker pipeline..."
+      - python pipelines/pipeline_def.py --run
+      
+  post_build:
+    commands:
+      - echo "Post-build phase completed on `date`"
+      - echo "Pipeline execution completed successfully"
+
+artifacts:
+  files:
+    - '**/*'
