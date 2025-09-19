@@ -215,7 +215,7 @@ class DevMLOpsStack(Stack):
                                 
                                 # 운영 레포 클론
                                 "echo Cloning production repository...",
-                                "git clone codecommit://$AWS_REGION/$PROD_REPO_NAME prod-repo",
+                                "git clone codecommit::$AWS_REGION://$PROD_REPO_NAME prod-repo",
                                 "cd prod-repo",
                                 "git checkout main || git checkout -b main",
                                 
@@ -228,17 +228,13 @@ class DevMLOpsStack(Stack):
                                 "cp $CODEBUILD_SRC_DIR/*.py . || echo 'Python files not found'",
                                 
                                 # 커밋 및 푸시
-                                "if [ -n \"$(git status --porcelain)\" ]; then",
-                                "  git add .",
-                                "  COMMIT_MSG=\"🚀 Auto deploy from dev: $DEPLOYMENT_START_TIME - Approved model\"",
-                                "  git commit -m \"$COMMIT_MSG\"",
-                                "  git push origin main",
-                                "  DEPLOYMENT_STATUS='SUCCESS'",
-                                "  echo '✅ Successfully deployed to production!'",
-                                "else",
-                                "  DEPLOYMENT_STATUS='NO_CHANGES'",
-                                "  echo 'ℹ️ No changes to deploy'",
-                                "fi",
+                                "echo 'Checking for changes...'",
+                                "git add .",
+                                "COMMIT_MSG=\"🚀 Auto deploy from dev: $DEPLOYMENT_START_TIME - Approved model\"",
+                                "git commit -m \"$COMMIT_MSG\" || echo 'No changes to commit'",
+                                "git push origin main",
+                                "DEPLOYMENT_STATUS='SUCCESS'",
+                                "echo '✅ Successfully deployed to production!'",
                             ]
                         },
                         "post_build": {
@@ -317,7 +313,7 @@ class DevMLOpsStack(Stack):
                 "sagemaker:BatchGetRecord",
             ],
             resources=[
-                f"arn:aws:sagemaker:{self.region}:{self.account}:feature-group/my-mlops-feature-group-v2",
+                f"arn:aws:sagemaker:{self.region}:{self.account}:feature-group/ad-click-feature-group-dev",
                 f"arn:aws:sagemaker:{self.region}:{self.account}:feature-group/my-mlops-user-interactions-v1",
             ],
         ))
@@ -327,7 +323,7 @@ class DevMLOpsStack(Stack):
         # ========================================
         enable_feature_group = False  # 개발망에서는 새로 생성하지 않음
         use_existing_feature_group = True  # 운영 Feature Store 참조
-        feature_group_name = f"my-mlops-feature-group-v2"  # 운영 Feature Store 이름
+        feature_group_name = f"ad-click-feature-group-dev"  # 개발환경 전용 Feature Store 이름
 
         if enable_feature_group and not use_existing_feature_group:
             fg = FeatureGroup(
@@ -346,8 +342,8 @@ class DevMLOpsStack(Stack):
                 
             self.feature_group_name = feature_group_name
         else:
-            # 운영 Feature Store 참조
-            self.feature_group_name = "my-mlops-feature-group-v2"  # 또는 기존 운영 FG 이름
+            # 개발환경 전용 Feature Store 사용
+            self.feature_group_name = "ad-click-feature-group-dev"  # 개발환경 전용 FG 이름
 
         # 사용자 상호작용 데이터용 Feature Group (운영 공유)
         # 개발에서도 운영 Feature Store 사용
