@@ -107,8 +107,8 @@ class BaseStack(Stack):
         enable_feature_group = self.node.try_get_context("enable_feature_group")
         use_existing_feature_group = self.node.try_get_context("use_existing_feature_group")
         feature_group_name = self.node.try_get_context("feature_group_name") or f"{name_prefix}-feature-group-v2"
-        enable_feature_group = False  # 기존 Feature Group과 충돌 방지를 위해 일시 비활성화
-        use_existing_feature_group = True  # 기존 것을 사용
+        enable_feature_group = True  # 운영 Feature Store 활성화
+        use_existing_feature_group = False  # 새로 생성
 
         if enable_feature_group and not use_existing_feature_group:
             fg = FeatureGroup(
@@ -128,13 +128,13 @@ class BaseStack(Stack):
             # Feature Group 이름들을 출력으로 내보내기
             self.feature_group_name = feature_group_name
         else:
-            self.feature_group_name = "my-mlops-dev-feature-group-ctr"  # 기존 Feature Group 이름 사용
+            self.feature_group_name = "my-mlops-feature-group-v2"  # 운영 Feature Group 이름
 
         # 사용자 상호작용 데이터용 Feature Group은 항상 생성 (새로운 기능)
         user_interaction_fg = UserInteractionFeatureGroup(
             self,
             "UserInteractionFeatureGroup",
-            feature_group_name=f"{name_prefix}-user-interactions-v1",
+            feature_group_name="my-mlops-user-interactions-v1",  # 고정 이름으로 변경
             s3_uri=f"s3://{storage.data_bucket.bucket_name}/feature-store/user-interactions/",
             role=sm_exec.role,
             kms_key_arn=kms.key.key_arn,
@@ -145,7 +145,7 @@ class BaseStack(Stack):
         if storage.data_bucket.policy:
             user_interaction_fg.feature_group.node.add_dependency(storage.data_bucket.policy)
             
-        self.user_interaction_fg_name = f"{name_prefix}-user-interactions-v1"
+        self.user_interaction_fg_name = "my-mlops-user-interactions-v1"  # 고정 이름으로 변경
 
         enable_sm_ci = bool(self.node.try_get_context("enable_sagemaker_ci") or False)
         if enable_sm_ci and cicd is not None:

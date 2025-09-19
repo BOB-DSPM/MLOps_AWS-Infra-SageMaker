@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(__file__))
 from aws_cdk import (
     App, Environment, Tags
 )
+from stacks.base_stack import BaseStack
 from stacks.inference_stack import ModelInferenceStack
 from stacks.dev_vpc_stack import DevVPCStack
 from stacks.dev_mlops_stack import DevMLOpsStack
@@ -18,15 +19,20 @@ env = Environment(
 )
 
 # ========================================
-# 기존 운영 환경은 My-mlops-BaseStack 그대로 유지
+# 운영 환경 (BaseStack)
 # ========================================
+base_stack = BaseStack(
+    app, f"{cfg.project_name.capitalize()}-BaseStack",
+    cfg=cfg,
+    env=env
+)
 
-# 모델 추론용 스택 (별도 VPC) - 기존 운영망 참조
+# 모델 추론용 스택 (별도 VPC) - 운영망 엔드포인트 참조
 inference_stack = ModelInferenceStack(
     app, f"{cfg.project_name.capitalize()}-InferenceStack",
-    sagemaker_endpoint_name=f"{cfg.project_name}-{cfg.env_name}-endpoint",
-    model_package_group_name=f"{cfg.project_name}-{cfg.env_name}-pkg",
-    user_interaction_fg_name=f"{cfg.project_name}-{cfg.env_name}-user-interactions-v1",
+    sagemaker_endpoint_name=f"{cfg.project_name}-prod-endpoint",  # 운영용 엔드포인트 사용
+    model_package_group_name=f"{cfg.project_name}-prod-pkg",      # 운영용 모델 패키지 그룹 사용
+    user_interaction_fg_name=f"{cfg.project_name}-prod-user-interactions-v1",  # 운영용 Feature Group 사용
     env=env
 )
 
@@ -45,17 +51,20 @@ dev_vpc_stack = DevVPCStack(
 dev_mlops_stack = DevMLOpsStack(
     app, f"{cfg.project_name.capitalize()}-DevMLOpsStack",
     cfg=cfg,
-    dev_vpc_id="vpc-077d29cb1c2eac9ea",  # 개발용 VPC ID 직접 지정
+    dev_vpc_id="vpc-083457295d278b916",  # 새로 생성된 개발 VPC ID
     env=env
 )
 
-# 의존성 설정 - 개발 MLOps는 개발 VPC 이후에 생성
+# 의존성 설정
 dev_mlops_stack.add_dependency(dev_vpc_stack)
+inference_stack.add_dependency(base_stack)  # 추론 서비스는 운영 환경 이후
 
 # ========================================
 # 태그 설정
 # ========================================
-# 기존 운영 환경은 My-mlops-BaseStack에서 이미 관리됨
+Tags.of(base_stack).add("Project", cfg.project_name)
+Tags.of(base_stack).add("Env", "production")
+Tags.of(base_stack).add("ManagedBy", "cdk")
 
 Tags.of(inference_stack).add("Project", cfg.project_name)
 Tags.of(inference_stack).add("Env", "production-inference")

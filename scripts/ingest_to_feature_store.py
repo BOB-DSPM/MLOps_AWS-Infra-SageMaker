@@ -61,8 +61,15 @@ def ensure_feature_group(sm_client, sm_sess: Session, name: str, role_arn: str, 
         OfflineStoreConfig=offline_cfg,
     )
 
-    waiter = sm_client.get_waiter("feature_group_created")
-    waiter.wait(FeatureGroupName=name, WaiterConfig={"Delay": 5, "MaxAttempts": 60})
+    # Wait for feature group to be created (polling method)
+    for _ in range(60):  # 5 minutes max
+        try:
+            desc = sm_client.describe_feature_group(FeatureGroupName=name)
+            if desc.get("FeatureGroupStatus") == "Created":
+                break
+        except sm_client.exceptions.ResourceNotFound:
+            pass
+        time.sleep(5)
     # Verify schema is present
     for _ in range(40):
         d = sm_client.describe_feature_group(FeatureGroupName=name)
