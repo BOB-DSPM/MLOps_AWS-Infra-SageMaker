@@ -4,37 +4,63 @@ env:
   variables:
     AWS_DEFAULT_REGION: "ap-northeast-2"
     DATA_BUCKET: "my-mlops-dev-dev-data"
-    SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-DevMLOpsStack-DevSmExecRoleF02E784A-bokjBaZoZ8ki"
-    FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
+    SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
+    FEATURE_GROUP_NAME: "ad-click-feature-group"
     USE_FEATURE_STORE: "true"
     EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
+    MODEL_PACKAGE_GROUP_NAME: "my-mlops-dev-dev-pkg"
+    USE_SM_PIPELINE: "true"
 
 phases:
   install:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies for DEV environment..."
       - pip install --upgrade pip
-      - pip install -r requirements.txt
-      
-  pre_build:
-    commands:
-      - echo "Pre-build phase started on `date` [DEV ENV]"
-      - echo "Checking AWS credentials..."
-      - aws sts get-caller-identity
+      - pip install boto3 sagemaker==2.* pandas numpy
       
   build:
     commands:
-      - echo "Build phase started on `date` [DEV ENV]"
-      - echo "Running SageMaker pipeline in DEV environment..."
-      - python pipelines/pipeline_def.py --run
-      
-  post_build:
-    commands:
-      - echo "Post-build phase completed on `date` [DEV ENV]"
-      - echo "DEV Pipeline execution completed successfully"
-      - echo "Cross-repo deployment will be triggered automatically"
+      - echo 'Ensure Model Package Group exists...'
+      - python - <<'PY'
+        import os, sys, boto3
+        from botocore.exceptions import ClientError
+        sm=boto3.client('sagemaker')
+        group=os.environ['MODEL_PACKAGE_GROUP_NAME']
+        try:
+            sm.describe_model_package_group(ModelPackageGroupName=group)
+            print('[MPG] exists:', group)
+        except ClientError as e:
+            if e.response['Error']['Code']=='ValidationException' and 'does not exist' in e.response['Error']['Message']:
+                sm.create_model_package_group(ModelPackageGroupName=group, ModelPackageGroupDescription='Created by CodeBuild')
+                print('[MPG] created:', group)
+            else:
+                print('[ERROR] MPG check:', e, file=sys.stderr)
+                sys.exit(1)
+        PY
+      - echo 'USE_SM_PIPELINE='"$USE_SM_PIPELINE"
+      - if [ "$USE_SM_PIPELINE" = "true" ]; then python pipelines/pipeline_def.py --run --wait; else :; fi
+      - echo 'Upload model package version to cross-repo deployment...'
+      - python - <<'PY'
+        import os, boto3, json
+        sm = boto3.client('sagemaker')
+        try:
+            resp = sm.list_model_packages(ModelPackageGroupName=os.environ['MODEL_PACKAGE_GROUP_NAME'], SortOrder='Descending', MaxResults=1)
+            if resp['ModelPackageSummaryList']:
+                latest = resp['ModelPackageSummaryList'][0]
+                ver = latest['ModelPackageVersion']
+                arn = latest['ModelPackageArn']
+                print(f'[MODEL] Latest version: {ver}, ARN: {arn}')
+                sns = boto3.client('sns')
+                topic_arn = 'arn:aws:sns:ap-northeast-2:651706765732:my-mlops-dev-cross-repo-topic'
+                msg = {'source': 'dev', 'model_package_arn': arn, 'version': ver, 'trigger': 'auto-deployment'}
+                sns.publish(TopicArn=topic_arn, Message=json.dumps(msg), Subject='Dev Model Ready for Cross-Repo Deployment')
+                print('[SNS] Cross-repo deployment notification sent')
+            else:
+                print('[MODEL] No model packages found')
+        except Exception as e:
+            print(f'[ERROR] Cross-repo notification: {e}')
+        PY
 
 artifacts:
   files:
