@@ -32,6 +32,9 @@ class DevVPCStack(Stack):
             ]
         )
         
+        # VPC 엔드포인트 생성 - AWS 서비스에 프라이빗 접근
+        self._create_vpc_endpoints()
+        
         # 개발용 보안 그룹
         self.dev_security_group = ec2.SecurityGroup(
             self, "DevSecurityGroup",
@@ -64,4 +67,70 @@ class DevVPCStack(Stack):
             self, "DevSecurityGroupId",
             value=self.dev_security_group.security_group_id,
             description="Development Security Group ID"
+        )
+
+    def _create_vpc_endpoints(self):
+        """AWS 서비스 접근을 위한 VPC 엔드포인트 생성"""
+        
+        # SageMaker API VPC Endpoint
+        self.dev_vpc.add_interface_endpoint(
+            "DevSageMakerApiEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_API,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # SageMaker Runtime VPC Endpoint  
+        self.dev_vpc.add_interface_endpoint(
+            "DevSageMakerRuntimeEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_RUNTIME,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # SageMaker Feature Store Runtime VPC Endpoint
+        self.dev_vpc.add_interface_endpoint(
+            "DevSageMakerFeatureStoreEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_FEATURESTORE_RUNTIME,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # Athena VPC Endpoint
+        self.dev_vpc.add_interface_endpoint(
+            "DevAthenaEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.ATHENA,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # Glue VPC Endpoint (Data Catalog용)
+        self.dev_vpc.add_interface_endpoint(
+            "DevGlueEndpoint", 
+            service=ec2.InterfaceVpcEndpointAwsService.GLUE,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # S3 Gateway Endpoint (성능 향상 및 비용 절약)
+        self.dev_vpc.add_gateway_endpoint(
+            "DevS3GatewayEndpoint",
+            service=ec2.GatewayVpcEndpointAwsService.S3,
+            subnets=[ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)]
+        )
+
+        # ECR API VPC Endpoint (Docker 이미지 다운로드용)
+        self.dev_vpc.add_interface_endpoint(
+            "DevEcrApiEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.ECR,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # ECR Docker VPC Endpoint
+        self.dev_vpc.add_interface_endpoint(
+            "DevEcrDockerEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # CloudWatch Logs VPC Endpoint
+        self.dev_vpc.add_interface_endpoint(
+            "DevCloudWatchLogsEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
         )

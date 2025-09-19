@@ -23,3 +23,51 @@ class BaseNetwork(Construct):
                         cidr_mask = 20),
             ]
         )
+
+        # VPC Endpoints for AWS Services Access
+        self._create_vpc_endpoints()
+
+    def _create_vpc_endpoints(self):
+        """Create VPC endpoints for AWS services to enable private access"""
+        
+        # SageMaker API VPC Endpoint
+        self.vpc.add_interface_endpoint(
+            "SageMakerApiEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_API,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # SageMaker Runtime VPC Endpoint  
+        self.vpc.add_interface_endpoint(
+            "SageMakerRuntimeEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_RUNTIME,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # SageMaker Feature Store Runtime VPC Endpoint
+        self.vpc.add_interface_endpoint(
+            "SageMakerFeatureStoreEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_FEATURESTORE_RUNTIME,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # Athena VPC Endpoint
+        self.vpc.add_interface_endpoint(
+            "AthenaEndpoint",
+            service=ec2.InterfaceVpcEndpointAwsService.ATHENA,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # Glue VPC Endpoint (for Data Catalog)
+        self.vpc.add_interface_endpoint(
+            "GlueEndpoint", 
+            service=ec2.InterfaceVpcEndpointAwsService.GLUE,
+            subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)
+        )
+
+        # S3 Gateway Endpoint (for better performance and no charges)
+        self.vpc.add_gateway_endpoint(
+            "S3GatewayEndpoint",
+            service=ec2.GatewayVpcEndpointAwsService.S3,
+            subnets=[ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)]
+        )
