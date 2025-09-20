@@ -22,56 +22,64 @@ phases:
       
   build:
     commands:
-      - echo 'Override environment variables for correct configuration...'
+      - echo "=== BUILD PHASE STARTED ==="
+      - echo "Setting up correct environment variables..."
       - export DATA_BUCKET="my-mlops-dev-dev-data"
       - export EXTERNAL_CSV_URI="s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
       - export MODEL_PACKAGE_GROUP_NAME="my-mlops-dev-dev-pkg"
       - export USE_FEATURE_STORE="true"
-      - echo "Using DATA_BUCKET=$DATA_BUCKET"
-      - echo "Using EXTERNAL_CSV_URI=$EXTERNAL_CSV_URI"
-      - echo "Using MODEL_PACKAGE_GROUP_NAME=$MODEL_PACKAGE_GROUP_NAME"
-      - echo "Using USE_FEATURE_STORE=$USE_FEATURE_STORE"
-      - echo 'Ensure Model Package Group exists...'
-      - python - <<'PY'
+      - echo "Environment variables configured:"
+      - echo "  DATA_BUCKET=$DATA_BUCKET"
+      - echo "  EXTERNAL_CSV_URI=$EXTERNAL_CSV_URI"
+      - echo "  MODEL_PACKAGE_GROUP_NAME=$MODEL_PACKAGE_GROUP_NAME"
+      - echo "  USE_FEATURE_STORE=$USE_FEATURE_STORE"
+      - echo "Ensuring Model Package Group exists..."
+      - |
+        python3 << 'EOF'
         import os, sys, boto3
         from botocore.exceptions import ClientError
-        sm=boto3.client('sagemaker')
-        group=os.environ['MODEL_PACKAGE_GROUP_NAME']
+        sm = boto3.client('sagemaker')
+        group = os.environ['MODEL_PACKAGE_GROUP_NAME']
         try:
             sm.describe_model_package_group(ModelPackageGroupName=group)
-            print('[MPG] exists:', group)
+            print(f'[MPG] exists: {group}')
         except ClientError as e:
-            if e.response['Error']['Code']=='ValidationException' and 'does not exist' in e.response['Error']['Message']:
+            if e.response['Error']['Code'] == 'ValidationException' and 'does not exist' in e.response['Error']['Message']:
                 sm.create_model_package_group(ModelPackageGroupName=group, ModelPackageGroupDescription='Created by CodeBuild')
-                print('[MPG] created:', group)
+                print(f'[MPG] created: {group}')
             else:
-                print('[ERROR] MPG check:', e, file=sys.stderr)
+                print(f'[ERROR] MPG check: {e}', file=sys.stderr)
                 sys.exit(1)
-        PY
-      - echo 'USE_SM_PIPELINE='"$USE_SM_PIPELINE"
-      - if [ "$USE_SM_PIPELINE" = "true" ]; then python pipelines/pipeline_def.py --run --wait; else :; fi
-      - echo 'Upload model package version to cross-repo deployment...'
-      - python - <<'PY'
+        EOF
+      - echo "USE_SM_PIPELINE=$USE_SM_PIPELINE"
+      - echo "Starting SageMaker pipeline execution..."
+      - |
+        if [ "$USE_SM_PIPELINE" = "true" ]; then
+          python3 pipelines/pipeline_def.py --run --wait
+        else
+          echo "SageMaker pipeline execution skipped"
+        fi
+      - echo "Uploading model package information..."
+      - |
+        python3 << 'EOF'
         import os, boto3, json
-        sm = boto3.client('sagemaker')
         try:
+            sm = boto3.client('sagemaker')
             resp = sm.list_model_packages(ModelPackageGroupName=os.environ['MODEL_PACKAGE_GROUP_NAME'], SortOrder='Descending', MaxResults=1)
             if resp['ModelPackageSummaryList']:
                 latest_arn = resp['ModelPackageSummaryList'][0]['ModelPackageArn']
-                print('[LATEST MODEL]', latest_arn)
+                print(f'[LATEST MODEL] {latest_arn}')
                 with open('/tmp/latest_model_arn.txt', 'w') as f:
                     f.write(latest_arn)
-                # S3에 업로드
                 s3 = boto3.client('s3')
                 s3.upload_file('/tmp/latest_model_arn.txt', os.environ['DATA_BUCKET'], 'model-registry/latest_model_arn.txt')
                 print('[UPLOADED] Model ARN to S3')
             else:
                 print('[NO MODELS] in package group')
         except Exception as e:
-            print('[ERROR]', e, file=sys.stderr)
-            # 에러가 있어도 빌드는 계속 진행
-        PY
-      - echo 'Build completed successfully'
+            print(f'[ERROR] {e}', file=sys.stderr)
+        EOF
+      - echo "=== BUILD PHASE COMPLETED ==="
       
   post_build:
     commands:
