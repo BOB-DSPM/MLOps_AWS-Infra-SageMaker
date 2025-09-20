@@ -154,7 +154,14 @@ def main():
             
         click_col = col("clicked", "click", "label", "target", "y", "is_click")
         click = raw[click_col].astype(int) if click_col else pd.Series(0, index=raw.index)
-        out = pd.DataFrame({"label": click, 0: gender.astype(int), 1: age.astype(int), 2: device.astype(int), 3: hour.astype(int)})
+        
+        # Handle missing values before converting to int
+        gender = gender.fillna(0).astype(int)
+        age = age.fillna(30).astype(int)  # Default age 30
+        device = device.fillna(0).astype(int)  # Default device 0
+        hour = hour.fillna(12).astype(int)  # Default hour 12
+        
+        out = pd.DataFrame({"label": click, 0: gender, 1: age, 2: device, 3: hour})
         df = out
     else:
         n = 1000
