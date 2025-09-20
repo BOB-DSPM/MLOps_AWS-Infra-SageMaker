@@ -23,7 +23,7 @@ phases:
   build:
     commands:
       - echo "=== BUILD PHASE STARTED ==="
-      - echo "Build triggered at $(date)"
+      - echo "Build triggered at $(date) - Production model package ready"
       - echo "Setting up correct environment variables..."
       - export DATA_BUCKET="my-mlops-dev-dev-data"
       - export EXTERNAL_CSV_URI="s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
