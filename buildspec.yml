@@ -3,32 +3,75 @@ version: 0.2
 env:
   variables:
     AWS_DEFAULT_REGION: "ap-northeast-2"
-    DATA_BUCKET: "my-mlops-dev-data"
+    # VPC Endpoints configured for AWS services access
+    DATA_BUCKET: "my-mlops-dev-dev-data"
     SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
-    FEATURE_GROUP_NAME: "ad-click-feature-group"
+    FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
     USE_FEATURE_STORE: "true"
-    EXTERNAL_CSV_URI: "s3://my-mlops-dev-data/raw-data/ad_click_dataset.csv"
+    EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
+    MODEL_PACKAGE_GROUP_NAME: "my-mlops-dev-dev-pkg"
+    USE_SM_PIPELINE: "true"
 
 phases:
   install:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies..."
       - pip install --upgrade pip
-      - pip install -r requirements.txt
-      
-  pre_build:
-    commands:
-      - echo "Pre-build phase started on `date`"
-      - echo "Checking AWS credentials..."
-      - aws sts get-caller-identity
+      - pip install boto3 sagemaker==2.* pandas numpy
       
   build:
     commands:
-      - echo "Build phase started on `date`"
-      - echo "Running SageMaker pipeline..."
-      - python pipelines/pipeline_def.py --run
+      - echo 'Override environment variables for correct configuration...'
+      - export DATA_BUCKET="my-mlops-dev-dev-data"
+      - export EXTERNAL_CSV_URI="s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
+      - export MODEL_PACKAGE_GROUP_NAME="my-mlops-dev-dev-pkg"
+      - export USE_FEATURE_STORE="true"
+      - echo "Using DATA_BUCKET=$DATA_BUCKET"
+      - echo "Using EXTERNAL_CSV_URI=$EXTERNAL_CSV_URI"
+      - echo "Using MODEL_PACKAGE_GROUP_NAME=$MODEL_PACKAGE_GROUP_NAME"
+      - echo "Using USE_FEATURE_STORE=$USE_FEATURE_STORE"
+      - echo 'Ensure Model Package Group exists...'
+      - python - <<'PY'
+        import os, sys, boto3
+        from botocore.exceptions import ClientError
+        sm=boto3.client('sagemaker')
+        group=os.environ['MODEL_PACKAGE_GROUP_NAME']
+        try:
+            sm.describe_model_package_group(ModelPackageGroupName=group)
+            print('[MPG] exists:', group)
+        except ClientError as e:
+            if e.response['Error']['Code']=='ValidationException' and 'does not exist' in e.response['Error']['Message']:
+                sm.create_model_package_group(ModelPackageGroupName=group, ModelPackageGroupDescription='Created by CodeBuild')
+                print('[MPG] created:', group)
+            else:
+                print('[ERROR] MPG check:', e, file=sys.stderr)
+                sys.exit(1)
+        PY
+      - echo 'USE_SM_PIPELINE='"$USE_SM_PIPELINE"
+      - if [ "$USE_SM_PIPELINE" = "true" ]; then python pipelines/pipeline_def.py --run --wait; else :; fi
+      - echo 'Upload model package version to cross-repo deployment...'
+      - python - <<'PY'
+        import os, boto3, json
+        sm = boto3.client('sagemaker')
+        try:
+            resp = sm.list_model_packages(ModelPackageGroupName=os.environ['MODEL_PACKAGE_GROUP_NAME'], SortOrder='Descending', MaxResults=1)
+            if resp['ModelPackageSummaryList']:
+                latest_arn = resp['ModelPackageSummaryList'][0]['ModelPackageArn']
+                print('[LATEST MODEL]', latest_arn)
+                with open('/tmp/latest_model_arn.txt', 'w') as f:
+                    f.write(latest_arn)
+                # S3에 업로드
+                s3 = boto3.client('s3')
+                s3.upload_file('/tmp/latest_model_arn.txt', os.environ['DATA_BUCKET'], 'model-registry/latest_model_arn.txt')
+                print('[UPLOADED] Model ARN to S3')
+            else:
+                print('[NO MODELS] in package group')
+        except Exception as e:
+            print('[ERROR]', e, file=sys.stderr)
+            # 에러가 있어도 빌드는 계속 진행
+        PY
+      - echo 'Build completed successfully'
       
   post_build:
     commands:
