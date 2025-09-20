@@ -7,7 +7,7 @@ env:
     DATA_BUCKET: "my-mlops-dev-dev-data"
     SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
     FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
-    - export     USE_FEATURE_STORE: "false"
+    - export     USE_FEATURE_STORE: "true"
     EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
     MODEL_PACKAGE_GROUP_NAME: "my-mlops-dev-dev-pkg"
     USE_SM_PIPELINE: "true"
@@ -26,9 +26,11 @@ phases:
       - export DATA_BUCKET="my-mlops-dev-dev-data"
       - export EXTERNAL_CSV_URI="s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
       - export MODEL_PACKAGE_GROUP_NAME="my-mlops-dev-dev-pkg"
+      - export USE_FEATURE_STORE="true"
       - echo "Using DATA_BUCKET=$DATA_BUCKET"
       - echo "Using EXTERNAL_CSV_URI=$EXTERNAL_CSV_URI"
       - echo "Using MODEL_PACKAGE_GROUP_NAME=$MODEL_PACKAGE_GROUP_NAME"
+      - echo "Using USE_FEATURE_STORE=$USE_FEATURE_STORE"
       - echo 'Ensure Model Package Group exists...'
       - python - <<'PY'
         import os, sys, boto3

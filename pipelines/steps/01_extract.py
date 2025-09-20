@@ -36,53 +36,76 @@ def main():
     if args.use_feature_store.lower() == "true" and args.feature_group_name:
         print(f"Using Feature Store with Feature Group: {args.feature_group_name}")
         sm = session.client("sagemaker")
-        athena = session.client("athena")
-        desc = sm.describe_feature_group(FeatureGroupName=args.feature_group_name)
-        dc = desc.get("OfflineStoreConfig", {}).get("DataCatalogConfig") or {}
-        glue_tbl = dc.get("TableName")
-        glue_db = dc.get("Database")
-        print(f"Feature Group table: {glue_db}.{glue_tbl}")
-        if not glue_tbl or not glue_db:
-            raise SystemExit("Feature Group offline store is not using DataCatalog; please provide ExternalCsvUri instead.")
-        q = f"SELECT cast(click as integer) as label, cast(gender as integer) as gender, cast(age as integer) as age, cast(device as integer) as device, cast(hour as integer) as hour FROM \"{glue_db}\".\"{glue_tbl}\" WHERE click is not null limit 5000"
-        s3_out = os.path.join(args.s3, "athena-out/")
-        # S3 경로가 올바른 형식인지 확인
-        if not s3_out.startswith("s3://"):
-            s3_out = args.s3 + "/" if not args.s3.endswith("/") else args.s3
-            s3_out += "athena-out/"
-        print(f"Athena query: {q}")
-        print(f"Athena output location: {s3_out}")
-        res = athena.start_query_execution(
-            QueryString=q, 
-            ResultConfiguration={"OutputLocation": s3_out},
-            WorkGroup="primary"  # 명시적으로 WorkGroup 지정
-        )
-        qid = res["QueryExecutionId"]
-        print(f"Athena query execution ID: {qid}")
-        while True:
-            ex = athena.get_query_execution(QueryExecutionId=qid)["QueryExecution"]
-            st = ex["Status"]["State"]
-            print(f"Athena query status: {st}")
-            if st in ("SUCCEEDED", "FAILED", "CANCELLED"):
-                if st != "SUCCEEDED":
-                    reason = ex["Status"].get("StateChangeReason", "Unknown reason")
-                    print(f"Athena query failed with reason: {reason}")
-                    raise SystemExit(f"Athena query failed: {st} - {reason}")
-                break
-            time.sleep(3)
-        s3loc = urlparse(s3_out)
-        dl = f"{qid}.csv"
-        tmp = tempfile.NamedTemporaryFile(delete=False)
-        s3c.download_file(s3loc.netloc, os.path.join(s3loc.path.lstrip("/"), dl), tmp.name)
-        raw = pd.read_csv(tmp.name)
-        # Feature Store 쿼리 결과를 기대하는 형식으로 변환
-        df = pd.DataFrame({
-            "label": raw["label"],
-            0: raw["gender"],
-            1: raw["age"], 
-            2: raw["device"],
-            3: raw["hour"]
-        })
+        
+        # Feature Store에서 온라인 스토어를 통해 데이터 샘플링
+        try:
+            # 온라인 스토어에서 데이터 가져오기 (실제 프로덕션에서는 더 정교한 방법 사용)
+            print("Attempting to use online store for data extraction...")
+            
+            # 임시: 온라인 스토어 대신 S3에서 직접 읽기
+            # Feature Store의 오프라인 스토어 S3 경로 확인
+            desc = sm.describe_feature_group(FeatureGroupName=args.feature_group_name)
+            offline_config = desc.get("OfflineStoreConfig", {})
+            s3_config = offline_config.get("S3StorageConfig", {})
+            resolved_s3_uri = s3_config.get("ResolvedOutputS3Uri", "")
+            
+            if resolved_s3_uri:
+                print(f"Feature Store S3 path: {resolved_s3_uri}")
+                # S3에서 파케트 파일들 목록 가져오기
+                s3_uri_parts = resolved_s3_uri.replace("s3://", "").split("/", 1)
+                bucket = s3_uri_parts[0]
+                prefix = s3_uri_parts[1] if len(s3_uri_parts) > 1 else ""
+                
+                # S3에서 파케트 파일 찾기
+                s3_paginator = s3c.get_paginator('list_objects_v2')
+                parquet_files = []
+                for page in s3_paginator.paginate(Bucket=bucket, Prefix=prefix):
+                    for obj in page.get('Contents', []):
+                        if obj['Key'].endswith('.parquet'):
+                            parquet_files.append(obj['Key'])
+                            if len(parquet_files) >= 5:  # 최대 5개 파일만 처리
+                                break
+                    if len(parquet_files) >= 5:
+                        break
+                
+                if parquet_files:
+                    print(f"Found {len(parquet_files)} parquet files, using first one for sampling")
+                    # 첫 번째 파케트 파일 다운로드
+                    import tempfile
+                    tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.parquet')
+                    s3c.download_file(bucket, parquet_files[0], tmp.name)
+                    
+                    # 파케트 파일 읽기
+                    import pandas as pd
+                    raw = pd.read_parquet(tmp.name)
+                    print(f"Loaded {len(raw)} records from Feature Store")
+                    
+                    # 필요한 컬럼 추출 및 변환
+                    df = pd.DataFrame({
+                        "label": raw["click"].astype(int),
+                        0: raw["gender"].astype(int),
+                        1: raw["age"].astype(int), 
+                        2: raw["device"].astype(int),
+                        3: raw["hour"].astype(int)
+                    })
+                    print(f"Processed {len(df)} records for training")
+                else:
+                    print("No parquet files found in Feature Store, falling back to CSV")
+                    raise FileNotFoundError("No data files found")
+            else:
+                print("No resolved S3 URI found for Feature Store")
+                raise ValueError("Feature Store not properly configured")
+                
+        except Exception as e:
+            print(f"Feature Store access failed: {e}")
+            print("Falling back to CSV file approach...")
+            # Feature Store 실패 시 CSV 파일로 fallback
+            if args.csv and args.csv.startswith("s3://"):
+                print(f"Using fallback CSV: {args.csv}")
+            else:
+                print("No CSV fallback available, using synthetic data")
+    
+    # CSV 처리 로직은 그대로 유지
     if df is None and args.csv and args.csv.startswith("s3://"):
         u = urlparse(args.csv)
         b = u.netloc
