@@ -117,21 +117,43 @@ def main():
                 if n in cols:
                     return cols[n]
             return None
-        gender = raw[col("gender", "sex", "is_male")]
+        gender_col = col("gender", "sex", "is_male")
+        gender = raw[gender_col] if gender_col else pd.Series(0, index=raw.index)
         if str(gender.dtype) == "bool":
             gender = gender.astype(int)
-        age = raw[col("age", "user_age")]
-        device = raw[col("device", "platform", "is_mobile")]
-        if str(device.dtype) == "bool":
+        elif gender.dtype == "object":
+            # Convert Male/Female to 1/0
+            gender = (gender.str.lower() == "male").astype(int)
+        
+        age_col = col("age", "user_age")
+        age = raw[age_col] if age_col else pd.Series(30, index=raw.index)
+        
+        device_col = col("device_type", "device", "platform", "is_mobile")
+        device = raw[device_col] if device_col else pd.Series(0, index=raw.index)
+        if device is not None and str(device.dtype) == "bool":
             device = device.astype(int)
-        hourcol = col("hour", "hour_of_day")
+        elif device.dtype == "object":
+            # Convert Desktop/Mobile to 1/0
+            device = (device.str.lower().isin(["mobile", "smartphone"])).astype(int)
+            
+        hourcol = col("hour", "hour_of_day", "time_of_day")
         ts = col("timestamp", "event_time", "time")
         if ts and hourcol is None:
             dt = pd.to_datetime(raw[ts], errors="coerce")
             hour = dt.dt.hour.fillna(0).astype(int)
+        elif hourcol:
+            hour_data = raw[hourcol]
+            if hour_data.dtype == "object":
+                # Convert time strings like "Afternoon", "Morning" to hours
+                time_map = {"morning": 9, "afternoon": 14, "evening": 18, "night": 22}
+                hour = hour_data.str.lower().map(time_map).fillna(12).astype(int)
+            else:
+                hour = hour_data.astype(int)
         else:
-            hour = raw[hourcol].astype(int)
-        click = raw[col("clicked", "click", "label", "target", "y", "is_click")].astype(int)
+            hour = pd.Series(12, index=raw.index)
+            
+        click_col = col("clicked", "click", "label", "target", "y", "is_click")
+        click = raw[click_col].astype(int) if click_col else pd.Series(0, index=raw.index)
         out = pd.DataFrame({"label": click, 0: gender.astype(int), 1: age.astype(int), 2: device.astype(int), 3: hour.astype(int)})
         df = out
     else:
