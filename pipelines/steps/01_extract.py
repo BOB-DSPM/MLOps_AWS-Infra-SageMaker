@@ -71,12 +71,10 @@ def main():
                 if parquet_files:
                     print(f"Found {len(parquet_files)} parquet files, using first one for sampling")
                     # 첫 번째 파케트 파일 다운로드
-                    import tempfile
                     tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.parquet')
                     s3c.download_file(bucket, parquet_files[0], tmp.name)
                     
                     # 파케트 파일 읽기
-                    import pandas as pd
                     raw = pd.read_parquet(tmp.name)
                     print(f"Loaded {len(raw)} records from Feature Store")
                     
