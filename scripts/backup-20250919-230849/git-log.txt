@@ -1,0 +1,10 @@
+0aaac75 Simplify cross-repo deployment: use basic git add/commit/push without complex conditionals
+a978e77 🔧 Fix cross-repo deployment git status check
+0f76516 🔧 Fix cross-repo deployment Git URL
+0fa14f8 🎯 Trigger pipeline with correct Feature Group
+057edb3 🔧 Add ModelPackageGroupName to pipeline parameters list
+58fb10f 🔧 Add ModelPackageGroupName parameter to pipeline definition
+b7a81ba 🔄 Trigger pipeline retry with fixed parameter passing
+8ec0a32 🔧 Fix pipeline parameter passing
+5e186e1 🔧 Fix Feature Group name for dev environment
+24f13b8 🔍 Add detailed logging to Extract step for Athena debugging

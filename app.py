@@ -51,7 +51,7 @@ dev_vpc_stack = DevVPCStack(
 dev_mlops_stack = DevMLOpsStack(
     app, f"{cfg.project_name.capitalize()}-DevMLOpsStack",
     cfg=cfg,
-    dev_vpc_id="vpc-083457295d278b916",  # 새로 생성된 개발 VPC ID
+    dev_vpc=dev_vpc_stack.dev_vpc,  # VPC 객체 직접 전달
     env=env
 )
 

@@ -1,0 +1,34 @@
+{
+    "FeatureGroupSummaries": [
+        {
+            "FeatureGroupName": "my-mlops-user-interactions-v1",
+            "FeatureGroupArn": "arn:aws:sagemaker:ap-northeast-2:651706765732:feature-group/my-mlops-user-interactions-v1",
+            "CreationTime": "2025-09-19T17:12:10.288000+09:00",
+            "FeatureGroupStatus": "Created"
+        },
+        {
+            "FeatureGroupName": "my-mlops-feature-group-v2",
+            "FeatureGroupArn": "arn:aws:sagemaker:ap-northeast-2:651706765732:feature-group/my-mlops-feature-group-v2",
+            "CreationTime": "2025-09-19T17:12:15.820000+09:00",
+            "FeatureGroupStatus": "Created"
+        },
+        {
+            "FeatureGroupName": "ad-click-feature-group-dev",
+            "FeatureGroupArn": "arn:aws:sagemaker:ap-northeast-2:651706765732:feature-group/ad-click-feature-group-dev",
+            "CreationTime": "2025-09-19T19:56:03.873000+09:00",
+            "FeatureGroupStatus": "Created",
+            "OfflineStoreStatus": {
+                "Status": "Active"
+            }
+        },
+        {
+            "FeatureGroupName": "ad-click-feature-group",
+            "FeatureGroupArn": "arn:aws:sagemaker:ap-northeast-2:651706765732:feature-group/ad-click-feature-group",
+            "CreationTime": "2025-09-19T17:46:13.427000+09:00",
+            "FeatureGroupStatus": "Created",
+            "OfflineStoreStatus": {
+                "Status": "Active"
+            }
+        }
+    ]
+}

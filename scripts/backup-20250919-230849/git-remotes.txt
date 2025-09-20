@@ -1,0 +1,6 @@
+aws	https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my-mlops-repo (fetch)
+aws	https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my-mlops-repo (push)
+dev	https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my-mlops-repo-dev (fetch)
+dev	https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/my-mlops-repo-dev (push)
+origin	git@github.com:BOB-DSPM/MLOps_AWS-Infra-SageMaker.git (fetch)
+origin	git@github.com:BOB-DSPM/MLOps_AWS-Infra-SageMaker.git (push)

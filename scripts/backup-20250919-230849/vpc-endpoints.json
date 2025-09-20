@@ -1,0 +1,703 @@
+{
+    "VpcEndpoints": [
+        {
+            "VpcEndpointId": "vpce-0fe8a61126e001aca",
+            "VpcEndpointType": "Gateway",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.s3",
+            "State": "available",
+            "PolicyDocument": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"*\",\"Resource\":\"*\"}]}",
+            "RouteTableIds": [
+                "rtb-0a5d004668adbb794",
+                "rtb-0e0a3a67360199f2b"
+            ],
+            "SubnetIds": [],
+            "Groups": [],
+            "PrivateDnsEnabled": false,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [],
+            "DnsEntries": [],
+            "CreationTimestamp": "2025-09-19T11:08:10+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevS3GatewayEndpoint6692293A"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-0b77eb09c7b6d6967",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.sagemaker.runtime",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-04d4781605b2a27d9",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevSageMakerRuntimeEndpointSecurityGroup5F1546E3-PvKMh9BZPPit"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-042aa2d3e74d3748e",
+                "eni-09d0f79e649a94864"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-0b77eb09c7b6d6967-y94c6g0d.runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0b77eb09c7b6d6967-y94c6g0d-ap-northeast-2b.runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0b77eb09c7b6d6967-y94c6g0d-ap-northeast-2a.runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "runtime.sagemaker.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z032327015OQQPDU4BF69"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.640000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevSageMakerRuntimeEndpoint195EECC6"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-07045fbba81257d68",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.ecr.api",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-0fb346df7c443a467",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevEcrApiEndpointSecurityGroupDC568B7D-45MZPMhu4Sti"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-0b45f7f9adeb51533",
+                "eni-0aa30a6374bb07bc4"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-07045fbba81257d68-yvm8hanp.api.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-07045fbba81257d68-yvm8hanp-ap-northeast-2a.api.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-07045fbba81257d68-yvm8hanp-ap-northeast-2b.api.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "api.ecr.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z03230891LDOX2LB07BF0"
+                },
+                {
+                    "DnsName": "ecr.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z04778011H6CJOUCS2B42"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.712000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevEcrApiEndpoint2289E397"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-019f7fb42b2eb2ccb",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.sagemaker.api",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-0dae76695f6b4bd95",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevSageMakerApiEndpointSecurityGroup8452FAB2-R1y4mfYHpd7t"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-0d1856d718af2668d",
+                "eni-07c418ac99c300434"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-019f7fb42b2eb2ccb-nlkkrqfy.api.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-019f7fb42b2eb2ccb-nlkkrqfy-ap-northeast-2b.api.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-019f7fb42b2eb2ccb-nlkkrqfy-ap-northeast-2a.api.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "api.sagemaker.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z0476679LAI6CS38E6Z6"
+                },
+                {
+                    "DnsName": "api.sagemaker.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z04785433KY8WMSDWF89V"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.718000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevSageMakerApiEndpoint1E328180"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-09bfc992fdd22d966",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.glue",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-093b508f070df8312",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevGlueEndpointSecurityGroupF1165CE5-nt2M11rhRG5y"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-00cf2b8134f38ba4e",
+                "eni-0cb7ce778b6ada5e9"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-09bfc992fdd22d966-1phoicii.glue.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-09bfc992fdd22d966-1phoicii-ap-northeast-2b.glue.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-09bfc992fdd22d966-1phoicii-ap-northeast-2a.glue.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "glue.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z02993263EIR6HPEZPI9O"
+                },
+                {
+                    "DnsName": "glue.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z032327420Z4BB3TZCA2E"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.788000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevGlueEndpoint0FC951CB"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-0466023551f4cf779",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.logs",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-0a24a887e1a965b29",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevCloudWatchLogsEndpointSecurityGroup5D5BB500-ujj7aFXrEowJ"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-0d2993abfd3d57425",
+                "eni-0052ef9e0e2e6ab6d"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-0466023551f4cf779-ccymun4r.logs.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0466023551f4cf779-ccymun4r-ap-northeast-2a.logs.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0466023551f4cf779-ccymun4r-ap-northeast-2b.logs.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "logs.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z04068471TL2RBQKFIN7W"
+                },
+                {
+                    "DnsName": "logs.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z0323302218CR0K21TGGF"
+                },
+                {
+                    "DnsName": "streaming-logs.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z0814032196ZMGUJRIWG2"
+                },
+                {
+                    "DnsName": "streaming-logs.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z0814039KSOWUGMZD2WW"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.795000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevCloudWatchLogsEndpoint9B672BAB"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-01d888f6cc07bf7ed",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.athena",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-07cb4cc962afaddc2",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevAthenaEndpointSecurityGroup32233126-Jk2EqIjT32kX"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-094d075c5b537e7fc",
+                "eni-0a1b1817341f73763"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-01d888f6cc07bf7ed-1fkwd550.athena.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-01d888f6cc07bf7ed-1fkwd550-ap-northeast-2a.athena.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-01d888f6cc07bf7ed-1fkwd550-ap-northeast-2b.athena.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "athena.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z0406839AVYL7S9J3ZVZ"
+                },
+                {
+                    "DnsName": "athena.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z03962811PHSSVT1OVQVZ"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:18.810000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevAthenaEndpoint3AC689F6"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-0a703fac1392eaa79",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.sagemaker.featurestore-runtime",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-0b6d53d5a9d55d3bc",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevSageMakerFeatureStoreEndpointSecurityGroup7BADD91F-uVDzcU6j2FG0"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-008e6828c58e70232",
+                "eni-060134e79e91f4b51"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-0a703fac1392eaa79-pykkw9jy.featurestore-runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0a703fac1392eaa79-pykkw9jy-ap-northeast-2b.featurestore-runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-0a703fac1392eaa79-pykkw9jy-ap-northeast-2a.featurestore-runtime.sagemaker.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "featurestore-runtime.sagemaker.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z040698615QRIH5PROL8V"
+                },
+                {
+                    "DnsName": "featurestore-runtime.sagemaker.ap-northeast-2.api.aws",
+                    "HostedZoneId": "Z081427828GPAAZCMDBBI"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:19.295000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevSageMakerFeatureStoreEndpoint0A4474DF"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        },
+        {
+            "VpcEndpointId": "vpce-081e7277c9812b60f",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-083457295d278b916",
+            "ServiceName": "com.amazonaws.ap-northeast-2.ecr.dkr",
+            "State": "available",
+            "PolicyDocument": "{\n  \"Statement\": [\n    {\n      \"Action\": \"*\", \n      \"Effect\": \"Allow\", \n      \"Principal\": \"*\", \n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "RouteTableIds": [],
+            "SubnetIds": [
+                "subnet-0a369ce2166736323",
+                "subnet-06b065914a4ec1672"
+            ],
+            "Groups": [
+                {
+                    "GroupId": "sg-0fb4ef0beed0cc2f5",
+                    "GroupName": "My-mlops-DevVpcStack-DevVPCDevEcrDockerEndpointSecurityGroup866A4690-21fP2krIieNa"
+                }
+            ],
+            "IpAddressType": "ipv4",
+            "DnsOptions": {
+                "DnsRecordIpType": "ipv4"
+            },
+            "PrivateDnsEnabled": true,
+            "RequesterManaged": false,
+            "NetworkInterfaceIds": [
+                "eni-067fd54820ac969e5",
+                "eni-04c63d8e4c0681b61"
+            ],
+            "DnsEntries": [
+                {
+                    "DnsName": "vpce-081e7277c9812b60f-n9gvekqy.dkr.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-081e7277c9812b60f-n9gvekqy-ap-northeast-2a.dkr.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "vpce-081e7277c9812b60f-n9gvekqy-ap-northeast-2b.dkr.ecr.ap-northeast-2.vpce.amazonaws.com",
+                    "HostedZoneId": "Z27UANNT0PRK1T"
+                },
+                {
+                    "DnsName": "dkr.ecr.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z04066251H537RARH80Z1"
+                },
+                {
+                    "DnsName": "*.dkr.ecr.ap-northeast-2.amazonaws.com",
+                    "HostedZoneId": "Z04066251H537RARH80Z1"
+                },
+                {
+                    "DnsName": "dkr-ecr.ap-northeast-2.on.aws",
+                    "HostedZoneId": "Z0476250362D5OFYQOQAI"
+                },
+                {
+                    "DnsName": "*.dkr-ecr.ap-northeast-2.on.aws",
+                    "HostedZoneId": "Z0476250362D5OFYQOQAI"
+                }
+            ],
+            "CreationTimestamp": "2025-09-19T11:08:25.507000+00:00",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPCDevEcrDockerEndpoint79F15B9B"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                }
+            ],
+            "OwnerId": "651706765732",
+            "ServiceRegion": "ap-northeast-2"
+        }
+    ]
+}

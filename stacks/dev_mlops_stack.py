@@ -35,17 +35,17 @@ class DevMLOpsStack(Stack):
         construct_id: str,
         *,
         cfg: Config,
-        dev_vpc_id: str,  # 개발용 VPC ID 받아오기
+        dev_vpc: ec2.IVpc,  # VPC 객체를 직접 받기
         **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         # 개발 환경 전용 네이밍 (운영망과 충돌 방지)
-        name_prefix = f"{cfg.project_name}-dev-{cfg.env_name}".lower()
+        name_prefix = f"{cfg.project_name}-dev2".lower()  # 고유한 개발 환경 구분
         alias_name = f"alias/{_sanitize_alias_component(name_prefix)}-s3"
 
-        # 기존 개발용 VPC 가져오기
-        vpc = ec2.Vpc.from_lookup(self, "DevVpc", vpc_id=dev_vpc_id)
+        # 개발용 VPC 사용
+        vpc = dev_vpc
 
         # ========================================
         # KMS 키 (개발 전용)
@@ -57,8 +57,8 @@ class DevMLOpsStack(Stack):
         # ========================================
         storage = BaseStorage(
             self, "DevStorage",
-            project=f"{cfg.project_name}-dev",  # 개발 전용 프로젝트명
-            env=cfg.env_name,
+            project=f"{cfg.project_name}-dev2",  # 개발 전용 프로젝트명 (고유하게)
+            env="main",  # 고정값으로 변경
             kms_key=kms.key,
             artifact_lifecycle_days=cfg.artifact_bucket_lifecycle_days,
         )
@@ -68,7 +68,7 @@ class DevMLOpsStack(Stack):
         # ========================================
         ecr = BaseEcr(
             self, "DevEcr",
-            name=f"{cfg.project_name}-dev-{cfg.env_name}".lower(),
+            name=f"{cfg.project_name}-dev2".lower(),  # 고유한 이름
             keep_untagged=cfg.ecr_untagged_keep,
         )
 

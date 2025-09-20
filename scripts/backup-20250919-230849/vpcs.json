@@ -1,0 +1,157 @@
+{
+    "Vpcs": [
+        {
+            "OwnerId": "651706765732",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-0817b25f9a8568b04",
+                    "CidrBlock": "10.20.0.0/16",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-BaseStack"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "NetVpc9C8E08CA"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "production"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/2d7de6c0-9530-11f0-940e-0616f193cb75"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "My-mlops-BaseStack/Net/Vpc"
+                }
+            ],
+            "BlockPublicAccessStates": {
+                "InternetGatewayBlockMode": "off"
+            },
+            "VpcId": "vpc-09184d110ac272eb3",
+            "State": "available",
+            "CidrBlock": "10.20.0.0/16",
+            "DhcpOptionsId": "dopt-0f5f7f7bd14d6a32f"
+        },
+        {
+            "OwnerId": "651706765732",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-0936a499a0ee02ffb",
+                    "CidrBlock": "10.2.0.0/16",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "My-mlops-DevVpcStack/DevVPC"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "development"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "DevVPC35293085"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-DevVpcStack"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                }
+            ],
+            "BlockPublicAccessStates": {
+                "InternetGatewayBlockMode": "off"
+            },
+            "VpcId": "vpc-083457295d278b916",
+            "State": "available",
+            "CidrBlock": "10.2.0.0/16",
+            "DhcpOptionsId": "dopt-0f5f7f7bd14d6a32f"
+        },
+        {
+            "OwnerId": "651706765732",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-0c786db49e12f6939",
+                    "CidrBlock": "10.1.0.0/16",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-InferenceStack/46ce1620-9532-11f0-b6fc-068dafcae875"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "My-mlops-InferenceStack/InferenceVpc"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "InferenceVpc75F19595"
+                },
+                {
+                    "Key": "Env",
+                    "Value": "production-inference"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "cdk"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "My-mlops-InferenceStack"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "my-mlops"
+                }
+            ],
+            "BlockPublicAccessStates": {
+                "InternetGatewayBlockMode": "off"
+            },
+            "VpcId": "vpc-0469f95a3c16add35",
+            "State": "available",
+            "CidrBlock": "10.1.0.0/16",
+            "DhcpOptionsId": "dopt-0f5f7f7bd14d6a32f"
+        }
+    ]
+}

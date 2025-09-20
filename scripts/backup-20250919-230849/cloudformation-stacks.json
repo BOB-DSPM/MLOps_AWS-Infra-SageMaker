@@ -1,0 +1,967 @@
+{
+    "StackSummaries": [
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-InferenceStack/46ce1620-9532-11f0-b6fc-068dafcae875",
+            "StackName": "My-mlops-InferenceStack",
+            "CreationTime": "2025-09-19T08:26:02.074000+00:00",
+            "LastUpdatedTime": "2025-09-19T08:26:07.773000+00:00",
+            "StackStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevMLOpsStack/0c747420-9531-11f0-b6fc-068dafcae875",
+            "StackName": "My-mlops-DevMLOpsStack",
+            "CreationTime": "2025-09-19T08:17:14.622000+00:00",
+            "LastUpdatedTime": "2025-09-19T13:37:06.893000+00:00",
+            "StackStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/a2b1b750-9530-11f0-9a4d-06da27e81f01",
+            "StackName": "My-mlops-DevVpcStack",
+            "CreationTime": "2025-09-19T08:14:17.138000+00:00",
+            "LastUpdatedTime": "2025-09-19T11:08:03.372000+00:00",
+            "StackStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/2d7de6c0-9530-11f0-940e-0616f193cb75",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-19T08:11:00.591000+00:00",
+            "LastUpdatedTime": "2025-09-19T08:11:11.466000+00:00",
+            "StackStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/c4d0dfb0-952f-11f0-b2cf-020507efc81f",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-19T08:08:04.789000+00:00",
+            "LastUpdatedTime": "2025-09-19T08:08:10.408000+00:00",
+            "StackStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-InferenceStack/1f10f1c0-9528-11f0-a0af-0261cf289b0d",
+            "StackName": "My-mlops-InferenceStack",
+            "CreationTime": "2025-09-19T07:13:20.532000+00:00",
+            "LastUpdatedTime": "2025-09-19T07:13:26.062000+00:00",
+            "DeletionTime": "2025-09-19T08:01:42.155000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/5545db30-9527-11f0-9ff7-02d04bbed3ff",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-19T07:07:41.685000+00:00",
+            "LastUpdatedTime": "2025-09-19T07:07:47.425000+00:00",
+            "DeletionTime": "2025-09-19T08:03:16.811000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-InferenceStack/32ea6af0-9519-11f0-8d3c-02ba24510571",
+            "StackName": "My-mlops-InferenceStack",
+            "CreationTime": "2025-09-19T05:26:31.292000+00:00",
+            "LastUpdatedTime": "2025-09-19T05:26:36.963000+00:00",
+            "DeletionTime": "2025-09-19T06:54:28.782000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevMLOpsStack/d0b9f680-9517-11f0-a7b5-06911efeb94f",
+            "StackName": "My-mlops-DevMLOpsStack",
+            "CreationTime": "2025-09-19T05:16:37.078000+00:00",
+            "LastUpdatedTime": "2025-09-19T05:16:43.889000+00:00",
+            "DeletionTime": "2025-09-19T05:25:56.483000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/68fc7f90-9517-11f0-bb6b-0a3d1d75e20d",
+            "StackName": "My-mlops-DevVpcStack",
+            "CreationTime": "2025-09-19T05:13:42.886000+00:00",
+            "LastUpdatedTime": "2025-09-19T05:13:49.167000+00:00",
+            "DeletionTime": "2025-09-19T07:03:22.192000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/2ea0ec50-9517-11f0-ae43-0a19348f16f7",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-19T05:12:04.946000+00:00",
+            "LastUpdatedTime": "2025-09-19T05:12:10.606000+00:00",
+            "DeletionTime": "2025-09-19T07:04:23.045000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevMLOpsStack/c8ec3ef0-946c-11f0-871e-0a257651ec8d",
+            "StackName": "My-mlops-DevMLOpsStack",
+            "CreationTime": "2025-09-18T08:52:20.076000+00:00",
+            "LastUpdatedTime": "2025-09-18T13:30:00.701000+00:00",
+            "DeletionTime": "2025-09-18T13:48:05.092000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevVpcStack/e45320b0-946b-11f0-bc17-0a29079ac763",
+            "StackName": "My-mlops-DevVpcStack",
+            "CreationTime": "2025-09-18T08:45:56.381000+00:00",
+            "LastUpdatedTime": "2025-09-18T08:46:02.099000+00:00",
+            "DeletionTime": "2025-09-18T14:05:09.698000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-DevStack/ac8ffd80-9469-11f0-b7b2-020499c16eef",
+            "StackName": "My-mlops-DevStack",
+            "CreationTime": "2025-09-18T08:30:03.810000+00:00",
+            "LastUpdatedTime": "2025-09-18T08:41:10.264000+00:00",
+            "DeletionTime": "2025-09-18T08:43:00.749000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-ProdStack/668e8050-9468-11f0-85bb-02be7c4e7081",
+            "StackName": "My-mlops-ProdStack",
+            "CreationTime": "2025-09-18T08:20:57.003000+00:00",
+            "LastUpdatedTime": "2025-09-18T08:21:07.964000+00:00",
+            "DeletionTime": "2025-09-18T14:05:40.119000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-InferenceStack/949538e0-944f-11f0-83a1-0646c86a7937",
+            "StackName": "My-mlops-InferenceStack",
+            "CreationTime": "2025-09-18T05:23:16.832000+00:00",
+            "LastUpdatedTime": "2025-09-18T07:33:50.819000+00:00",
+            "DeletionTime": "2025-09-18T14:06:10.569000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/b1dab890-93f4-11f0-940e-0616f193cb75",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T18:32:41.669000+00:00",
+            "LastUpdatedTime": "2025-09-18T06:42:05.143000+00:00",
+            "DeletionTime": "2025-09-18T14:30:46.718000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/7e334d40-93f4-11f0-abce-0a8f165a8f33",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-17T18:31:14.875000+00:00",
+            "LastUpdatedTime": "2025-09-17T18:31:20.473000+00:00",
+            "DeletionTime": "2025-09-18T14:31:17.233000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/e7a6cae0-93ef-11f0-a0af-0261cf289b0d",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T17:58:24.474000+00:00",
+            "LastUpdatedTime": "2025-09-17T17:58:30.208000+00:00",
+            "DeletionTime": "2025-09-17T18:26:12.892000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/7b090900-93ec-11f0-940e-0616f193cb75",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-17T17:33:53.543000+00:00",
+            "LastUpdatedTime": "2025-09-17T17:33:59.146000+00:00",
+            "DeletionTime": "2025-09-17T18:26:43.334000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/2877d060-93e5-11f0-a39b-0a7104d9a79f",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T16:41:28.716000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:58:44.275000+00:00",
+            "DeletionTime": "2025-09-17T17:29:09.184000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/962689e0-93e4-11f0-9fe7-06104c775d45",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T16:37:23.291000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:37:34.052000+00:00",
+            "DeletionTime": "2025-09-17T16:41:22.957000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/d466c6d0-93e3-11f0-83a1-0646c86a7937",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T16:31:58.173000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:32:03.739000+00:00",
+            "DeletionTime": "2025-09-17T16:37:17.475000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/7d5754e0-93e3-11f0-aef5-068dafcae875",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T16:29:32.143000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:29:37.845000+00:00",
+            "DeletionTime": "2025-09-17T16:31:52.431000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/e60fc310-93e2-11f0-871e-0a257651ec8d",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T16:25:18.325000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:25:24+00:00",
+            "DeletionTime": "2025-09-17T16:29:26.354000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/9ffdaea0-93e2-11f0-9f3f-027ca233f45d",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-17T16:23:20.607000+00:00",
+            "LastUpdatedTime": "2025-09-17T16:23:26.150000+00:00",
+            "DeletionTime": "2025-09-17T17:29:39.557000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/1b214280-93df-11f0-b4ee-0a3705196c3d",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T15:58:09.356000+00:00",
+            "LastUpdatedTime": "2025-09-17T15:58:14.928000+00:00",
+            "DeletionTime": "2025-09-17T15:59:08.618000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/3dccf370-93de-11f0-ad92-028299c85c39",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-17T15:51:58.060000+00:00",
+            "LastUpdatedTime": "2025-09-17T15:52:08.935000+00:00",
+            "DeletionTime": "2025-09-17T15:57:41.630000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/0d7a3160-93de-11f0-bf3b-0a9e1cfcfab3",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-17T15:50:36.828000+00:00",
+            "LastUpdatedTime": "2025-09-17T15:50:42.490000+00:00",
+            "DeletionTime": "2025-09-17T16:04:28.981000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/4be26020-93c6-11f0-92ab-06344be65ba9",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-17T13:00:33.583000+00:00",
+            "LastUpdatedTime": "2025-09-17T13:00:39.313000+00:00",
+            "DeletionTime": "2025-09-17T13:21:52.482000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/911d7a90-92cb-11f0-b617-0a67b11691b1",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-16T07:05:46.257000+00:00",
+            "LastUpdatedTime": "2025-09-16T09:13:32.492000+00:00",
+            "DeletionTime": "2025-09-17T04:24:19.273000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/6b50d000-92cb-11f0-9e6a-0a7115ca717b",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-16T07:04:42.668000+00:00",
+            "LastUpdatedTime": "2025-09-16T07:04:48.350000+00:00",
+            "DeletionTime": "2025-09-17T04:25:49.944000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/889bf790-92c9-11f0-aba9-0a07418bb519",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-16T06:51:13.055000+00:00",
+            "LastUpdatedTime": "2025-09-16T06:51:23.801000+00:00",
+            "DeletionTime": "2025-09-16T06:53:24.584000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/ac7e7040-92c7-11f0-b617-0a67b11691b1",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-16T06:37:54.342000+00:00",
+            "LastUpdatedTime": "2025-09-16T06:38:05.054000+00:00",
+            "DeletionTime": "2025-09-16T06:45:02.508000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/7cb37bd0-92c7-11f0-bbb1-0ae5f7845ea1",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-16T06:36:33.833000+00:00",
+            "LastUpdatedTime": "2025-09-16T06:36:39.355000+00:00",
+            "DeletionTime": "2025-09-16T07:03:05.956000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/9e7c1530-92c5-11f0-9a39-0a3d3f6f249d",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-16T06:23:11.875000+00:00",
+            "LastUpdatedTime": "2025-09-16T06:23:22.623000+00:00",
+            "DeletionTime": "2025-09-16T06:23:30.313000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/6db13cf0-92c5-11f0-aaad-0a7cbda9d3dd",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-16T06:21:49.667000+00:00",
+            "LastUpdatedTime": "2025-09-16T06:21:55.232000+00:00",
+            "DeletionTime": "2025-09-16T06:33:21.787000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/e101e950-923b-11f0-a59c-0615010e507f",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-15T13:57:12.563000+00:00",
+            "LastUpdatedTime": "2025-09-15T13:57:18.084000+00:00",
+            "DeletionTime": "2025-09-15T14:06:20.875000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/regional/04bbd8f0-921a-11f0-ba62-02edaa6d9105",
+            "StackName": "regional",
+            "TemplateDescription": "This CloudFormation template sets up AWS Config so that it will start collecting resource information for the region Workload Discovery on AWS will discover. (SO0075c) - Solution - Import Region Template (uksb-1r0720e5f) (version:v2.3.3)",
+            "CreationTime": "2025-09-15T09:54:49.543000+00:00",
+            "DeletionTime": "2025-09-15T10:17:10.232000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/regonal/9def78c0-9219-11f0-852d-027e187054f7",
+            "StackName": "regonal",
+            "TemplateDescription": "This CloudFormation template sets up AWS Config so that it will start collecting resource information for the region Workload Discovery on AWS will discover. (SO0075c) - Solution - Import Region Template (uksb-1r0720e5f) (version:v2.3.3)",
+            "CreationTime": "2025-09-15T09:51:57.098000+00:00",
+            "DeletionTime": "2025-09-15T09:54:08.729000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/region-seoul/5b480690-9219-11f0-a735-06989aee66a7",
+            "StackName": "region-seoul",
+            "TemplateDescription": "This CloudFormation template sets up AWS Config so that it will start collecting resource information for the region Workload Discovery on AWS will discover. (SO0075c) - Solution - Import Region Template (uksb-1r0720e5f) (version:v2.3.3)",
+            "CreationTime": "2025-09-15T09:50:05.259000+00:00",
+            "DeletionTime": "2025-09-15T09:51:33.442000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/global/fd431df0-9218-11f0-b2e8-0ae2c71bdd63",
+            "StackName": "global",
+            "TemplateDescription": "This Cloudformation template sets up the roles needed to import data into Workload Discovery on AWS. (SO0075b) - Solution - Import Account Template (uksb-1r0720e57) (version:v2.3.3)",
+            "CreationTime": "2025-09-15T09:49:43.313000+00:00",
+            "DeletionTime": "2025-09-15T10:17:40.565000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-AppInsightsStack-1X6AM1GP6WZYP/f17918f0-9211-11f0-ae0f-02422dd0a8ab",
+            "StackName": "workload-discovery-AppInsightsStack-1X6AM1GP6WZYP",
+            "TemplateDescription": "Workload Discovery on AWS Application Insights Dashboard",
+            "CreationTime": "2025-09-15T08:57:01.298000+00:00",
+            "DeletionTime": "2025-09-15T10:18:10.919000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-AccountImportTemplatesResolversStack-4Y6L502V1NCN/f17a0350-9211-11f0-8f72-063d2b1f9d13",
+            "StackName": "workload-discovery-AccountImportTemplatesResolversStack-4Y6L502V1NCN",
+            "TemplateDescription": "Workload Discovery on AWS Account Import Template API",
+            "CreationTime": "2025-09-15T08:57:01.278000+00:00",
+            "DeletionTime": "2025-09-15T10:19:11.408000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-CodebuildStack-1UAQVQAQSBTOA/f176a7f0-9211-11f0-a735-06989aee66a7",
+            "StackName": "workload-discovery-CodebuildStack-1UAQVQAQSBTOA",
+            "TemplateDescription": "Workload Discovery on AWS Codepipeline/Codebuild Stack",
+            "CreationTime": "2025-09-15T08:57:01.266000+00:00",
+            "DeletionTime": "2025-09-15T10:20:11.936000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-GremlinResolversStack-8MBWSCW5HAAT/dbef0760-9211-11f0-b479-0aff1276cb6f",
+            "StackName": "workload-discovery-GremlinResolversStack-8MBWSCW5HAAT",
+            "TemplateDescription": "Workload Discovery on AWS Gremlin AppSync Stack",
+            "CreationTime": "2025-09-15T08:56:25.135000+00:00",
+            "DeletionTime": "2025-09-15T10:23:13.071000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-MetricsStack-V6M5UALSBQPY/d24a7640-9211-11f0-9a4d-06da27e81f01",
+            "StackName": "workload-discovery-MetricsStack-V6M5UALSBQPY",
+            "TemplateDescription": "Workload Discovery on AWS Metrics Stack",
+            "CreationTime": "2025-09-15T08:56:08.950000+00:00",
+            "DeletionTime": "2025-09-15T10:43:18.014000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-WebUiSettingsStack-1S1ADGXOWG503/ad771fd0-9211-11f0-b617-0a67b11691b1",
+            "StackName": "workload-discovery-WebUiSettingsStack-1S1ADGXOWG503",
+            "TemplateDescription": "Workload Discovery on AWS Web Interface Settings Stack",
+            "CreationTime": "2025-09-15T08:55:07.214000+00:00",
+            "DeletionTime": "2025-09-15T10:44:18.395000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-CostResolversStack-NFI7DHK0DDTV/ad7746e0-9211-11f0-b2c6-0a43911c1dc7",
+            "StackName": "workload-discovery-CostResolversStack-NFI7DHK0DDTV",
+            "TemplateDescription": "Workload Discovery on AWS Cost Api Stack",
+            "CreationTime": "2025-09-15T08:55:07.176000+00:00",
+            "DeletionTime": "2025-09-15T10:44:48.722000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-MyApplicationsResolversStack-OAIPZL74O0VL/ad70de40-9211-11f0-ba98-02bc9628fa9d",
+            "StackName": "workload-discovery-MyApplicationsResolversStack-OAIPZL74O0VL",
+            "TemplateDescription": "Workload Discovery on AWS myApplications Export API",
+            "CreationTime": "2025-09-15T08:55:07.136000+00:00",
+            "DeletionTime": "2025-09-15T10:45:49.164000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-TaskStack-5HVNKPOZ60YT/ad6c9880-9211-11f0-a4f8-0a1187e2cc03",
+            "StackName": "workload-discovery-TaskStack-5HVNKPOZ60YT",
+            "TemplateDescription": "Workload Discovery on AWS Discovery Crawler Scheduled Task Stack",
+            "CreationTime": "2025-09-15T08:55:07.121000+00:00",
+            "DeletionTime": "2025-09-15T10:47:50.168000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-SettingsResolversStack-193RC3A4L4WJP/ad6cbf90-9211-11f0-aba9-0a07418bb519",
+            "StackName": "workload-discovery-SettingsResolversStack-193RC3A4L4WJP",
+            "TemplateDescription": "Workload Discovery on AWS Settings Api Stack",
+            "CreationTime": "2025-09-15T08:55:07.102000+00:00",
+            "DeletionTime": "2025-09-15T10:48:20.490000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-SearchResolversStack-1PZXSZUWX0A7G/ad693d20-9211-11f0-94c0-02be54599d7b",
+            "StackName": "workload-discovery-SearchResolversStack-1PZXSZUWX0A7G",
+            "TemplateDescription": "Workload Discovery on AWS AppSync Search API Stack",
+            "CreationTime": "2025-09-15T08:55:07.087000+00:00",
+            "DeletionTime": "2025-09-15T11:50:04.472000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-DrawIoExportResolversStack-145JCX0SM3ZD2/ad643410-9211-11f0-8d3b-06f4f00fa5fb",
+            "StackName": "workload-discovery-DrawIoExportResolversStack-145JCX0SM3ZD2",
+            "TemplateDescription": "Workload Discovery on AWS DrawIo Export API",
+            "CreationTime": "2025-09-15T08:55:07.073000+00:00",
+            "DeletionTime": "2025-09-15T11:08:21.031000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-AppSyncApiStack-1Y1DU9I7X112P/5be4aad0-9210-11f0-a0bd-06aaadab0b25",
+            "StackName": "workload-discovery-AppSyncApiStack-1Y1DU9I7X112P",
+            "TemplateDescription": "Workload Discovery on AWS Appsync Api Stack",
+            "CreationTime": "2025-09-15T08:45:40.822000+00:00",
+            "DeletionTime": "2025-09-15T11:33:41.666000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-CognitoStack-PW34RI5RBHV1/3f5a2610-9210-11f0-a2ee-06aeca5b639f",
+            "StackName": "workload-discovery-CognitoStack-PW34RI5RBHV1",
+            "TemplateDescription": "Workload Discovery on AWS Amazon Cognito Stack",
+            "CreationTime": "2025-09-15T08:44:52.963000+00:00",
+            "DeletionTime": "2025-09-15T11:33:34.999000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-NeptuneStack-144YUPV26NDUV/d7846c30-920f-11f0-a0bd-06aaadab0b25",
+            "StackName": "workload-discovery-NeptuneStack-144YUPV26NDUV",
+            "TemplateDescription": "Workload Discovery on AWS Neptune DB Stack",
+            "CreationTime": "2025-09-15T08:41:58.765000+00:00",
+            "DeletionTime": "2025-09-15T11:08:22.023000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-OpenSearchStack-154V23NNCJT4M/d78137e0-920f-11f0-a9c2-0a4fcef44b4d",
+            "StackName": "workload-discovery-OpenSearchStack-154V23NNCJT4M",
+            "TemplateDescription": "Workload Discovery on AWS Opensearch Domain Stack",
+            "CreationTime": "2025-09-15T08:41:58.728000+00:00",
+            "DeletionTime": "2025-09-15T11:33:28.115000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-AthenaGlueCrawlerStack-5MKXWSDF5HD0/aebd1f40-920f-11f0-861b-0254998dc703",
+            "StackName": "workload-discovery-AthenaGlueCrawlerStack-5MKXWSDF5HD0",
+            "TemplateDescription": "Workload Discovery on AWS Amazon Athena and AWS Glue Stack",
+            "CreationTime": "2025-09-15T08:40:50.346000+00:00",
+            "DeletionTime": "2025-09-15T11:08:21.927000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-ConfigAggregator-QNBCMVUL765R/aeb68f90-920f-11f0-a9c2-0a4fcef44b4d",
+            "StackName": "workload-discovery-ConfigAggregator-QNBCMVUL765R",
+            "TemplateDescription": "Workload Discovery AWS Config Aggregator Stack",
+            "CreationTime": "2025-09-15T08:40:50.342000+00:00",
+            "DeletionTime": "2025-09-15T11:08:23.120000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-WebUiStack-1NI24XAP14N52/aea355b0-920f-11f0-a420-0622bb2c5517",
+            "StackName": "workload-discovery-WebUiStack-1NI24XAP14N52",
+            "TemplateDescription": "Workload Discovery on AWS Web Interface Stack",
+            "CreationTime": "2025-09-15T08:40:50.183000+00:00",
+            "DeletionTime": "2025-09-15T11:33:21.755000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-S3Buckets-1DYHMW8QFWCFR/802330c0-920f-11f0-ba62-02edaa6d9105",
+            "StackName": "workload-discovery-S3Buckets-1DYHMW8QFWCFR",
+            "TemplateDescription": "Workload Discovery on AWS S3 Buckets Stack",
+            "CreationTime": "2025-09-15T08:39:32.123000+00:00",
+            "DeletionTime": "2025-09-15T11:33:14.991000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-LayerStack-8PP11EG98BHD/792dba10-920f-11f0-871e-0a257651ec8d",
+            "StackName": "workload-discovery-LayerStack-8PP11EG98BHD",
+            "TemplateDescription": "Workload Discovery on AWS Lambda Layers Stack",
+            "CreationTime": "2025-09-15T08:39:20.539000+00:00",
+            "DeletionTime": "2025-09-15T11:33:07.292000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-VpcStack-1GQ2S7VGTALSU/792073a0-920f-11f0-96d0-0a03b2014025",
+            "StackName": "workload-discovery-VpcStack-1GQ2S7VGTALSU",
+            "TemplateDescription": "Workload Discovery on AWS VPC Stack",
+            "CreationTime": "2025-09-15T08:39:20.410000+00:00",
+            "DeletionTime": "2025-09-15T12:41:02.745000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-OpenSearchRoleStack-16H16IK0WQQO9/79185d50-920f-11f0-b617-0a67b11691b1",
+            "StackName": "workload-discovery-OpenSearchRoleStack-16H16IK0WQQO9",
+            "TemplateDescription": "Workload Discovery on AWS Opensearch Roles Stack",
+            "CreationTime": "2025-09-15T08:39:20.349000+00:00",
+            "DeletionTime": "2025-09-15T11:42:50.154000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery-AppRegistryStack-HW6PZKSBU92G/7230a240-920f-11f0-8cd8-022ee203bbad",
+            "StackName": "workload-discovery-AppRegistryStack-HW6PZKSBU92G",
+            "TemplateDescription": "Workload Discovery on AWS AppRegistry Stack",
+            "CreationTime": "2025-09-15T08:39:08.786000+00:00",
+            "DeletionTime": "2025-09-15T11:33:01.479000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/workload-discovery/5c143bc0-920f-11f0-ae8b-0ac0fd048a85",
+            "StackName": "workload-discovery",
+            "TemplateDescription": "(SO0075) Workload Discovery on AWS Main Template - Solution - Main Template (uksb-1r0720e27) (version:v2.3.3)",
+            "CreationTime": "2025-09-15T08:38:32.415000+00:00",
+            "DeletionTime": "2025-09-15T12:41:33.288000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/c2e8fa00-9207-11f0-8cd8-022ee203bbad",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-15T07:44:08.520000+00:00",
+            "LastUpdatedTime": "2025-09-15T09:51:37.814000+00:00",
+            "DeletionTime": "2025-09-15T14:07:21.587000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/7a19e870-9207-11f0-85bb-02be7c4e7081",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-15T07:42:06.113000+00:00",
+            "LastUpdatedTime": "2025-09-15T07:42:11.612000+00:00",
+            "DeletionTime": "2025-09-15T11:13:39.077000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/4f11fa20-91e2-11f0-aef5-068dafcae875",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-15T03:16:02.738000+00:00",
+            "LastUpdatedTime": "2025-09-15T07:23:25.902000+00:00",
+            "DeletionTime": "2025-09-15T07:38:34.566000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/ec280440-91e1-11f0-b77b-06189bebf297",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-15T03:13:16.560000+00:00",
+            "LastUpdatedTime": "2025-09-15T03:13:22.177000+00:00",
+            "DeletionTime": "2025-09-15T07:39:35.122000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/691a0a70-9179-11f0-9179-027ca233f45d",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-14T14:45:09.176000+00:00",
+            "LastUpdatedTime": "2025-09-14T14:45:19.994000+00:00",
+            "DeletionTime": "2025-09-15T02:35:19.902000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/191d3420-9179-11f0-88a4-0a0ce469ed27",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-14T14:42:54.833000+00:00",
+            "LastUpdatedTime": "2025-09-14T14:43:00.422000+00:00",
+            "DeletionTime": "2025-09-15T02:36:50.529000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/My-mlops-BaseStack/6a341690-9074-11f0-ae43-0a19348f16f7",
+            "StackName": "My-mlops-BaseStack",
+            "CreationTime": "2025-09-13T07:36:52.459000+00:00",
+            "LastUpdatedTime": "2025-09-13T07:36:58.013000+00:00",
+            "DeletionTime": "2025-09-13T08:19:59.503000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/CDKToolkit/12190100-9074-11f0-ae43-0a19348f16f7",
+            "StackName": "CDKToolkit",
+            "TemplateDescription": "This stack includes resources needed to deploy AWS CDK apps into this environment",
+            "CreationTime": "2025-09-13T07:34:24.442000+00:00",
+            "LastUpdatedTime": "2025-09-13T07:34:30.019000+00:00",
+            "DeletionTime": "2025-09-13T07:40:30.551000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/mlops-orchestrator/84c8d320-8fe2-11f0-abb2-060d39dae171",
+            "StackName": "mlops-orchestrator",
+            "TemplateDescription": "(SO0136-sa) - MLOps Workload Orchestrator (Single Account Option). Version v1.0.0-local",
+            "CreationTime": "2025-09-12T14:16:10.061000+00:00",
+            "DeletionTime": "2025-09-13T04:47:10.843000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-4cz6fal4x6z2mw/6df30850-8f8d-11f0-aae4-021d421dba17",
+            "StackName": "DataZone-Env-4cz6fal4x6z2mw",
+            "CreationTime": "2025-09-12T04:03:24.727000+00:00",
+            "DeletionTime": "2025-09-12T12:38:07.410000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-5dwjaeylb25lw8/39c66770-8f8d-11f0-84e7-02ba3b43ead5",
+            "StackName": "DataZone-Env-5dwjaeylb25lw8",
+            "CreationTime": "2025-09-12T04:01:57.230000+00:00",
+            "DeletionTime": "2025-09-12T12:38:16.854000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/my-mlops-network/f8061ab0-8dfc-11f0-9afa-06bc7171304b",
+            "StackName": "my-mlops-network",
+            "TemplateDescription": "Simple VPC with two public subnets for SageMaker Studio (PublicInternetOnly)",
+            "CreationTime": "2025-09-10T04:16:48.163000+00:00",
+            "LastUpdatedTime": "2025-09-10T04:16:53.555000+00:00",
+            "DeletionTime": "2025-09-12T12:38:41.604000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/mlops-dev-20250909-1607-network/03b15a10-8d75-11f0-a465-02ba3b43ead5",
+            "StackName": "mlops-dev-20250909-1607-network",
+            "TemplateDescription": "Simple VPC with two public subnets for SageMaker Studio (PublicInternetOnly)",
+            "CreationTime": "2025-09-09T12:03:36.195000+00:00",
+            "LastUpdatedTime": "2025-09-09T12:03:41.543000+00:00",
+            "DeletionTime": "2025-09-12T13:13:03.652000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-bg0ho0e6v8hfvc/055cbcf0-8d71-11f0-ae42-0609e1fb6c55",
+            "StackName": "DataZone-Env-bg0ho0e6v8hfvc",
+            "CreationTime": "2025-09-09T11:35:01.054000+00:00",
+            "DeletionTime": "2025-09-12T12:38:55.872000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-dh6ilrkhg3uba0/494f1060-8d4a-11f0-98ee-022dc0833567",
+            "StackName": "DataZone-Env-dh6ilrkhg3uba0",
+            "CreationTime": "2025-09-09T06:57:44.645000+00:00",
+            "DeletionTime": "2025-09-12T12:38:59.948000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-5an0xovrzgw520/14aa5950-8d4a-11f0-a0cc-0a6bd80c9707",
+            "StackName": "DataZone-Env-5an0xovrzgw520",
+            "CreationTime": "2025-09-09T06:56:16.358000+00:00",
+            "DeletionTime": "2025-09-12T12:39:05.190000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-b9isziaka362zc/06b93850-8892-11f0-864d-0a1187e2cc03",
+            "StackName": "DataZone-Env-b9isziaka362zc",
+            "CreationTime": "2025-09-03T06:48:40.919000+00:00",
+            "DeletionTime": "2025-09-12T12:39:13.690000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/DataZone-Env-c8pwhg17uf6peg/53d26c20-8891-11f0-ab57-0a16342bc61f",
+            "StackName": "DataZone-Env-c8pwhg17uf6peg",
+            "CreationTime": "2025-09-03T06:43:40.766000+00:00",
+            "DeletionTime": "2025-09-12T13:13:34.338000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/ECS-Console-V2-Service-frontend-task-service-ehfng0mc-frontend-cluster-97413f9f/d4966f60-30e8-11f0-a174-0a1fb2769fb9",
+            "StackName": "ECS-Console-V2-Service-frontend-task-service-ehfng0mc-frontend-cluster-97413f9f",
+            "TemplateDescription": "The template used to create an ECS Service from the ECS Console.",
+            "CreationTime": "2025-05-14T17:28:20.605000+00:00",
+            "DeletionTime": "2025-09-12T12:39:34.107000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "StackId": "arn:aws:cloudformation:ap-northeast-2:651706765732:stack/WazuhSingleNode/cbf41aa0-2ff9-11f0-bd71-0a7a0bc03933",
+            "StackName": "WazuhSingleNode",
+            "TemplateDescription": "Wazuh Single Node Setup on EC2 (t3.medium) with Docker Compose",
+            "CreationTime": "2025-05-13T12:57:16.451000+00:00",
+            "DeletionTime": "2025-09-12T12:39:40.269000+00:00",
+            "StackStatus": "DELETE_COMPLETE",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

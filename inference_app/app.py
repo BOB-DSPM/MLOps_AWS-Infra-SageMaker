@@ -37,8 +37,8 @@ except Exception as e:
     llm_available = False
 
 # 환경 변수
-ENDPOINT_NAME = os.environ.get('SAGEMAKER_ENDPOINT_NAME', 'my-mlops-dev-endpoint')
-MODEL_PACKAGE_GROUP = os.environ.get('MODEL_PACKAGE_GROUP', 'my-mlops-dev-pkg')
+ENDPOINT_NAME = os.environ.get('SAGEMAKER_ENDPOINT_NAME', 'my-mlops-dev-dev-endpoint')
+MODEL_PACKAGE_GROUP = os.environ.get('MODEL_PACKAGE_GROUP', 'my-mlops-dev-dev-pkg')
 AWS_REGION = os.environ.get('AWS_DEFAULT_REGION', 'ap-northeast-2')
 USER_INTERACTION_FG_NAME = os.environ.get('USER_INTERACTION_FG_NAME', 'my-mlops-dev-user-interactions')
 
