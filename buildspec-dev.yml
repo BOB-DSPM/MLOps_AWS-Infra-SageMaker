@@ -7,7 +7,7 @@ env:
     DATA_BUCKET: "my-mlops-dev-dev-data"
     SM_EXEC_ROLE_ARN: "arn:aws:iam::651706765732:role/My-mlops-BaseStack-SmExecRole9469EF9D-xPtKqAhhoz4g"
     FEATURE_GROUP_NAME: "ad-click-feature-group-dev"
-    USE_FEATURE_STORE: "true"
+    - export     USE_FEATURE_STORE: "false"
     EXTERNAL_CSV_URI: "s3://my-mlops-dev-dev-data/raw-data/ad_click_dataset.csv"
     MODEL_PACKAGE_GROUP_NAME: "my-mlops-dev-dev-pkg"
     USE_SM_PIPELINE: "true"
