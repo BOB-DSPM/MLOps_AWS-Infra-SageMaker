@@ -13,6 +13,7 @@ from infra.cicd import CiCdPipeline
 from infra.sagemaker_exec import SmExecutionRole
 from infra.sagemaker_ci import ModelRegistry, SageMakerCiCd
 from infra.feature_store import FeatureGroup, UserInteractionFeatureGroup
+from infra.rds import RdsConstruct
 from infra.studio import Studio
 
 ## hjahahahahahaahahah
@@ -42,6 +43,16 @@ class BaseStack(Stack):
             vpc = net.vpc
 
         kms = BaseKms(self, "Kms", alias=alias_name)
+
+        # RDS 인스턴스 생성 (VPC가 있을 때만)
+        rds_instance = None
+        if vpc:
+            rds_instance = RdsConstruct(
+                self, "RdsDatabase",
+                vpc=vpc,
+                database_name="mlopsdb",
+                username="mlopsuser"
+            )
 
         storage = BaseStorage(
             self, "Storage",
@@ -84,6 +95,11 @@ class BaseStack(Stack):
             artifacts_bucket=storage.artifacts_bucket,
             kms_key=kms.key,
         )
+
+        # RDS 접근 권한 부여 (RDS가 있을 때만)
+        if rds_instance:
+            rds_instance.grant_connect(sm_exec.role)
+            rds_instance.grant_secret_read(sm_exec.role)
 
         storage.data_bucket.add_to_resource_policy(iam_cdk.PolicyStatement(
             principals=[iam_cdk.ArnPrincipal(sm_exec.role.role_arn)],
@@ -214,6 +230,10 @@ class BaseStack(Stack):
         CfnOutput(self, "SmExecRoleArn", value=sm_exec.role.role_arn)
         if vpc:
             CfnOutput(self, "VpcId", value=vpc.vpc_id)
+        if rds_instance:
+            CfnOutput(self, "RdsEndpoint", value=rds_instance.endpoint)
+            CfnOutput(self, "RdsPort", value=str(rds_instance.port))
+            CfnOutput(self, "RdsSecretArn", value=rds_instance.db_credentials.secret_arn)
 
         enable_studio = bool(self.node.try_get_context("enable_studio") or False)
         if enable_studio and vpc:
@@ -232,4 +252,6 @@ class BaseStack(Stack):
         # 다른 스택에서 참조할 수 있도록 속성 노출
         self.data_bucket = storage.data_bucket
         self.artifacts_bucket = storage.artifacts_bucket
+        self.rds_instance = rds_instance
+        self.vpc = vpc
         self.vpc = vpc

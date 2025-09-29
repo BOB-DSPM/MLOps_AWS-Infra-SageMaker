@@ -17,6 +17,7 @@ from infra.cicd import CiCdPipeline
 from infra.sagemaker_exec import SmExecutionRole
 from infra.sagemaker_ci import ModelRegistry, SageMakerCiCd
 from infra.feature_store import FeatureGroup, UserInteractionFeatureGroup
+from infra.rds import RdsConstruct
 from infra.studio import Studio
 
 ## hjahahahahahaahahah
@@ -51,6 +52,16 @@ class DevMLOpsStack(Stack):
         # KMS 키 (개발 전용)
         # ========================================
         kms = BaseKms(self, "DevKms", alias=alias_name)
+
+        # ========================================
+        # RDS 데이터베이스 (개발 전용)
+        # ========================================
+        rds_instance = RdsConstruct(
+            self, "DevRdsDatabase",
+            vpc=vpc,
+            database_name="mlopsdevdb",
+            username="mlopsdevuser"
+        )
 
         # ========================================
         # 스토리지 (개발 전용)
@@ -283,6 +294,10 @@ class DevMLOpsStack(Stack):
             kms_key=kms.key,
         )
 
+        # RDS 접근 권한 부여 (개발 환경)
+        rds_instance.grant_connect(sm_exec.role)
+        rds_instance.grant_secret_read(sm_exec.role)
+
         # S3 버킷 정책 설정 (운영망과 동일)
         storage.data_bucket.add_to_resource_policy(iam_cdk.PolicyStatement(
             principals=[iam_cdk.ArnPrincipal(sm_exec.role.role_arn)],
@@ -442,6 +457,10 @@ class DevMLOpsStack(Stack):
         CfnOutput(self, "DevSmExecRoleArn", value=sm_exec.role.role_arn)
         if vpc:
             CfnOutput(self, "DevVpcId", value=vpc.vpc_id)
+        # RDS 정보 출력 (개발 환경)
+        CfnOutput(self, "DevRdsEndpoint", value=rds_instance.endpoint)
+        CfnOutput(self, "DevRdsPort", value=str(rds_instance.port))
+        CfnOutput(self, "DevRdsSecretArn", value=rds_instance.db_credentials.secret_arn)
 
         # SageMaker Studio (개발 전용)
         enable_studio = True

@@ -27,14 +27,14 @@ base_stack = BaseStack(
     env=env
 )
 
-# 모델 추론용 스택 (별도 VPC) - 운영망 엔드포인트 참조
-inference_stack = ModelInferenceStack(
-    app, f"{cfg.project_name.capitalize()}-InferenceStack",
-    sagemaker_endpoint_name=f"{cfg.project_name}-prod-endpoint",  # 운영용 엔드포인트 사용
-    model_package_group_name=f"{cfg.project_name}-prod-pkg",      # 운영용 모델 패키지 그룹 사용
-    user_interaction_fg_name=f"{cfg.project_name}-prod-user-interactions-v1",  # 운영용 Feature Group 사용
-    env=env
-)
+# 모델 추론용 스택 (별도 VPC) - 작동하는 dev 엔드포인트 사용
+# inference_stack = ModelInferenceStack(
+#     app, f"{cfg.project_name.capitalize()}-InferenceStack",
+#     sagemaker_endpoint_name=f"{cfg.project_name}-dev-endpoint",  # 작동하는 dev 엔드포인트 사용
+#     model_package_group_name=f"{cfg.project_name}-dev-pkg",      # 작동하는 dev 모델 패키지 그룹 사용
+#     user_interaction_fg_name=f"{cfg.project_name}-dev-user-interactions-v1",  # dev Feature Group 사용
+#     env=env
+# )
 
 # ========================================
 # 개발용 VPC 스택 (별도 VPC)
@@ -57,7 +57,7 @@ dev_mlops_stack = DevMLOpsStack(
 
 # 의존성 설정
 dev_mlops_stack.add_dependency(dev_vpc_stack)
-inference_stack.add_dependency(base_stack)  # 추론 서비스는 운영 환경 이후
+# inference_stack.add_dependency(base_stack)  # 추론 서비스는 운영 환경 이후
 
 # ========================================
 # 태그 설정
@@ -66,9 +66,9 @@ Tags.of(base_stack).add("Project", cfg.project_name)
 Tags.of(base_stack).add("Env", "production")
 Tags.of(base_stack).add("ManagedBy", "cdk")
 
-Tags.of(inference_stack).add("Project", cfg.project_name)
-Tags.of(inference_stack).add("Env", "production-inference")
-Tags.of(inference_stack).add("ManagedBy", "cdk")
+# Tags.of(inference_stack).add("Project", cfg.project_name)
+# Tags.of(inference_stack).add("Env", "production-inference")
+# Tags.of(inference_stack).add("ManagedBy", "cdk")
 
 Tags.of(dev_vpc_stack).add("Project", cfg.project_name)
 Tags.of(dev_vpc_stack).add("Env", "development")
