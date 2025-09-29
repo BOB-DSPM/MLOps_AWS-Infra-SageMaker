@@ -19,9 +19,13 @@ class RdsConstruct(Construct):
         vpc: ec2.IVpc,
         database_name: str = "mlopsdb",
         username: str = "mlopsuser",
+        identifier_prefix: str = "mlops",
         **kwargs
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        
+        # DB 식별자 접두사 저장
+        self.identifier_prefix = identifier_prefix
         
         # DB 서브넷 그룹 생성
         self.db_subnet_group = rds.SubnetGroup(
@@ -66,7 +70,7 @@ class RdsConstruct(Construct):
         self.database_cluster = rds.DatabaseCluster(
             self, "AuroraCluster",
             engine=rds.DatabaseClusterEngine.aurora_postgres(
-                version=rds.AuroraPostgresEngineVersion.VER_15_7
+                version=rds.AuroraPostgresEngineVersion.VER_15_4
             ),
             credentials=rds.Credentials.from_secret(self.db_credentials),
             default_database_name=database_name,
@@ -78,7 +82,7 @@ class RdsConstruct(Construct):
             serverless_v2_min_capacity=0.5,  # 최소 ACU (가장 저렴)
             serverless_v2_max_capacity=1.0,  # 최대 ACU 제한
             writer=rds.ClusterInstance.serverless_v2("writer", 
-                instance_identifier="aurora-writer"
+                instance_identifier=f"{self.identifier_prefix}-aurora-writer"
             )
         )
         

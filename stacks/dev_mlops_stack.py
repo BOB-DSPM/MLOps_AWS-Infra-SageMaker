@@ -60,7 +60,8 @@ class DevMLOpsStack(Stack):
             self, "DevRdsDatabase",
             vpc=vpc,
             database_name="mlopsdevdb",
-            username="mlopsdevuser"
+            username="mlopsdevuser",
+            identifier_prefix="dev-mlops"
         )
 
         # ========================================
@@ -465,7 +466,7 @@ class DevMLOpsStack(Stack):
         # SageMaker Studio (개발 전용)
         enable_studio = True
         if enable_studio and vpc:
-            studio_domain_name = f"{cfg.project_name}-dev-{cfg.env_name}-studio"
+            studio_domain_name = f"{cfg.project_name}-dev2-{cfg.env_name}-studio"
             studio_user = "dev-admin"
             Studio(
                 self,
