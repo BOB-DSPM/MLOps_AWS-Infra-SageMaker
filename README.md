@@ -1,6 +1,6 @@
 # MLOps on AWS (SageMaker + CodePipeline)
 
-*Last updated: 2025-09-20 - Infrastructure successfully restored after AWS nuke*
+*Last updated: 2025-09-30 - Auto-deployment pipeline test*
 
 ## 준비
 1) 해당 레포 클론
