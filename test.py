@@ -1,4 +1,5 @@
 import boto3
+import datetime
 rt = boto3.client("sagemaker-runtime", region_name="ap-northeast-2")
 endpoint = "my-mlops-dev-endpoint"
 
@@ -18,4 +19,5 @@ print("raw:", raw)                 # 예: "0.34\n0.42"
 scores = [float(x) for x in raw.splitlines()]
 print("scores:", scores)           # [0.34, 0.42]
 preds = [int(s >= 0.5) for s in scores]
+print("Test run date:", datetime.datetime.now().isoformat())
 print("preds:", preds)             # [0, 0]
