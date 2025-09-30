@@ -26,16 +26,22 @@ class ModelInferenceStack(Stack):
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # 완전히 프라이빗한 VPC 생성 (Internet Gateway 없음)
+        # 웹 서비스용 VPC 생성 (Public + Private 서브넷)
         self.vpc = ec2.Vpc(
             self, "InferenceVpc",
             max_azs=2,
-            ip_addresses=ec2.IpAddresses.cidr("10.1.0.0/16"),  # MLOps VPC와 다른 CIDR
+            ip_addresses=ec2.IpAddresses.cidr("10.3.0.0/16"),  # 다른 VPC와 겹치지 않는 CIDR
             subnet_configuration=[
-                # Internet Gateway 없이 완전히 격리된 프라이빗 서브넷만 생성
+                # 로드 밸런서용 Public 서브넷
                 ec2.SubnetConfiguration(
-                    name="IsolatedSubnet",
-                    subnet_type=ec2.SubnetType.PRIVATE_ISOLATED,  # 인터넷 연결 없음
+                    name="PublicSubnet",
+                    subnet_type=ec2.SubnetType.PUBLIC,
+                    cidr_mask=24,
+                ),
+                # 컨테이너용 Private 서브넷
+                ec2.SubnetConfiguration(
+                    name="PrivateSubnet",
+                    subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,
                     cidr_mask=24,
                 ),
             ],
