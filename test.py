@@ -20,4 +20,5 @@ scores = [float(x) for x in raw.splitlines()]
 print("scores:", scores)           # [0.34, 0.42]
 preds = [int(s >= 0.5) for s in scores]
 print("Test run date:", datetime.datetime.now().isoformat())
+print("Pipeline trigger test: commit from dev branch")
 print("preds:", preds)             # [0, 0]
