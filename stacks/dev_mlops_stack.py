@@ -69,7 +69,7 @@ class DevMLOpsStack(Stack):
         # ========================================
         storage = BaseStorage(
             self, "DevStorage",
-            project=f"{cfg.project_name}-dev2",  # 개발 전용 프로젝트명 (고유하게)
+            project=f"{cfg.project_name}-dev2-v2",  # 더 고유한 개발 전용 프로젝트명
             env="main",  # 고정값으로 변경
             kms_key=kms.key,
             artifact_lifecycle_days=cfg.artifact_bucket_lifecycle_days,
@@ -80,7 +80,7 @@ class DevMLOpsStack(Stack):
         # ========================================
         ecr = BaseEcr(
             self, "DevEcr",
-            name=f"{cfg.project_name}-dev2".lower(),  # 고유한 이름
+            name=f"{cfg.project_name}-dev2-v2".lower(),  # 더 고유한 이름
             keep_untagged=cfg.ecr_untagged_keep,
         )
 
