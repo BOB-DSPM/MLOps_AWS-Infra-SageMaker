@@ -27,7 +27,7 @@ base_stack = BaseStack(
     env=env
 )
 
-# 모델 추론용 스택 (별도 VPC) - 작동하는 dev 엔드포인트 사용
+# 모델 추론용 스택 (별도 VPC) - 업데이트된 모델 패키지 사용
 inference_stack = ModelInferenceStack(
     app, f"{cfg.project_name.capitalize()}-InferenceStack",
     sagemaker_endpoint_name=f"{cfg.project_name}-dev-endpoint",  # 작동하는 dev 엔드포인트 사용
