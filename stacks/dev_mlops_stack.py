@@ -444,6 +444,15 @@ class DevMLOpsStack(Stack):
                 actions=["iam:PassRole"],
                 resources=[sm_exec.role.role_arn],
             ))
+            
+            # Deploy 단계에서 필요한 추가 SageMaker 권한
+            iam.codebuild_role.add_to_policy(iam_cdk.PolicyStatement(
+                actions=[
+                    "sagemaker:ListTrainingJobs",
+                    "sagemaker:DescribeTrainingJob",
+                ],
+                resources=["*"],
+            ))
 
             CfnOutput(self, "DevSmPackageGroup", value=sm_pkg_group_name)
             CfnOutput(self, "DevSmEndpointName", value=sm_endpoint_name)
