@@ -13,6 +13,17 @@
     ```bash
     cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION
     ```
+## 원클릭 배포 (권장)
+- 로컬에서 AWS CLI가 설정된 상태라면 아래 한 줄로 부트스트랩 → 전체 스택 배포 → 샘플 데이터 적재 → 파이프라인 트리거까지 자동 실행됩니다.
+    ```bash
+    bash scripts/one-click-deploy.sh
+    ```
+- 선택 옵션(필요 시 환경변수로 설정)
+    - `SKIP_BOOTSTRAP=1` : `cdk bootstrap` 건너뜀
+    - `SKIP_INGEST=1` : Feature Store 샘플 데이터 적재 건너뜀
+    - `WITH_DEV_DATA=1` : 개발용 Feature Store에도 샘플 데이터 적재
+    - `SKIP_PIPELINE_START=1` : CodePipeline 실행 건너뜀
+
 ## 배포
 ```bash
 cdk deploy

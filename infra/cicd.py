@@ -18,14 +18,15 @@ class CiCdPipeline(Construct):
         artifacts_bucket,
         codebuild_role,
         pipeline_role,
+        use_codestar_connection: bool = False,
+        codestar_connection_arn: str | None = None,
+        codestar_repo_owner: str | None = None,
+        codestar_repo_name: str | None = None,
     ) -> None:
         super().__init__(scope, construct_id)
 
-        self.repo = codecommit.Repository(
-            self, "Repo",
-            repository_name=repo_name,
-            description="Bootstrap repo for my-mlops",
-        )
+        self.repo = None
+        self.repo_clone_url_http = None
 
         self.project = codebuild.PipelineProject(
             self, "Build",
@@ -76,16 +77,37 @@ class CiCdPipeline(Construct):
             pipeline_type=codepipeline.PipelineType.V2,
         )
 
+        if use_codestar_connection:
+            if not (codestar_connection_arn and codestar_repo_owner and codestar_repo_name):
+                raise ValueError("CodeStar connection requires ARN, repo owner, and repo name.")
+            source_action = cpactions.CodeStarConnectionsSourceAction(
+                action_name="CodeStarSource",
+                owner=codestar_repo_owner,
+                repo=codestar_repo_name,
+                branch=branch,
+                connection_arn=codestar_connection_arn,
+                output=source_output,
+                code_build_clone_output=True,
+            )
+        else:
+            self.repo = codecommit.Repository(
+                self, "Repo",
+                repository_name=repo_name,
+                description="Bootstrap repo for my-mlops",
+            )
+            self.repo_clone_url_http = self.repo.repository_clone_url_http
+            source_action = cpactions.CodeCommitSourceAction(
+                action_name="CodeCommit",
+                repository=self.repo,
+                branch=branch,
+                output=source_output,
+                trigger=cpactions.CodeCommitTrigger.EVENTS, 
+            )
+
         self.pipeline.add_stage(
             stage_name="Source",
             actions=[
-                cpactions.CodeCommitSourceAction(
-                    action_name="CodeCommit",
-                    repository=self.repo,
-                    branch=branch,
-                    output=source_output,
-                    trigger=cpactions.CodeCommitTrigger.EVENTS, 
-                )
+                source_action
             ],
         )
 

@@ -85,8 +85,15 @@ class BaseStack(Stack):
                 artifacts_bucket=storage.artifacts_bucket,
                 codebuild_role=iam.codebuild_role,
                 pipeline_role=iam.pipeline_role,
+                use_codestar_connection=cfg.use_codestar_connection,
+                codestar_connection_arn=cfg.codestar_connection_arn,
+                codestar_repo_owner=cfg.codestar_repo_owner,
+                codestar_repo_name=cfg.codestar_repo_name,
             )
-            CfnOutput(self, "CodeCommitCloneUrlHttp", value=cicd.repo.repository_clone_url_http)
+            if cicd.repo_clone_url_http:
+                CfnOutput(self, "CodeCommitCloneUrlHttp", value=cicd.repo_clone_url_http)
+            if cfg.use_codestar_connection and cfg.codestar_connection_arn:
+                CfnOutput(self, "CodeStarConnectionArn", value=cfg.codestar_connection_arn)
             CfnOutput(self, "PipelineName", value=cicd.pipeline.pipeline_name)
 
         sm_exec = SmExecutionRole(

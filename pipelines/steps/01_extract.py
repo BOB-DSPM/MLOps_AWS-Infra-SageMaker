@@ -4,6 +4,7 @@ import tempfile
 import numpy as np
 import pandas as pd
 import boto3
+from botocore.exceptions import ClientError
 from urllib.parse import urlparse
 import time
 
@@ -109,61 +110,74 @@ def main():
         b = u.netloc
         k = u.path.lstrip("/")
         tmp = tempfile.NamedTemporaryFile(delete=False)
-        s3c.download_file(b, k, tmp.name)
-        raw = pd.read_csv(tmp.name)
-        cols = {c.lower(): c for c in raw.columns}
-        def col(*names):
-            for n in names:
-                if n in cols:
-                    return cols[n]
-            return None
-        gender_col = col("gender", "sex", "is_male")
-        gender = raw[gender_col] if gender_col else pd.Series(0, index=raw.index)
-        if str(gender.dtype) == "bool":
-            gender = gender.astype(int)
-        elif gender.dtype == "object":
-            # Convert Male/Female to 1/0
-            gender = (gender.str.lower() == "male").astype(int)
-        
-        age_col = col("age", "user_age")
-        age = raw[age_col] if age_col else pd.Series(30, index=raw.index)
-        
-        device_col = col("device_type", "device", "platform", "is_mobile")
-        device = raw[device_col] if device_col else pd.Series(0, index=raw.index)
-        if device is not None and str(device.dtype) == "bool":
-            device = device.astype(int)
-        elif device.dtype == "object":
-            # Convert Desktop/Mobile to 1/0
-            device = (device.str.lower().isin(["mobile", "smartphone"])).astype(int)
+        try:
+            s3c.download_file(b, k, tmp.name)
+            raw = pd.read_csv(tmp.name)
+            cols = {c.lower(): c for c in raw.columns}
+            def col(*names):
+                for n in names:
+                    if n in cols:
+                        return cols[n]
+                return None
+            gender_col = col("gender", "sex", "is_male")
+            gender = raw[gender_col] if gender_col else pd.Series(0, index=raw.index)
+            if str(gender.dtype) == "bool":
+                gender = gender.astype(int)
+            elif gender.dtype == "object":
+                # Convert Male/Female to 1/0
+                gender = (gender.str.lower() == "male").astype(int)
             
-        hourcol = col("hour", "hour_of_day", "time_of_day")
-        ts = col("timestamp", "event_time", "time")
-        if ts and hourcol is None:
-            dt = pd.to_datetime(raw[ts], errors="coerce")
-            hour = dt.dt.hour.fillna(0).astype(int)
-        elif hourcol:
-            hour_data = raw[hourcol]
-            if hour_data.dtype == "object":
-                # Convert time strings like "Afternoon", "Morning" to hours
-                time_map = {"morning": 9, "afternoon": 14, "evening": 18, "night": 22}
-                hour = hour_data.str.lower().map(time_map).fillna(12).astype(int)
+            age_col = col("age", "user_age")
+            age = raw[age_col] if age_col else pd.Series(30, index=raw.index)
+            
+            device_col = col("device_type", "device", "platform", "is_mobile")
+            device = raw[device_col] if device_col else pd.Series(0, index=raw.index)
+            if device is not None and str(device.dtype) == "bool":
+                device = device.astype(int)
+            elif device.dtype == "object":
+                # Convert Desktop/Mobile to 1/0
+                device = (device.str.lower().isin(["mobile", "smartphone"])).astype(int)
+                
+            hourcol = col("hour", "hour_of_day", "time_of_day")
+            ts = col("timestamp", "event_time", "time")
+            if ts and hourcol is None:
+                dt = pd.to_datetime(raw[ts], errors="coerce")
+                hour = dt.dt.hour.fillna(0).astype(int)
+            elif hourcol:
+                hour_data = raw[hourcol]
+                if hour_data.dtype == "object":
+                    # Convert time strings like "Afternoon", "Morning" to hours
+                    time_map = {"morning": 9, "afternoon": 14, "evening": 18, "night": 22}
+                    hour = hour_data.str.lower().map(time_map).fillna(12).astype(int)
+                else:
+                    hour = hour_data.astype(int)
             else:
-                hour = hour_data.astype(int)
-        else:
-            hour = pd.Series(12, index=raw.index)
+                hour = pd.Series(12, index=raw.index)
+                
+            click_col = col("clicked", "click", "label", "target", "y", "is_click")
+            click = raw[click_col].astype(int) if click_col else pd.Series(0, index=raw.index)
             
-        click_col = col("clicked", "click", "label", "target", "y", "is_click")
-        click = raw[click_col].astype(int) if click_col else pd.Series(0, index=raw.index)
-        
-        # Handle missing values before converting to int
-        gender = gender.fillna(0).astype(int)
-        age = age.fillna(30).astype(int)  # Default age 30
-        device = device.fillna(0).astype(int)  # Default device 0
-        hour = hour.fillna(12).astype(int)  # Default hour 12
-        
-        out = pd.DataFrame({"label": click, 0: gender, 1: age, 2: device, 3: hour})
-        df = out
-    else:
+            # Handle missing values before converting to int
+            gender = gender.fillna(0).astype(int)
+            age = age.fillna(30).astype(int)  # Default age 30
+            device = device.fillna(0).astype(int)  # Default device 0
+            hour = hour.fillna(12).astype(int)  # Default hour 12
+            
+            out = pd.DataFrame({"label": click, 0: gender, 1: age, 2: device, 3: hour})
+            df = out
+        except ClientError as e:
+            code = (e.response.get("Error") or {}).get("Code")
+            print(f"CSV download failed from {args.csv}: {e}")
+            if code in {"404", "NotFound", "NoSuchKey"}:
+                print("CSV not found in S3, generating synthetic data instead.")
+                df = None
+            else:
+                raise
+        except Exception as e:
+            print(f"CSV processing failed: {e}")
+            df = None
+    if df is None:
+        print("Falling back to synthetic data generation.")
         n = 1000
         rng = np.random.default_rng(42)
         gender = rng.integers(0, 2, size=n)

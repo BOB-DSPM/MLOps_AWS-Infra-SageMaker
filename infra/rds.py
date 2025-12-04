@@ -70,7 +70,8 @@ class RdsConstruct(Construct):
         self.database_cluster = rds.DatabaseCluster(
             self, "AuroraCluster",
             engine=rds.DatabaseClusterEngine.aurora_postgres(
-                version=rds.AuroraPostgresEngineVersion.VER_15_4
+                # Use a widely available Aurora Postgres version to avoid InvalidRequest errors
+                version=rds.AuroraPostgresEngineVersion.VER_14_6
             ),
             credentials=rds.Credentials.from_secret(self.db_credentials),
             default_database_name=database_name,

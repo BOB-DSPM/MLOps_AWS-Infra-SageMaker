@@ -109,181 +109,189 @@ class DevMLOpsStack(Stack):
                 artifacts_bucket=storage.artifacts_bucket,
                 codebuild_role=iam.codebuild_role,
                 pipeline_role=iam.pipeline_role,
+                use_codestar_connection=cfg.use_codestar_connection,
+                codestar_connection_arn=cfg.codestar_connection_arn,
+                codestar_repo_owner=cfg.codestar_repo_owner,
+                codestar_repo_name=cfg.codestar_repo_name,
             )
-            CfnOutput(self, "DevCodeCommitCloneUrlHttp", value=cicd.repo.repository_clone_url_http)
+            if cicd.repo_clone_url_http:
+                CfnOutput(self, "DevCodeCommitCloneUrlHttp", value=cicd.repo_clone_url_http)
+            if cfg.use_codestar_connection and cfg.codestar_connection_arn:
+                CfnOutput(self, "DevCodeStarConnectionArn", value=cfg.codestar_connection_arn)
             CfnOutput(self, "DevPipelineName", value=cicd.pipeline.pipeline_name)
 
             # ========================================
             # Cross-repo 배포 기능 (개발 → 운영)
             # ========================================
             
-            # SNS 토픽 생성 (배포 알림용)
-            deployment_topic = sns.Topic(
-                self, "DevToProdDeploymentTopic",
-                topic_name=f"{name_prefix}-deployment-notifications",
-                display_name="Dev to Prod Deployment Notifications"
-            )
+            if not cfg.use_codestar_connection:
+                # SNS 토픽 생성 (배포 알림용)
+                deployment_topic = sns.Topic(
+                    self, "DevToProdDeploymentTopic",
+                    topic_name=f"{name_prefix}-deployment-notifications",
+                    display_name="Dev to Prod Deployment Notifications"
+                )
 
-            # Cross-repo 배포용 IAM 역할
-            cross_repo_role = iam_cdk.Role(
-                self, "CrossRepoDeployRole",
-                assumed_by=iam_cdk.ServicePrincipal("codebuild.amazonaws.com"),
-                inline_policies={
-                    "CrossRepoPolicy": iam_cdk.PolicyDocument(
-                        statements=[
-                            # 개발 레포 읽기
-                            iam_cdk.PolicyStatement(
-                                effect=iam_cdk.Effect.ALLOW,
-                                actions=[
-                                    "codecommit:GitPull",
-                                    "codecommit:GitPush",
-                                    "codecommit:GetBranch",
-                                    "codecommit:GetCommit",
-                                    "codecommit:GetRepository",
-                                    "codecommit:ListBranches",
-                                    "codecommit:ListRepositories"
-                                ],
-                                resources=[f"arn:aws:codecommit:{self.region}:{self.account}:{cfg.codecommit_repo_name}-dev"],
-                            ),
-                            # 운영 레포 쓰기
-                            iam_cdk.PolicyStatement(
-                                effect=iam_cdk.Effect.ALLOW,
-                                actions=[
-                                    "codecommit:GitPush",
-                                    "codecommit:GitPull",
-                                    "codecommit:GetBranch",
-                                    "codecommit:GetCommit",
-                                    "codecommit:GetRepository",
-                                    "codecommit:PutFile",
-                                    "codecommit:CreateCommit"
-                                ],
-                                resources=[f"arn:aws:codecommit:{self.region}:{self.account}:{cfg.codecommit_repo_name}"],
-                            ),
-                            # CodeBuild 기본 권한
-                            iam_cdk.PolicyStatement(
-                                effect=iam_cdk.Effect.ALLOW,
-                                actions=[
-                                    "logs:CreateLogGroup",
-                                    "logs:CreateLogStream",
-                                    "logs:PutLogEvents"
-                                ],
-                                resources=[f"arn:aws:logs:{self.region}:{self.account}:*"],
-                            ),
-                            # SNS 알림 권한
-                            iam_cdk.PolicyStatement(
-                                effect=iam_cdk.Effect.ALLOW,
-                                actions=["sns:Publish"],
-                                resources=[deployment_topic.topic_arn],
-                            ),
-                        ]
-                    )
-                },
-            )
+                # Cross-repo 배포용 IAM 역할
+                cross_repo_role = iam_cdk.Role(
+                    self, "CrossRepoDeployRole",
+                    assumed_by=iam_cdk.ServicePrincipal("codebuild.amazonaws.com"),
+                    inline_policies={
+                        "CrossRepoPolicy": iam_cdk.PolicyDocument(
+                            statements=[
+                                # 개발 레포 읽기
+                                iam_cdk.PolicyStatement(
+                                    effect=iam_cdk.Effect.ALLOW,
+                                    actions=[
+                                        "codecommit:GitPull",
+                                        "codecommit:GitPush",
+                                        "codecommit:GetBranch",
+                                        "codecommit:GetCommit",
+                                        "codecommit:GetRepository",
+                                        "codecommit:ListBranches",
+                                        "codecommit:ListRepositories"
+                                    ],
+                                    resources=[f"arn:aws:codecommit:{self.region}:{self.account}:{cfg.codecommit_repo_name}-dev"],
+                                ),
+                                # 운영 레포 쓰기
+                                iam_cdk.PolicyStatement(
+                                    effect=iam_cdk.Effect.ALLOW,
+                                    actions=[
+                                        "codecommit:GitPush",
+                                        "codecommit:GitPull",
+                                        "codecommit:GetBranch",
+                                        "codecommit:GetCommit",
+                                        "codecommit:GetRepository",
+                                        "codecommit:PutFile",
+                                        "codecommit:CreateCommit"
+                                    ],
+                                    resources=[f"arn:aws:codecommit:{self.region}:{self.account}:{cfg.codecommit_repo_name}"],
+                                ),
+                                # CodeBuild 기본 권한
+                                iam_cdk.PolicyStatement(
+                                    effect=iam_cdk.Effect.ALLOW,
+                                    actions=[
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    resources=[f"arn:aws:logs:{self.region}:{self.account}:*"],
+                                ),
+                                # SNS 알림 권한
+                                iam_cdk.PolicyStatement(
+                                    effect=iam_cdk.Effect.ALLOW,
+                                    actions=["sns:Publish"],
+                                    resources=[deployment_topic.topic_arn],
+                                ),
+                            ]
+                        )
+                    },
+                )
 
-            # Cross-repo 배포 CodeBuild 프로젝트
-            cross_repo_deploy = codebuild.Project(
-                self, "CrossRepoDeployProject",
-                project_name=f"{name_prefix}-cross-repo-deploy",
-                environment=codebuild.BuildEnvironment(
-                    build_image=codebuild.LinuxBuildImage.STANDARD_7_0,
-                    privileged=False,
-                    environment_variables={
-                        "PROD_REPO_NAME": codebuild.BuildEnvironmentVariable(
-                            value=cfg.codecommit_repo_name
-                        ),
-                        "AWS_REGION": codebuild.BuildEnvironmentVariable(
-                            value=self.region
-                        ),
-                        "SNS_TOPIC_ARN": codebuild.BuildEnvironmentVariable(
-                            value=deployment_topic.topic_arn
-                        ),
-                    }
-                ),
-                build_spec=codebuild.BuildSpec.from_object({
-                    "version": "0.2",
-                    "phases": {
-                        "install": {
-                            "runtime-versions": {
-                                "python": "3.11"
-                            },
-                            "commands": [
-                                "echo Installing dependencies...",
-                                "pip install git-remote-codecommit boto3",
-                            ]
-                        },
-                        "pre_build": {
-                            "commands": [
-                                "echo Setting up git configuration...",
-                                "git config --global user.email 'dev-pipeline@mlops.com'",
-                                "git config --global user.name 'DevPipeline'",
-                                "git config --global credential.helper '!aws codecommit credential-helper $@'",
-                                "git config --global credential.UseHttpPath true",
-                            ]
-                        },
-                        "build": {
-                            "commands": [
-                                "echo Starting deployment to production repository...",
-                                "DEPLOYMENT_START_TIME=$(date '+%Y-%m-%d %H:%M:%S')",
-                                
-                                # 운영 레포 클론
-                                "echo Cloning production repository...",
-                                "git clone codecommit::$AWS_REGION://$PROD_REPO_NAME prod-repo",
-                                "cd prod-repo",
-                                "git checkout main || git checkout -b main",
-                                
-                                # 선택적 파일 복사
-                                "echo Copying approved code from dev...",
-                                "cp -r $CODEBUILD_SRC_DIR/pipelines . || echo 'pipelines directory not found'",
-                                "cp -r $CODEBUILD_SRC_DIR/inference_app . || echo 'inference_app directory not found'",
-                                "cp $CODEBUILD_SRC_DIR/requirements.txt . || echo 'requirements.txt not found'",
-                                "cp $CODEBUILD_SRC_DIR/buildspec.yml . || echo 'buildspec.yml not found'",
-                                "cp $CODEBUILD_SRC_DIR/*.py . || echo 'Python files not found'",
-                                
-                                # 커밋 및 푸시
-                                "echo 'Checking for changes...'",
-                                "git add .",
-                                "COMMIT_MSG=\"🚀 Auto deploy from dev: $DEPLOYMENT_START_TIME - Approved model\"",
-                                "git commit -m \"$COMMIT_MSG\" || echo 'No changes to commit'",
-                                "git push origin main",
-                                "DEPLOYMENT_STATUS='SUCCESS'",
-                                "echo '✅ Successfully deployed to production!'",
-                            ]
-                        },
-                        "post_build": {
-                            "commands": [
-                                "echo Sending deployment notification...",
-                                "DEPLOYMENT_END_TIME=$(date '+%Y-%m-%d %H:%M:%S')",
-                                
-                                # SNS 알림 발송
-                                "MESSAGE=\"🔄 Dev to Prod Deployment Report\\n\\n\"",
-                                "MESSAGE=\"${MESSAGE}📅 Start Time: $DEPLOYMENT_START_TIME\\n\"",
-                                "MESSAGE=\"${MESSAGE}📅 End Time: $DEPLOYMENT_END_TIME\\n\"",
-                                "MESSAGE=\"${MESSAGE}📊 Status: $DEPLOYMENT_STATUS\\n\"",
-                                "MESSAGE=\"${MESSAGE}🎯 Target Repo: $PROD_REPO_NAME\\n\"",
-                                "MESSAGE=\"${MESSAGE}🔗 Production pipeline should be triggered automatically\"",
-                                "aws sns publish --topic-arn $SNS_TOPIC_ARN --message \"$MESSAGE\" --subject 'MLOps Dev to Prod Deployment' --region $AWS_REGION",
-                                
-                                "echo 🎉 Deployment process completed!"
-                            ]
+                # Cross-repo 배포 CodeBuild 프로젝트
+                cross_repo_deploy = codebuild.Project(
+                    self, "CrossRepoDeployProject",
+                    project_name=f"{name_prefix}-cross-repo-deploy",
+                    environment=codebuild.BuildEnvironment(
+                        build_image=codebuild.LinuxBuildImage.STANDARD_7_0,
+                        privileged=False,
+                        environment_variables={
+                            "PROD_REPO_NAME": codebuild.BuildEnvironmentVariable(
+                                value=cfg.codecommit_repo_name
+                            ),
+                            "AWS_REGION": codebuild.BuildEnvironmentVariable(
+                                value=self.region
+                            ),
+                            "SNS_TOPIC_ARN": codebuild.BuildEnvironmentVariable(
+                                value=deployment_topic.topic_arn
+                            ),
                         }
-                    }
-                }),
-                role=cross_repo_role,
-                timeout=Duration.minutes(15),
-            )
+                    ),
+                    build_spec=codebuild.BuildSpec.from_object({
+                        "version": "0.2",
+                        "phases": {
+                            "install": {
+                                "runtime-versions": {
+                                    "python": "3.11"
+                                },
+                                "commands": [
+                                    "echo Installing dependencies...",
+                                    "pip install git-remote-codecommit boto3",
+                                ]
+                            },
+                            "pre_build": {
+                                "commands": [
+                                    "echo Setting up git configuration...",
+                                    "git config --global user.email 'dev-pipeline@mlops.com'",
+                                    "git config --global user.name 'DevPipeline'",
+                                    "git config --global credential.helper '!aws codecommit credential-helper $@'",
+                                    "git config --global credential.UseHttpPath true",
+                                ]
+                            },
+                            "build": {
+                                "commands": [
+                                    "echo Starting deployment to production repository...",
+                                    "DEPLOYMENT_START_TIME=$(date '+%Y-%m-%d %H:%M:%S')",
+                                    
+                                    # 운영 레포 클론
+                                    "echo Cloning production repository...",
+                                    "git clone codecommit::$AWS_REGION://$PROD_REPO_NAME prod-repo",
+                                    "cd prod-repo",
+                                    "git checkout main || git checkout -b main",
+                                    
+                                    # 선택적 파일 복사
+                                    "echo Copying approved code from dev...",
+                                    "cp -r $CODEBUILD_SRC_DIR/pipelines . || echo 'pipelines directory not found'",
+                                    "cp -r $CODEBUILD_SRC_DIR/inference_app . || echo 'inference_app directory not found'",
+                                    "cp $CODEBUILD_SRC_DIR/requirements.txt . || echo 'requirements.txt not found'",
+                                    "cp $CODEBUILD_SRC_DIR/buildspec.yml . || echo 'buildspec.yml not found'",
+                                    "cp $CODEBUILD_SRC_DIR/*.py . || echo 'Python files not found'",
+                                    
+                                    # 커밋 및 푸시
+                                    "echo 'Checking for changes...'",
+                                    "git add .",
+                                    "COMMIT_MSG=\"🚀 Auto deploy from dev: $DEPLOYMENT_START_TIME - Approved model\"",
+                                    "git commit -m \"$COMMIT_MSG\" || echo 'No changes to commit'",
+                                    "git push origin main",
+                                    "DEPLOYMENT_STATUS='SUCCESS'",
+                                    "echo '✅ Successfully deployed to production!'",
+                                ]
+                            },
+                            "post_build": {
+                                "commands": [
+                                    "echo Sending deployment notification...",
+                                    "DEPLOYMENT_END_TIME=$(date '+%Y-%m-%d %H:%M:%S')",
+                                    
+                                    # SNS 알림 발송
+                                    "MESSAGE=\"🔄 Dev to Prod Deployment Report\\n\\n\"",
+                                    "MESSAGE=\"${MESSAGE}📅 Start Time: $DEPLOYMENT_START_TIME\\n\"",
+                                    "MESSAGE=\"${MESSAGE}📅 End Time: $DEPLOYMENT_END_TIME\\n\"",
+                                    "MESSAGE=\"${MESSAGE}📊 Status: $DEPLOYMENT_STATUS\\n\"",
+                                    "MESSAGE=\"${MESSAGE}🎯 Target Repo: $PROD_REPO_NAME\\n\"",
+                                    "MESSAGE=\"${MESSAGE}🔗 Production pipeline should be triggered automatically\"",
+                                    "aws sns publish --topic-arn $SNS_TOPIC_ARN --message \"$MESSAGE\" --subject 'MLOps Dev to Prod Deployment' --region $AWS_REGION",
+                                    
+                                    "echo 🎉 Deployment process completed!"
+                                ]
+                            }
+                        }
+                    }),
+                    role=cross_repo_role,
+                    timeout=Duration.minutes(15),
+                )
 
-            # 출력값 추가
-            CfnOutput(
-                self, "CrossRepoDeployProjectName",
-                value=cross_repo_deploy.project_name,
-                description="CodeBuild project for dev to prod deployment"
-            )
+                # 출력값 추가
+                CfnOutput(
+                    self, "CrossRepoDeployProjectName",
+                    value=cross_repo_deploy.project_name,
+                    description="CodeBuild project for dev to prod deployment"
+                )
 
-            CfnOutput(
-                self, "DeploymentNotificationTopic",
-                value=deployment_topic.topic_arn,
-                description="SNS topic for deployment notifications"
-            )
+                CfnOutput(
+                    self, "DeploymentNotificationTopic",
+                    value=deployment_topic.topic_arn,
+                    description="SNS topic for deployment notifications"
+                )
 
         # ========================================
         # SageMaker 실행 역할 (개발 전용)
@@ -384,7 +392,7 @@ class DevMLOpsStack(Stack):
 
             # Cross-repo 배포 액션 (SageMaker CI/CD 전에 정의)
             deploy_to_prod_action = None
-            if cfg.enable_pipeline:
+            if cfg.enable_pipeline and cross_repo_deploy:
                 deploy_to_prod_action = codepipeline_actions.CodeBuildAction(
                     action_name="DeployToProd",
                     project=cross_repo_deploy,

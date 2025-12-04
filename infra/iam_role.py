@@ -35,8 +35,9 @@ class CiCdIam(Construct):
             ],
         ))
         self.codebuild_role.add_to_policy(iam.PolicyStatement(
+            # Allow interacting with any project KMS key (buckets may be pre-existing with a different key)
             actions=["kms:Encrypt", "kms:Decrypt", "kms:DescribeKey", "kms:GenerateDataKey*"],
-            resources=[kms_key_arn],
+            resources=["*"],
         ))
         self.codebuild_role.add_to_policy(iam.PolicyStatement(
             actions=[

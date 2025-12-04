@@ -8,6 +8,10 @@
         "include_vpc": true,
         "enable_pipeline": true,
         "codecommit_repo_name": "my-mlops-repo",
+        "use_codestar_connection": true,
+        "codestar_connection_arn": "arn:aws:codeconnections:ap-northeast-2:108713078164:connection/9237fe5d-d89f-4718-aff7-e35f1db7f54a",
+        "codestar_repo_owner": "BOB-DSPM",
+        "codestar_repo_name": "MLOps_AWS-Infra-SageMaker",
         "pipeline_branch": "main",
 
         "artifact_bucket_lifecycle_days": 90,
@@ -20,9 +24,9 @@
         "ct_schedule_cron": "cron(0 0 * * ? *)",
         "feature_group_name": "my-mlops-feature-group-v2",
         "use_existing_feature_group": true,
-        "use_sm_pipeline": false,
+        "use_sm_pipeline": true,
         "use_feature_store": true,
-        "enable_studio": true,
+        "enable_studio": false,
         "studio_user": "admin"
     }
 }

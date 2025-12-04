@@ -71,6 +71,18 @@ class SmExecutionRole(Construct):
             ],
         ))
 
+        # Allow decrypt on any KMS key (buckets may be pre-existing with different keys)
+        self.role.add_to_policy(iam.PolicyStatement(
+            actions=[
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey",
+            ],
+            resources=["*"],
+        ))
+
         self.role.add_to_policy(iam.PolicyStatement(
             actions=[
                 "glue:GetDatabase",

@@ -1,6 +1,7 @@
 import argparse
 import os
 import boto3
+from botocore.exceptions import ClientError
 from sagemaker.workflow.pipeline import Pipeline
 from sagemaker.workflow.parameters import (
     ParameterString,
@@ -61,6 +62,20 @@ def get_pipeline(region: str, role: str) -> Pipeline:
         key = f"{s3_prefix_scripts}/{os.path.basename(path)}"
         s3.upload_file(path, data_bucket_env, key)
         code_uris[name] = f"s3://{data_bucket_env}/{key}"
+    # Ensure default dataset exists in S3 for fallback when Feature Store is empty
+    dataset_local = os.path.abspath(os.path.join(base_dir, os.pardir, "ad_click_dataset.csv"))
+    dataset_key = "datasets/ad_click_dataset.csv"
+    if os.path.isfile(dataset_local):
+        try:
+            s3.head_object(Bucket=data_bucket_env, Key=dataset_key)
+            print(f"Dataset already present at s3://{data_bucket_env}/{dataset_key}")
+        except ClientError as e:
+            code = (e.response.get("Error") or {}).get("Code")
+            if code in {"404", "NotFound", "NoSuchKey"}:
+                print(f"Uploading default dataset to s3://{data_bucket_env}/{dataset_key}")
+                s3.upload_file(dataset_local, data_bucket_env, dataset_key)
+            else:
+                raise
 
     extract = SKLearnProcessor(
         framework_version="1.2-1",
